@@ -1,0 +1,87 @@
+﻿<UserControl x:Class="CodingArena.Main.Battlefields.BattlefieldView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CodingArena.Controls"
+             xmlns:bases="clr-namespace:CodingArena.Main.Battlefields.Bases"
+             xmlns:resources="clr-namespace:CodingArena.Main.Battlefields.Resources"
+             xmlns:bots="clr-namespace:CodingArena.Main.Battlefields.Bots"
+             xmlns:bullets="clr-namespace:CodingArena.Main.Battlefields.Bullets"
+             mc:Ignorable="d" 
+             d:DesignWidth="1600" d:DesignHeight="900" >
+    <Grid>
+        <Viewbox>
+            <Grid>
+                <ItemsControl Width="{Binding Width}" Height="{Binding Height}"
+                              ItemsSource="{Binding Bases}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Background="LightGray"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <bases:BaseView DataContext="{Binding}">
+                                <bases:BaseView.RenderTransform>
+                                    <TranslateTransform X="{Binding X}" Y="{Binding Y}" />
+                                </bases:BaseView.RenderTransform>
+                            </bases:BaseView>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl Width="{Binding Width}" Height="{Binding Height}"
+                              ItemsSource="{Binding Resources}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Background="Transparent"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <resources:ResourceView DataContext="{Binding}">
+                                <resources:ResourceView.RenderTransform>
+                                    <TranslateTransform X="{Binding X}" Y="{Binding Y}" />
+                                </resources:ResourceView.RenderTransform>
+                            </resources:ResourceView>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl Width="{Binding Width}" Height="{Binding Height}"
+                          ItemsSource="{Binding Bots}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Background="Transparent"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <bots:BotView DataContext="{Binding}">
+                                <bots:BotView.RenderTransform>
+                                    <TranslateTransform X="{Binding X}" Y="{Binding Y}" />
+                                </bots:BotView.RenderTransform>
+                            </bots:BotView>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl Width="{Binding Width}" Height="{Binding Height}"
+                          ItemsSource="{Binding Bullets}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Background="Transparent"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <bullets:BulletView DataContext="{Binding}">
+                                <bullets:BulletView.RenderTransform>
+                                    <TranslateTransform X="{Binding X}" Y="{Binding Y}" />
+                                </bullets:BulletView.RenderTransform>
+                            </bullets:BulletView>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Viewbox>
+    </Grid>
+</UserControl>

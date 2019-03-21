@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,7 +56,45 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Common\Collider.cs" />
+    <Compile Include="Common\GameObject.cs" />
+    <Compile Include="Common\Movable.cs" />
+    <Compile Include="Main\Battlefields\Bases\Base.cs" />
+    <Compile Include="Main\Battlefields\Bases\BaseViewModel.cs" />
+    <Compile Include="Main\Battlefields\Bases\BaseView.xaml.cs">
+      <DependentUpon>BaseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Main\Battlefields\Battlefield.cs" />
+    <Compile Include="Main\Battlefields\BotEventArgs.cs" />
+    <Compile Include="Main\Battlefields\Bots\Bot.cs" />
+    <Compile Include="Main\Battlefields\BulletEventArgs.cs" />
+    <Compile Include="Main\Battlefields\Bullets\Bullet.cs" />
+    <Compile Include="Main\Battlefields\ResourceEventArgs.cs" />
+    <Compile Include="Main\Battlefields\Resources\Resource.cs" />
+    <Compile Include="Main\MainViewModel.cs" />
+    <Compile Include="Main\Battlefields\Resources\ResourceViewModel.cs" />
+    <Page Include="Main\Battlefields\Bases\BaseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Main\Battlefields\BattlefieldView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Main\Battlefields\Bots\BotView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Main\Battlefields\Bullets\BulletView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Main\Battlefields\Resources\ResourceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Main\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -63,12 +102,30 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Main\Battlefields\Bots\BotViewModel.cs" />
+    <Compile Include="Main\Battlefields\Bullets\BulletViewModel.cs" />
+    <Compile Include="Main\Battlefields\BattlefieldView.xaml.cs">
+      <DependentUpon>BattlefieldView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Main\Battlefields\Bots\BotView.xaml.cs">
+      <DependentUpon>BotView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Main\Battlefields\Bullets\BulletView.xaml.cs">
+      <DependentUpon>BulletView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CircularProgress.cs" />
+    <Compile Include="Main\Battlefields\Resources\ResourceView.xaml.cs">
+      <DependentUpon>ResourceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Main\Battlefields\BattlefieldViewModel.cs" />
+    <Compile Include="Main\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Observable.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
