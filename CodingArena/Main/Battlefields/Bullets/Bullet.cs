@@ -10,7 +10,7 @@ namespace CodingArena.Main.Battlefields.Bullets
 {
     public class Bullet : Movable
     {
-        public Bullet([NotNull] Battlefield battlefield, [NotNull] Bot shooter, double speed, double damage) : base(battlefield)
+        public Bullet([NotNull] Battlefield battlefield, [NotNull] DeathMatchBot shooter, double speed, double damage) : base(battlefield)
         {
             Radius = 3;
             Shooter = shooter ?? throw new ArgumentNullException(nameof(shooter));
@@ -19,7 +19,7 @@ namespace CodingArena.Main.Battlefields.Bullets
             Damage = damage;
         }
 
-        public Bot Shooter { get; }
+        public DeathMatchBot Shooter { get; }
         public double Damage { get; }
         public double Distance { get; private set; }
         public override async Task<bool> MoveAsync()

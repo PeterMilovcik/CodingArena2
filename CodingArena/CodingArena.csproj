@@ -67,7 +67,8 @@
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Main\Battlefields\Battlefield.cs" />
     <Compile Include="Main\Battlefields\BotEventArgs.cs" />
-    <Compile Include="Main\Battlefields\Bots\Bot.cs" />
+    <Compile Include="Main\Battlefields\Bots\AIs\BotAIFactory.cs" />
+    <Compile Include="Main\Battlefields\Bots\DeathMatchBot.cs" />
     <Compile Include="Main\Battlefields\Weapons\IWeapon.cs" />
     <Compile Include="Main\Battlefields\Weapons\Pistol.cs" />
     <Compile Include="Main\Battlefields\BulletEventArgs.cs" />
@@ -126,6 +127,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Main\Rounds\Round.cs" />
     <Compile Include="Observable.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

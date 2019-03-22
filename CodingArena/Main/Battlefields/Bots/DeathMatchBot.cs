@@ -13,14 +13,16 @@ using IWeapon = CodingArena.Main.Battlefields.Weapons.IWeapon;
 
 namespace CodingArena.Main.Battlefields.Bots
 {
-    public sealed class Bot : Movable, IBot
+    public sealed class DeathMatchBot : Movable, IBot
     {
         private readonly Battlefield myBattlefield;
         private double myAngle;
         private readonly IWeapon myWeapon;
 
-        public Bot([NotNull] Battlefield battlefield) : base(battlefield)
+        public DeathMatchBot([NotNull] Battlefield battlefield, IDeathMatchAI botAI) : base(battlefield)
         {
+            BotAI = botAI;
+            Name = BotAI.BotName;
             myBattlefield = battlefield ?? throw new ArgumentNullException(nameof(battlefield));
             Radius = 20;
             var maxHitPoints = double.Parse(ConfigurationManager.AppSettings["MaxHitPoints"]);
@@ -29,7 +31,9 @@ namespace CodingArena.Main.Battlefields.Bots
             myWeapon = new Pistol(myBattlefield);
         }
 
-        public string Name { get; set; }
+        public IDeathMatchAI BotAI { get; }
+
+        public string Name { get; }
 
         public double Angle
         {
@@ -60,7 +64,7 @@ namespace CodingArena.Main.Battlefields.Bots
             var movement = new Vector(Direction.X, Direction.Y);
             movement.X *= Speed * deltaTime.TotalSeconds;
             movement.Y *= Speed * deltaTime.TotalSeconds;
-            var afterMove = new Bot(Battlefield)
+            var afterMove = new DeathMatchBot(Battlefield, BotAI)
             {
                 Position = new Point(Position.X + movement.X, Position.Y + movement.Y),
                 Radius = Radius
@@ -98,7 +102,7 @@ namespace CodingArena.Main.Battlefields.Bots
             }
         }
 
-        private void Die(Bot shooter)
+        private void Die(DeathMatchBot shooter)
         {
             HitPoints = new Value(HitPoints.Maximum, 0);
             Battlefield.RemoveBot(this);

@@ -5,7 +5,7 @@ namespace CodingArena.Main.Battlefields.Weapons
 {
     public interface IWeapon : Player.IWeapon
     {
-        Bullet Fire(Bot shooter);
+        Bullet Fire(DeathMatchBot shooter);
         void Reload();
     }
 }

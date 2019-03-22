@@ -15,7 +15,7 @@ namespace CodingArena.Main.Battlefields
             Width = double.Parse(ConfigurationManager.AppSettings["BattlefieldWidth"]);
             Height = double.Parse(ConfigurationManager.AppSettings["BattlefieldHeight"]);
             Bases = new List<Base>();
-            Bots = new List<Bot>();
+            Bots = new List<DeathMatchBot>();
             Bullets = new List<Bullet>();
             Resources = new List<Resource>();
         }
@@ -23,11 +23,11 @@ namespace CodingArena.Main.Battlefields
         public double Width { get; }
         public double Height { get; }
         public List<Base> Bases { get; }
-        public List<Bot> Bots { get; }
+        public List<DeathMatchBot> Bots { get; }
         public List<Bullet> Bullets { get; }
         public List<Resource> Resources { get; }
 
-        public void RemoveBot(Bot bot)
+        public void RemoveBot(DeathMatchBot bot)
         {
             Bots.Remove(bot);
             OnBotRemoved(bot);
@@ -52,8 +52,8 @@ namespace CodingArena.Main.Battlefields
         public event EventHandler<ResourceEventArgs> ResourceAdded;
         public event EventHandler<ResourceEventArgs> ResourceRemoved;
 
-        private void OnBotAdded(Bot bot) => BotAdded?.Invoke(this, new BotEventArgs(bot));
-        private void OnBotRemoved(Bot bot) => BotRemoved?.Invoke(this, new BotEventArgs(bot));
+        private void OnBotAdded(DeathMatchBot bot) => BotAdded?.Invoke(this, new BotEventArgs(bot));
+        private void OnBotRemoved(DeathMatchBot bot) => BotRemoved?.Invoke(this, new BotEventArgs(bot));
         private void OnBulletAdded(Bullet bullet) => BulletAdded?.Invoke(this, new BulletEventArgs(bullet));
         private void OnBulletRemoved(Bullet bullet) => BulletRemoved?.Invoke(this, new BulletEventArgs(bullet));
         private void OnResourceAdded(Resource resource) => ResourceAdded?.Invoke(this, new ResourceEventArgs(resource));

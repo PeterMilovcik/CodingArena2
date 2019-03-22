@@ -44,7 +44,7 @@ namespace CodingArena.Main.Battlefields.Weapons
         public IBulletSpecification Bullet { get; }
         public DateTime LastUpdate { get; private set; }
 
-        public Bullet Fire(Bot shooter)
+        public Bullet Fire(DeathMatchBot shooter)
         {
             LastUpdate = DateTime.Now;
             if (IsReloading) return null;
