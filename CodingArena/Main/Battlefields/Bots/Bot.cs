@@ -2,12 +2,14 @@
 using CodingArena.Common;
 using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Main.Battlefields.Resources;
+using CodingArena.Main.Battlefields.Weapons;
 using CodingArena.Player;
 using System;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using IWeapon = CodingArena.Main.Battlefields.Weapons.IWeapon;
 
 namespace CodingArena.Main.Battlefields.Bots
 {
@@ -118,14 +120,14 @@ namespace CodingArena.Main.Battlefields.Bots
         }
 
         public event EventHandler<ResourceEventArgs> ResourcePicked;
-        public event EventHandler<ResourceEventArgs> ResourceDropped;
         private void OnResourcePicked(Resource resource) =>
             ResourcePicked?.Invoke(this, new ResourceEventArgs(resource));
+
+        public event EventHandler<ResourceEventArgs> ResourceDropped;
         private void OnResourceDropped(Resource resource) =>
             ResourceDropped?.Invoke(this, new ResourceEventArgs(resource));
 
         public event EventHandler Died;
-
         private void OnDied() => Died?.Invoke(this, EventArgs.Empty);
     }
 }

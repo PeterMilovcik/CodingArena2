@@ -68,9 +68,8 @@
     <Compile Include="Main\Battlefields\Battlefield.cs" />
     <Compile Include="Main\Battlefields\BotEventArgs.cs" />
     <Compile Include="Main\Battlefields\Bots\Bot.cs" />
-    <Compile Include="Main\Battlefields\Bots\IWeapon.cs" />
-    <Compile Include="Main\Battlefields\Bots\Pistol.cs" />
-    <Compile Include="Main\Battlefields\Bots\PistolBulletSpecification.cs" />
+    <Compile Include="Main\Battlefields\Weapons\IWeapon.cs" />
+    <Compile Include="Main\Battlefields\Weapons\Pistol.cs" />
     <Compile Include="Main\Battlefields\BulletEventArgs.cs" />
     <Compile Include="Main\Battlefields\Bullets\Bullet.cs" />
     <Compile Include="Main\Battlefields\ResourceEventArgs.cs" />
