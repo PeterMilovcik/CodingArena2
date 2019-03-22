@@ -6,19 +6,14 @@ using System.Windows;
 
 namespace CodingArena.Common
 {
-    public interface IMovable : ICollider
+    public interface IMovable : Player.IMovable
     {
-        double MinSpeed { get; }
-        double MaxSpeed { get; }
-        double Speed { get; }
-        Vector Direction { get; }
-        DateTime LastUpdate { get; }
         Task<bool> MoveAsync();
     }
 
     public abstract class Movable : Collider, IMovable
     {
-        public Movable([NotNull] Battlefield battlefield)
+        protected Movable([NotNull] Battlefield battlefield)
         {
             Battlefield = battlefield ?? throw new ArgumentNullException(nameof(battlefield));
         }

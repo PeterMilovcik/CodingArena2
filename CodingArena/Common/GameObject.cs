@@ -1,21 +1,18 @@
 ﻿using System;
+using System.Windows;
 
 namespace CodingArena.Common
 {
-    public interface IGameObject
+    public interface IGameObject : Player.IGameObject
     {
-        double X { get; }
-        double Y { get; }
-        double DistanceTo(IGameObject gameObject);
         event EventHandler Changed;
     }
 
     public class GameObject : IGameObject
     {
-        public double X { get; protected set; }
-        public double Y { get; protected set; }
-        public double DistanceTo(IGameObject gameObject) =>
-            Math.Sqrt(Math.Pow(gameObject.X - X, 2) + Math.Pow(gameObject.Y - Y, 2));
+        public Point Position { get; protected set; }
+        public double DistanceTo(Player.IGameObject gameObject) =>
+            Math.Sqrt(Math.Pow(gameObject.Position.X - Position.X, 2) + Math.Pow(gameObject.Position.Y - Position.Y, 2));
 
         public event EventHandler Changed;
 

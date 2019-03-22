@@ -2,6 +2,7 @@
 using CodingArena.Common;
 using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Main.Battlefields.Resources;
+using CodingArena.Player;
 using System;
 using System.Configuration;
 using System.Linq;
@@ -10,18 +11,20 @@ using System.Windows;
 
 namespace CodingArena.Main.Battlefields.Bots
 {
-    public sealed class Bot : Movable
+    public sealed class Bot : Movable, IBot
     {
         private readonly Battlefield myBattlefield;
         private double myAngle;
+        private readonly IWeapon myWeapon;
 
         public Bot([NotNull] Battlefield battlefield) : base(battlefield)
         {
             myBattlefield = battlefield ?? throw new ArgumentNullException(nameof(battlefield));
             Radius = 20;
-            MaxHitPoints = double.Parse(ConfigurationManager.AppSettings["MaxHitPoints"]);
-            HitPoints = MaxHitPoints;
+            var maxHitPoints = double.Parse(ConfigurationManager.AppSettings["MaxHitPoints"]);
+            HitPoints = new Value(maxHitPoints, maxHitPoints);
             Speed = double.Parse(ConfigurationManager.AppSettings["BotSpeed"]);
+            myWeapon = new Pistol(myBattlefield);
         }
 
         public string Name { get; set; }
@@ -36,10 +39,10 @@ namespace CodingArena.Main.Battlefields.Bots
             }
         }
 
-        public double MaxHitPoints { get; }
-        public double HitPoints { get; private set; }
+        public IValue HitPoints { get; private set; }
         public Resource Resource { get; private set; }
         public bool HasResource => Resource != null;
+        public Player.IWeapon Weapon => myWeapon;
 
         public override async Task<bool> MoveAsync()
         {
@@ -55,7 +58,11 @@ namespace CodingArena.Main.Battlefields.Bots
             var movement = new Vector(Direction.X, Direction.Y);
             movement.X *= Speed * deltaTime.TotalSeconds;
             movement.Y *= Speed * deltaTime.TotalSeconds;
-            var afterMove = new Bot(Battlefield) { X = X + movement.X, Y = Y + movement.Y, Radius = Radius };
+            var afterMove = new Bot(Battlefield)
+            {
+                Position = new Point(Position.X + movement.X, Position.Y + movement.Y),
+                Radius = Radius
+            };
 
             if (Battlefield.Bots.Except(new[] { this })
                 .Any(bot => bot.IsInCollisionWith(afterMove)))
@@ -75,16 +82,15 @@ namespace CodingArena.Main.Battlefields.Bots
                 return false;
             }
 
-            X = afterMove.X;
-            Y = afterMove.Y;
+            Position = new Point(afterMove.Position.X, afterMove.Position.Y);
             LastUpdate = DateTime.Now;
             return true;
         }
 
         public void TakeDamageFrom(Bullet bullet)
         {
-            HitPoints -= bullet.Damage;
-            if (HitPoints <= 0)
+            HitPoints = new Value(HitPoints.Maximum, HitPoints.Actual - bullet.Damage);
+            if (HitPoints.Actual <= 0)
             {
                 Die(bullet.Shooter);
             }
@@ -92,13 +98,12 @@ namespace CodingArena.Main.Battlefields.Bots
 
         private void Die(Bot shooter)
         {
-            HitPoints = 0;
+            HitPoints = new Value(HitPoints.Maximum, 0);
             Battlefield.RemoveBot(this);
             OnDied();
         }
 
-        public Bullet Shoot() =>
-            myBattlefield.Bullets.SingleOrDefault(b => b.Shooter == this) ?? new Bullet(Battlefield, this);
+        public Bullet Shoot() => myWeapon.Fire(this);
 
         public void PickResource(Resource resource)
         {

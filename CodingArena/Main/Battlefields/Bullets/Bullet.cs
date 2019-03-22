@@ -2,7 +2,6 @@
 using CodingArena.Common;
 using CodingArena.Main.Battlefields.Bots;
 using System;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,13 +10,13 @@ namespace CodingArena.Main.Battlefields.Bullets
 {
     public class Bullet : Movable
     {
-        public Bullet([NotNull] Battlefield battlefield, [NotNull] Bot shooter) : base(battlefield)
+        public Bullet([NotNull] Battlefield battlefield, [NotNull] Bot shooter, double speed, double damage) : base(battlefield)
         {
             Radius = 3;
             Shooter = shooter ?? throw new ArgumentNullException(nameof(shooter));
             Direction = new Vector(Shooter.Direction.X, Shooter.Direction.Y);
-            Speed = double.Parse(ConfigurationManager.AppSettings["BulletSpeed"]);
-            Damage = double.Parse(ConfigurationManager.AppSettings["BulletDamage"]);
+            Speed = speed;
+            Damage = damage;
         }
 
         public Bot Shooter { get; }
@@ -37,7 +36,11 @@ namespace CodingArena.Main.Battlefields.Bullets
             var movement = new Vector(Direction.X, Direction.Y);
             movement.X *= Speed * deltaTime.TotalSeconds;
             movement.Y *= Speed * deltaTime.TotalSeconds;
-            var afterMove = new Bullet(Battlefield, Shooter) { X = X + movement.X, Y = Y + movement.Y, Radius = Radius };
+            var afterMove = new Bullet(Battlefield, Shooter, Speed, Damage)
+            {
+                Position = new Point(Position.X + movement.X, Position.Y + movement.Y),
+                Radius = Radius
+            };
 
             var damageBots = Battlefield.Bots.Where(bot => bot.IsInCollisionWith(afterMove));
             if (damageBots.Any())
@@ -52,8 +55,7 @@ namespace CodingArena.Main.Battlefields.Bullets
                 return false;
             }
 
-            X = afterMove.X;
-            Y = afterMove.Y;
+            Position = new Point(afterMove.Position.X, afterMove.Position.Y);
             LastUpdate = DateTime.Now;
             return true;
         }

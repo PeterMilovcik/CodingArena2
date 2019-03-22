@@ -68,6 +68,9 @@
     <Compile Include="Main\Battlefields\Battlefield.cs" />
     <Compile Include="Main\Battlefields\BotEventArgs.cs" />
     <Compile Include="Main\Battlefields\Bots\Bot.cs" />
+    <Compile Include="Main\Battlefields\Bots\IWeapon.cs" />
+    <Compile Include="Main\Battlefields\Bots\Pistol.cs" />
+    <Compile Include="Main\Battlefields\Bots\PistolBulletSpecification.cs" />
     <Compile Include="Main\Battlefields\BulletEventArgs.cs" />
     <Compile Include="Main\Battlefields\Bullets\Bullet.cs" />
     <Compile Include="Main\Battlefields\ResourceEventArgs.cs" />
@@ -150,6 +153,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CodingArena.Player\CodingArena.Player.csproj">
+      <Project>{ade7e948-f1b0-4eaa-b5b3-c1eb8577e7ad}</Project>
+      <Name>CodingArena.Player</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
