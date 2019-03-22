@@ -50,10 +50,12 @@
     <Compile Include="IMovable.cs" />
     <Compile Include="ITurnAction.cs" />
     <Compile Include="IWeapon.cs" />
+    <Compile Include="TurnActions\DropDownResourceTurnAction.cs" />
     <Compile Include="TurnActions\MoveAwayFromTurnAction.cs" />
     <Compile Include="TurnActions\MoveTowardsTurnAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TurnAction.cs" />
+    <Compile Include="TurnActions\PickUpResourceTurnAction.cs" />
     <Compile Include="TurnActions\ShootTurnAction.cs" />
     <Compile Include="TurnActions\TurnAwayFromTurnAction.cs" />
     <Compile Include="TurnActions\TurnTowardsTurnAction.cs" />

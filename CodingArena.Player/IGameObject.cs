@@ -6,5 +6,6 @@ namespace CodingArena.Player
     {
         Point Position { get; }
         double DistanceTo(IGameObject gameObject);
+        double DistanceTo(Point point);
     }
 }

@@ -11,8 +11,12 @@ namespace CodingArena.Common
     public class GameObject : IGameObject
     {
         public Point Position { get; protected set; }
+
         public double DistanceTo(Player.IGameObject gameObject) =>
-            Math.Sqrt(Math.Pow(gameObject.Position.X - Position.X, 2) + Math.Pow(gameObject.Position.Y - Position.Y, 2));
+            DistanceTo(gameObject.Position);
+
+        public double DistanceTo(Point position) =>
+            Math.Sqrt(Math.Pow(position.X - Position.X, 2) + Math.Pow(position.Y - Position.Y, 2));
 
         public event EventHandler Changed;
 

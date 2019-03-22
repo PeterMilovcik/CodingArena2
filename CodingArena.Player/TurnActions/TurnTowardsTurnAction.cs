@@ -1,14 +1,14 @@
-﻿using System;
+﻿using System.Windows;
 
 namespace CodingArena.Player.TurnActions
 {
     public class TurnTowardsTurnAction : ITurnAction
     {
-        internal TurnTowardsTurnAction(IGameObject gameObject)
+        internal TurnTowardsTurnAction(Point position)
         {
-            GameObject = gameObject ?? throw new ArgumentNullException(nameof(gameObject));
+            Position = position;
         }
 
-        public IGameObject GameObject { get; }
+        public Point Position { get; }
     }
 }
