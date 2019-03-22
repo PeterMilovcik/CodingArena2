@@ -4,7 +4,7 @@ namespace CodingArena.Player.TurnActions
 {
     public class TurnAwayFromTurnAction : ITurnAction
     {
-        public TurnAwayFromTurnAction(IGameObject gameObject)
+        internal TurnAwayFromTurnAction(IGameObject gameObject)
         {
             GameObject = gameObject ?? throw new ArgumentNullException(nameof(gameObject));
         }
