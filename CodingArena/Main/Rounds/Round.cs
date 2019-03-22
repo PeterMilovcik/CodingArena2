@@ -6,18 +6,23 @@ using System.Collections.Generic;
 
 namespace CodingArena.Main.Rounds
 {
-    public class Round
+    public sealed class Round
     {
         public Round()
         {
             var botAIFactory = new BotAIFactory<IDeathMatchAI>();
             var botAIs = botAIFactory.CreateBotAIs();
-            var battlefield = new Battlefield();
-            var bots = new List<DeathMatchBot>();
+            Battlefield = new Battlefield();
+            Bots = new List<DeathMatchBot>();
             foreach (var botAI in botAIs)
             {
-                new DeathMatchBot(battlefield, botAI);
+                var bot = new DeathMatchBot(Battlefield, botAI);
+                Bots.Add(bot);
             }
         }
+
+        public Battlefield Battlefield { get; }
+
+        public List<DeathMatchBot> Bots { get; }
     }
 }
