@@ -7,6 +7,7 @@ using CodingArena.Player;
 using CodingArena.Player.TurnActions;
 using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,7 +18,6 @@ namespace CodingArena.Main.Battlefields.Bots
     public sealed class Bot : Movable, IBot
     {
         private readonly Battlefield myBattlefield;
-        private double myAngle;
         private readonly IWeapon myWeapon;
 
         public Bot([NotNull] Battlefield battlefield, IBotAI botAI) : base(battlefield)
@@ -30,21 +30,12 @@ namespace CodingArena.Main.Battlefields.Bots
             HitPoints = new Value(maxHitPoints, maxHitPoints);
             Speed = double.Parse(ConfigurationManager.AppSettings["BotSpeed"]);
             myWeapon = new Pistol(myBattlefield);
+            Angle = 90;
         }
 
         public IBotAI BotAI { get; }
 
         public string Name { get; }
-
-        public double Angle
-        {
-            get => myAngle;
-            set
-            {
-                myAngle = value;
-                Direction = new Vector(Math.Cos(Angle), Math.Sin(Angle));
-            }
-        }
 
         public IValue HitPoints { get; private set; }
         public Resource Resource { get; private set; }
@@ -78,15 +69,6 @@ namespace CodingArena.Main.Battlefields.Bots
                 return false;
             }
 
-            var takeBullets = Battlefield.Bullets.Where(bullet => bullet.IsInCollisionWith(afterMove));
-            if (takeBullets.Any())
-            {
-                foreach (var takeBullet in takeBullets)
-                {
-                    TakeDamageFrom(takeBullet);
-                }
-            }
-
             Position = new Point(afterMove.Position.X, afterMove.Position.Y);
             LastUpdate = DateTime.Now;
             OnChanged();
@@ -96,6 +78,7 @@ namespace CodingArena.Main.Battlefields.Bots
         public void TakeDamageFrom(IBullet bullet)
         {
             HitPoints = new Value(HitPoints.Maximum, HitPoints.Actual - bullet.Damage);
+            Debug.WriteLine($"{Name} takes {bullet.Damage} damage. Remaining HP: {HitPoints.Actual}");
             if (HitPoints.Actual <= 0)
             {
                 Die(bullet.Shooter);

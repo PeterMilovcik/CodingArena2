@@ -11,6 +11,14 @@ namespace CodingArena.Main.Battlefields.Bullets
         public BulletViewModel([NotNull] Bullet bullet)
         {
             Bullet = bullet ?? throw new ArgumentNullException(nameof(bullet));
+            Bullet.Changed += (sender, args) => Update();
+            Update();
+        }
+
+        private void Update()
+        {
+            X = Bullet.Position.X;
+            Y = Bullet.Position.Y;
         }
 
         public Bullet Bullet { get; }

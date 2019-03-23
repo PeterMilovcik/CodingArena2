@@ -1,6 +1,7 @@
 ﻿using CodingArena.Main.Battlefields;
 using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bots.AIs;
+using CodingArena.Main.Battlefields.Bullets;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -60,8 +61,10 @@ namespace CodingArena.Main.Rounds
             {
                 while (!HasWinner)
                 {
-                    var tasks = Bots.Select(b => b.UpdateAsync());
-                    await Task.WhenAll(tasks);
+                    var bulletTasks = Battlefield.Bullets.OfType<Bullet>().Select(b => b.MoveAsync());
+                    await Task.WhenAll(bulletTasks);
+                    var botTasks = Bots.Select(b => b.UpdateAsync());
+                    await Task.WhenAll(botTasks);
                     await Task.Delay(TimeSpan.FromMilliseconds(myTurnDelay));
                 }
             }

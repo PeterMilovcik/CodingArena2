@@ -18,6 +18,7 @@ namespace CodingArena.Main.Battlefields.Bullets
             Direction = new Vector(Shooter.Direction.X, Shooter.Direction.Y);
             Speed = speed;
             Damage = damage;
+            Position = new Point(shooter.Position.X, shooter.Position.Y);
         }
 
         public IBot Shooter { get; }
@@ -43,7 +44,8 @@ namespace CodingArena.Main.Battlefields.Bullets
                 Radius = Radius
             };
 
-            var damageBots = Battlefield.Bots.OfType<Bot>().Where(bot => bot.IsInCollisionWith(afterMove));
+            var damageBots = Battlefield.Bots.Except(new[] { Shooter }).OfType<Bot>()
+                .Where(bot => bot.IsInCollisionWith(afterMove));
             if (damageBots.Any())
             {
                 foreach (var bot in damageBots)
@@ -51,13 +53,15 @@ namespace CodingArena.Main.Battlefields.Bullets
                     bot.TakeDamageFrom(this);
                 }
 
-                Battlefield.Remove(this);
                 LastUpdate = DateTime.Now;
+                OnChanged();
+                Battlefield.Remove(this);
                 return false;
             }
 
             Position = new Point(afterMove.Position.X, afterMove.Position.Y);
             LastUpdate = DateTime.Now;
+            OnChanged();
             return true;
         }
     }

@@ -36,6 +36,7 @@ namespace CodingArena.Main.Battlefields.Bots
         {
             X = Bot.Position.X;
             Y = Bot.Position.Y;
+            Angle = Bot.Angle;
             HP = Bot.HitPoints.Actual;
             HasResource = Bot.HasResource;
         }

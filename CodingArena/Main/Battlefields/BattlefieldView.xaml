@@ -48,6 +48,23 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
                 <ItemsControl Width="{Binding Width}" Height="{Binding Height}"
+                              ItemsSource="{Binding Bullets}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Background="Transparent"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <bullets:BulletView DataContext="{Binding}">
+                                <bullets:BulletView.RenderTransform>
+                                    <TranslateTransform X="{Binding X}" Y="{Binding Y}" />
+                                </bullets:BulletView.RenderTransform>
+                            </bullets:BulletView>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl Width="{Binding Width}" Height="{Binding Height}"
                           ItemsSource="{Binding Bots}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -61,23 +78,6 @@
                                     <TranslateTransform X="{Binding X}" Y="{Binding Y}" />
                                 </bots:BotView.RenderTransform>
                             </bots:BotView>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-                <ItemsControl Width="{Binding Width}" Height="{Binding Height}"
-                          ItemsSource="{Binding Bullets}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <Canvas Background="Transparent"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <bullets:BulletView DataContext="{Binding}">
-                                <bullets:BulletView.RenderTransform>
-                                    <TranslateTransform X="{Binding X}" Y="{Binding Y}" />
-                                </bullets:BulletView.RenderTransform>
-                            </bullets:BulletView>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

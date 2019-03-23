@@ -10,7 +10,18 @@ namespace CodingArena.Common
 
     public class GameObject : IGameObject
     {
-        public Point Position { get; protected set; }
+        private Point myPosition;
+
+        public Point Position
+        {
+            get => myPosition;
+            protected set
+            {
+                if (myPosition.Equals(value)) return;
+                myPosition = value;
+                OnChanged();
+            }
+        }
 
         public double DistanceTo(Player.IGameObject gameObject) =>
             DistanceTo(gameObject.Position);
