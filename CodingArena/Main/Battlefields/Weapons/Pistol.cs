@@ -1,10 +1,10 @@
 ﻿using CodingArena.Annotations;
+using CodingArena.Common;
 using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Player;
 using System;
 using System.Configuration;
-using IWeapon = CodingArena.Main.Battlefields.Weapons.IWeapon;
 
 namespace CodingArena.Main.Battlefields.Weapons
 {
@@ -20,7 +20,7 @@ namespace CodingArena.Main.Battlefields.Weapons
         public double Damage { get; }
     }
 
-    public class Pistol : IWeapon
+    public class Pistol : Collider, IWeapon
     {
         private readonly Battlefield myBattlefield;
 
@@ -44,7 +44,7 @@ namespace CodingArena.Main.Battlefields.Weapons
         public IBulletSpecification Bullet { get; }
         public DateTime LastUpdate { get; private set; }
 
-        public Bullet Fire(DeathMatchBot shooter)
+        public Bullet Fire(Bot shooter)
         {
             LastUpdate = DateTime.Now;
             if (IsReloading) return null;

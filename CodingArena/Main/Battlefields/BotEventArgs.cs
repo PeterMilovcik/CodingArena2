@@ -6,9 +6,9 @@ namespace CodingArena.Main.Battlefields
 {
     public class BotEventArgs : EventArgs
     {
-        public DeathMatchBot Bot { get; }
+        public Bot Bot { get; }
 
-        public BotEventArgs([NotNull] DeathMatchBot bot)
+        public BotEventArgs([NotNull] Bot bot)
         {
             Bot = bot ?? throw new ArgumentNullException(nameof(bot));
         }

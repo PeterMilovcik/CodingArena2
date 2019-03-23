@@ -2,7 +2,7 @@
 
 namespace CodingArena.Player
 {
-    public interface IWeapon
+    public interface IWeapon : ICollider
     {
         string Name { get; }
         double Damage { get; }

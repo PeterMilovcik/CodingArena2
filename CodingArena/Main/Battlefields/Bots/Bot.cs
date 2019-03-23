@@ -4,6 +4,7 @@ using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Main.Battlefields.Resources;
 using CodingArena.Main.Battlefields.Weapons;
 using CodingArena.Player;
+using CodingArena.Player.TurnActions;
 using System;
 using System.Configuration;
 using System.Linq;
@@ -13,13 +14,13 @@ using IWeapon = CodingArena.Main.Battlefields.Weapons.IWeapon;
 
 namespace CodingArena.Main.Battlefields.Bots
 {
-    public sealed class DeathMatchBot : Movable, IBot
+    public sealed class Bot : Movable, IBot
     {
         private readonly Battlefield myBattlefield;
         private double myAngle;
         private readonly IWeapon myWeapon;
 
-        public DeathMatchBot([NotNull] Battlefield battlefield, IDeathMatchAI botAI) : base(battlefield)
+        public Bot([NotNull] Battlefield battlefield, IBotAI botAI) : base(battlefield)
         {
             BotAI = botAI;
             Name = BotAI.BotName;
@@ -31,7 +32,7 @@ namespace CodingArena.Main.Battlefields.Bots
             myWeapon = new Pistol(myBattlefield);
         }
 
-        public IDeathMatchAI BotAI { get; }
+        public IBotAI BotAI { get; }
 
         public string Name { get; }
 
@@ -64,7 +65,7 @@ namespace CodingArena.Main.Battlefields.Bots
             var movement = new Vector(Direction.X, Direction.Y);
             movement.X *= Speed * deltaTime.TotalSeconds;
             movement.Y *= Speed * deltaTime.TotalSeconds;
-            var afterMove = new DeathMatchBot(Battlefield, BotAI)
+            var afterMove = new Bot(Battlefield, BotAI)
             {
                 Position = new Point(Position.X + movement.X, Position.Y + movement.Y),
                 Radius = Radius
@@ -93,7 +94,7 @@ namespace CodingArena.Main.Battlefields.Bots
             return true;
         }
 
-        public void TakeDamageFrom(Bullet bullet)
+        public void TakeDamageFrom(IBullet bullet)
         {
             HitPoints = new Value(HitPoints.Maximum, HitPoints.Actual - bullet.Damage);
             if (HitPoints.Actual <= 0)
@@ -102,10 +103,10 @@ namespace CodingArena.Main.Battlefields.Bots
             }
         }
 
-        private void Die(DeathMatchBot shooter)
+        private void Die(IBot shooter)
         {
             HitPoints = new Value(HitPoints.Maximum, 0);
-            Battlefield.RemoveBot(this);
+            Battlefield.Remove(this);
             OnDied();
         }
 
@@ -133,5 +134,39 @@ namespace CodingArena.Main.Battlefields.Bots
 
         public event EventHandler Died;
         private void OnDied() => Died?.Invoke(this, EventArgs.Empty);
+
+        public Task UpdateAsync()
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    var turnAction = BotAI.Update(this, myBattlefield);
+                    if (turnAction is ShootTurnAction shoot)
+                    {
+                        Execute(shoot);
+                    }
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            });
+        }
+
+        private void Execute(ShootTurnAction shoot)
+        {
+            var bullet = Shoot();
+            if (bullet != null)
+            {
+                myBattlefield.Add(bullet);
+            }
+            else
+            {
+
+            }
+        }
+
+        public void SetPositionTo(Point position) => Position = position;
     }
 }

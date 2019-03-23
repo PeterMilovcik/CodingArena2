@@ -42,12 +42,16 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IBase.cs" />
+    <Compile Include="IBattlefield.cs" />
     <Compile Include="IBot.cs" />
+    <Compile Include="IBullet.cs" />
     <Compile Include="IBulletSpecification.cs" />
-    <Compile Include="IDeathMatchAI.cs" />
+    <Compile Include="IBotAI.cs" />
     <Compile Include="ICollider.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="IMovable.cs" />
+    <Compile Include="IResource.cs" />
     <Compile Include="ITurnAction.cs" />
     <Compile Include="IWeapon.cs" />
     <Compile Include="TurnActions\DropDownResourceTurnAction.cs" />

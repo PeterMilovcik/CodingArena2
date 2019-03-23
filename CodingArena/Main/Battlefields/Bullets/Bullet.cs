@@ -1,6 +1,7 @@
 ﻿using CodingArena.Annotations;
 using CodingArena.Common;
 using CodingArena.Main.Battlefields.Bots;
+using CodingArena.Player;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,9 +9,9 @@ using System.Windows;
 
 namespace CodingArena.Main.Battlefields.Bullets
 {
-    public class Bullet : Movable
+    public class Bullet : Movable, IBullet
     {
-        public Bullet([NotNull] Battlefield battlefield, [NotNull] DeathMatchBot shooter, double speed, double damage) : base(battlefield)
+        public Bullet([NotNull] Battlefield battlefield, [NotNull] IBot shooter, double speed, double damage) : base(battlefield)
         {
             Radius = 3;
             Shooter = shooter ?? throw new ArgumentNullException(nameof(shooter));
@@ -19,7 +20,7 @@ namespace CodingArena.Main.Battlefields.Bullets
             Damage = damage;
         }
 
-        public DeathMatchBot Shooter { get; }
+        public IBot Shooter { get; }
         public double Damage { get; }
         public double Distance { get; private set; }
         public override async Task<bool> MoveAsync()
@@ -42,7 +43,7 @@ namespace CodingArena.Main.Battlefields.Bullets
                 Radius = Radius
             };
 
-            var damageBots = Battlefield.Bots.Where(bot => bot.IsInCollisionWith(afterMove));
+            var damageBots = Battlefield.Bots.OfType<Bot>().Where(bot => bot.IsInCollisionWith(afterMove));
             if (damageBots.Any())
             {
                 foreach (var bot in damageBots)
@@ -50,7 +51,7 @@ namespace CodingArena.Main.Battlefields.Bullets
                     bot.TakeDamageFrom(this);
                 }
 
-                Battlefield.RemoveBullet(this);
+                Battlefield.Remove(this);
                 LastUpdate = DateTime.Now;
                 return false;
             }
