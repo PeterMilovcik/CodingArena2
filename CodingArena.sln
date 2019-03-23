@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingArena", "CodingArena\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingArena.Player", "CodingArena.Player\CodingArena.Player.csproj", "{ADE7E948-F1B0-4EAA-B5B3-C1EB8577E7AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingArena.Player.Scrappie", "CodingArena.Player.Scrappie\CodingArena.Player.Scrappie.csproj", "{FF83D76B-8380-4883-9A53-084D9E113516}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingArena.Player.Rust", "CodingArena.Player.Rust\CodingArena.Player.Rust.csproj", "{94DB3355-4625-4967-A69A-FBC2B25A71E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{ADE7E948-F1B0-4EAA-B5B3-C1EB8577E7AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADE7E948-F1B0-4EAA-B5B3-C1EB8577E7AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADE7E948-F1B0-4EAA-B5B3-C1EB8577E7AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF83D76B-8380-4883-9A53-084D9E113516}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF83D76B-8380-4883-9A53-084D9E113516}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF83D76B-8380-4883-9A53-084D9E113516}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF83D76B-8380-4883-9A53-084D9E113516}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94DB3355-4625-4967-A69A-FBC2B25A71E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94DB3355-4625-4967-A69A-FBC2B25A71E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94DB3355-4625-4967-A69A-FBC2B25A71E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94DB3355-4625-4967-A69A-FBC2B25A71E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

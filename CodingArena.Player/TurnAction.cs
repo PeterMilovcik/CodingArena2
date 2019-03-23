@@ -37,5 +37,8 @@ namespace CodingArena.Player
 
         public static ITurnAction DropDownResource() =>
             new DropDownResourceTurnAction();
+
+        public static ITurnAction Idle =>
+            new IdleTurnAction();
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using CodingArena.Main.Battlefields;
 
 namespace CodingArena.Main
 {
@@ -11,13 +10,6 @@ namespace CodingArena.Main
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void StartGameMenuItem_OnClick(object sender, RoutedEventArgs e)
-        {
-            // TODO: remove
-            var viewModel = DataContext as BattlefieldViewModel;
-            viewModel?.StartGameAsync();
         }
     }
 }

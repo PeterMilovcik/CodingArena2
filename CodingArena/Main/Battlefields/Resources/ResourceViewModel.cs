@@ -1,9 +1,19 @@
-﻿namespace CodingArena.Main.Battlefields.Resources
+﻿using CodingArena.Annotations;
+using System;
+
+namespace CodingArena.Main.Battlefields.Resources
 {
     public class ResourceViewModel : Observable
     {
         private double myX;
         private double myY;
+
+        public ResourceViewModel([NotNull] Resource resource)
+        {
+            Resource = resource ?? throw new ArgumentNullException(nameof(resource));
+        }
+
+        public Resource Resource { get; }
 
         public double X
         {

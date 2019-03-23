@@ -28,7 +28,6 @@ namespace CodingArena.Main.Battlefields.Weapons
         {
             myBattlefield = battlefield ?? throw new ArgumentNullException(nameof(battlefield));
             Name = "Pistol";
-            Damage = double.Parse(ConfigurationManager.AppSettings["PistolDamage"]);
             var reloadTimeInSeconds = double.Parse(ConfigurationManager.AppSettings["PistolReloadTimeInSeconds"]);
             ReloadTime = TimeSpan.FromSeconds(reloadTimeInSeconds);
             MaxRange = double.Parse(ConfigurationManager.AppSettings["PistolMaxRange"]);

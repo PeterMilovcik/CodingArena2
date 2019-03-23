@@ -5,7 +5,6 @@ namespace CodingArena.Player
     public interface IWeapon : ICollider
     {
         string Name { get; }
-        double Damage { get; }
         double MaxRange { get; }
         TimeSpan ReloadTime { get; }
         bool IsReloading { get; }

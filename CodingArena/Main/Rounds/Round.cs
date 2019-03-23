@@ -43,8 +43,8 @@ namespace CodingArena.Main.Rounds
             double angleDif = 360 / Bots.Count;
             foreach (var bot in Bots)
             {
-                var newX = centerX + radius * Math.Cos(angle);
-                var newY = centerY + radius * Math.Sin(angle);
+                var newX = centerX + radius * Math.Cos(angle * Math.PI / 180);
+                var newY = centerY + radius * Math.Sin(angle * Math.PI / 180);
                 bot.SetPositionTo(new Point(newX, newY));
                 angle += angleDif;
             }
@@ -67,6 +67,6 @@ namespace CodingArena.Main.Rounds
             }
         }
 
-        public bool HasWinner { get; set; }
+        public bool HasWinner => Bots.Count(b => b.HitPoints.Actual > 0) <= 1;
     }
 }

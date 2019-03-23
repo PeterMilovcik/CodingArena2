@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="File">
-                <MenuItem Header="Start Game" Click="StartGameMenuItem_OnClick" InputGestureText="Ctrl + G" />
+                <MenuItem Header="Start Game" InputGestureText="Ctrl + G" />
                 <Separator/>
                 <MenuItem Header="Exit" />
             </MenuItem>

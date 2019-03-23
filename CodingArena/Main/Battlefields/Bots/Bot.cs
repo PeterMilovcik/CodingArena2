@@ -85,12 +85,11 @@ namespace CodingArena.Main.Battlefields.Bots
                 {
                     TakeDamageFrom(takeBullet);
                 }
-                LastUpdate = DateTime.Now;
-                return false;
             }
 
             Position = new Point(afterMove.Position.X, afterMove.Position.Y);
             LastUpdate = DateTime.Now;
+            OnChanged();
             return true;
         }
 
@@ -135,23 +134,33 @@ namespace CodingArena.Main.Battlefields.Bots
         public event EventHandler Died;
         private void OnDied() => Died?.Invoke(this, EventArgs.Empty);
 
-        public Task UpdateAsync()
+        public async Task UpdateAsync()
         {
-            return Task.Run(() =>
+            try
             {
-                try
+                var turnAction = BotAI.Update(this, myBattlefield);
+                switch (turnAction)
                 {
-                    var turnAction = BotAI.Update(this, myBattlefield);
-                    if (turnAction is ShootTurnAction shoot)
-                    {
+                    case ShootTurnAction shoot:
                         Execute(shoot);
-                    }
+                        break;
+                    case MoveTowardsTurnAction moveTowards:
+                        await ExecuteAsync(moveTowards);
+                        break;
                 }
-                catch (Exception)
-                {
-                    // ignored
-                }
-            });
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+        }
+
+        private async Task ExecuteAsync(MoveTowardsTurnAction moveTowards)
+        {
+            var movement = new Vector(moveTowards.Position.X - Position.X, moveTowards.Position.Y - Position.Y);
+            movement.Normalize();
+            Direction = movement;
+            await MoveAsync();
         }
 
         private void Execute(ShootTurnAction shoot)

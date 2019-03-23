@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace CodingArena.Main.Battlefields.Bots
 {
-    public class BotViewModel : Observable
+    public sealed class BotViewModel : Observable
     {
         private double myX;
         private double myY;
@@ -18,15 +18,29 @@ namespace CodingArena.Main.Battlefields.Bots
         private Brush myColor;
         private const double WeaponSize = 30;
 
-        public BotViewModel()
+        public BotViewModel(Bot bot)
         {
+            Bot = bot;
+            Name = Bot.Name;
+            Bot.Changed += (sender, args) => Update();
+            Bot.ResourcePicked += (sender, args) => HasResource = true;
+            Bot.ResourcePicked += (sender, args) => HasResource = false;
+            Bot.Died += (sender, args) => OnDied();
+            Color = Brushes.Black;
             Update();
         }
 
+        public Bot Bot { get; }
+
         public void Update()
         {
-            Name = "MyName";
+            X = Bot.Position.X;
+            Y = Bot.Position.Y;
+            HP = Bot.HitPoints.Actual;
+            HasResource = Bot.HasResource;
         }
+
+        public event EventHandler Died;
 
         public string Name
         {
@@ -156,5 +170,7 @@ namespace CodingArena.Main.Battlefields.Bots
                 }
             }
         }
+
+        private void OnDied() => Died?.Invoke(this, EventArgs.Empty);
     }
 }
