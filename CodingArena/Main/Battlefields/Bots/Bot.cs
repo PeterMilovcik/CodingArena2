@@ -42,7 +42,66 @@ namespace CodingArena.Main.Battlefields.Bots
         public Resource Resource { get; private set; }
         public bool HasResource => Resource != null;
         public bool IsAiming => myRemainingAimTime > TimeSpan.Zero;
+
         public Player.IWeapon Weapon => myWeapon;
+
+        public override async Task UpdateAsync()
+        {
+            await base.UpdateAsync();
+            await myWeapon.UpdateAsync();
+            try
+            {
+                if (IsAiming)
+                {
+                    Aim();
+                    return;
+                }
+                var turnAction = BotAI.Update(this, myBattlefield);
+                switch (turnAction)
+                {
+                    case ShootTurnAction shoot:
+                        Execute(shoot);
+                        break;
+                    case MoveTowardsTurnAction moveTowards:
+                        Execute(moveTowards);
+                        break;
+                    case MoveAwayFromTurnAction moveAway:
+                        Execute(moveAway);
+                        break;
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+        }
+
+        private void Execute(MoveTowardsTurnAction moveTowards)
+        {
+            if (DistanceTo(moveTowards.Position) < MinDistance)
+            {
+                return;
+            }
+            var movement = new Vector(moveTowards.Position.X - Position.X, moveTowards.Position.Y - Position.Y);
+            movement.Normalize();
+            Direction = movement;
+            Move();
+        }
+
+        private void Execute(MoveAwayFromTurnAction moveAway)
+        {
+            var movement = new Vector(Position.X - moveAway.Position.X, Position.Y - moveAway.Position.Y);
+            movement.Normalize();
+            Direction = movement;
+            Move();
+        }
+
+        private void Execute(ShootTurnAction shoot)
+        {
+            if (IsAiming) return;
+            if (Weapon.IsReloading) return;
+            Shoot();
+        }
 
         private bool Move()
         {
@@ -56,6 +115,14 @@ namespace CodingArena.Main.Battlefields.Bots
                 Radius = Radius
             };
 
+            if (afterMove.Position.X > Battlefield.Width - 1 ||
+                afterMove.Position.X < 0 ||
+                afterMove.Position.Y > Battlefield.Height - 1 ||
+                afterMove.Position.Y < 0)
+            {
+                Die();
+                return true;
+            }
 
             var otherBots = Battlefield.Bots.Except(new[] { this });
             foreach (var bot in otherBots)
@@ -128,11 +195,16 @@ namespace CodingArena.Main.Battlefields.Bots
             }
         }
 
-        private void Die(IBot shooter)
+        private void Die()
         {
             HitPoints = new Value(HitPoints.Maximum, 0);
             Battlefield.Remove(this);
             OnDied();
+        }
+
+        private void Die(IBot shooter)
+        {
+            Die();
         }
 
         private void Shoot()
@@ -153,43 +225,18 @@ namespace CodingArena.Main.Battlefields.Bots
         }
 
         public event EventHandler<ResourceEventArgs> ResourcePicked;
+
         private void OnResourcePicked(Resource resource) =>
             ResourcePicked?.Invoke(this, new ResourceEventArgs(resource));
 
         public event EventHandler<ResourceEventArgs> ResourceDropped;
+
         private void OnResourceDropped(Resource resource) =>
             ResourceDropped?.Invoke(this, new ResourceEventArgs(resource));
 
         public event EventHandler Died;
-        private void OnDied() => Died?.Invoke(this, EventArgs.Empty);
 
-        public override async Task UpdateAsync()
-        {
-            await base.UpdateAsync();
-            await myWeapon.UpdateAsync();
-            try
-            {
-                if (IsAiming)
-                {
-                    Aim();
-                    return;
-                }
-                var turnAction = BotAI.Update(this, myBattlefield);
-                switch (turnAction)
-                {
-                    case ShootTurnAction shoot:
-                        Execute(shoot);
-                        break;
-                    case MoveTowardsTurnAction moveTowards:
-                        Execute(moveTowards);
-                        break;
-                }
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-        }
+        private void OnDied() => Died?.Invoke(this, EventArgs.Empty);
 
         private void Aim()
         {
@@ -199,25 +246,6 @@ namespace CodingArena.Main.Battlefields.Bots
                 var bullet = myWeapon.Fire(this);
                 Battlefield.Add(bullet);
             }
-        }
-
-        private void Execute(MoveTowardsTurnAction moveTowards)
-        {
-            if (DistanceTo(moveTowards.Position) < MinDistance)
-            {
-                return;
-            }
-            var movement = new Vector(moveTowards.Position.X - Position.X, moveTowards.Position.Y - Position.Y);
-            movement.Normalize();
-            Direction = movement;
-            Move();
-        }
-
-        private void Execute(ShootTurnAction shoot)
-        {
-            if (IsAiming) return;
-            if (Weapon.IsReloading) return;
-            Shoot();
         }
 
         public void SetPositionTo(Point position) => Position = position;
