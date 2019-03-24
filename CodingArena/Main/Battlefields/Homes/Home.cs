@@ -1,23 +1,33 @@
-﻿using System;
-using System.Windows.Media;
-using CodingArena.Annotations;
+﻿using CodingArena.Annotations;
 using CodingArena.Common;
 using CodingArena.Player;
+using System;
+using System.Windows;
+using System.Windows.Media;
 
 namespace CodingArena.Main.Battlefields.Homes
 {
     public class Home : Collider, IHome
     {
-        public Home([NotNull] string name)
+        public Home([NotNull] IBot bot, Point position)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
             Radius = 30;
-            Name = name;
+            Owner = bot ?? throw new ArgumentNullException(nameof(bot));
+            Name = bot.Name;
+            Position = position;
             Color = Color.FromRgb(0, 0, 0);
+            Count = 0;
         }
 
         public string Name { get; }
+        public IBot Owner { get; }
         public Color Color { get; }
+        public int Count { get; private set; }
+
+        public void IncreaseCount()
+        {
+            Count++;
+            OnChanged();
+        }
     }
 }

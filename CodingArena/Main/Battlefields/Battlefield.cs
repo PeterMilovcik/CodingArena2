@@ -1,6 +1,6 @@
 ﻿using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bullets;
-using CodingArena.Main.Battlefields.Resources;
+using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Player;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace CodingArena.Main.Battlefields
 {
     public sealed class Battlefield : IBattlefield
     {
-        private readonly List<IHome> myBases;
+        private readonly List<IHome> myHomes;
         private readonly List<IBot> myBots;
         private readonly List<IBullet> myBullets;
         private readonly List<IResource> myResources;
@@ -20,7 +20,7 @@ namespace CodingArena.Main.Battlefields
         {
             Width = double.Parse(ConfigurationManager.AppSettings["BattlefieldWidth"]);
             Height = double.Parse(ConfigurationManager.AppSettings["BattlefieldHeight"]);
-            myBases = new List<IHome>();
+            myHomes = new List<IHome>();
             myBots = new List<IBot>();
             myBullets = new List<IBullet>();
             myResources = new List<IResource>();
@@ -29,15 +29,10 @@ namespace CodingArena.Main.Battlefields
 
         public double Width { get; }
         public double Height { get; }
-
-        public IReadOnlyList<IHome> Bases => myBases;
-
+        public IReadOnlyList<IHome> Homes => myHomes;
         public IReadOnlyList<IBot> Bots => myBots;
-
         public IReadOnlyList<IBullet> Bullets => myBullets;
-
         public IReadOnlyList<IResource> Resources => myResources;
-
         public IReadOnlyList<IWeapon> Weapons => myWeapons;
 
         public void Add(Bot bot)
@@ -64,7 +59,7 @@ namespace CodingArena.Main.Battlefields
             OnBulletRemoved(bullet);
         }
 
-        public void Add(Resource resource)
+        public void Add(IResource resource)
         {
             myResources.Add(resource);
             OnResourceAdded(resource);
@@ -74,6 +69,18 @@ namespace CodingArena.Main.Battlefields
         {
             myResources.Remove(resource);
             OnResourceRemoved(resource);
+        }
+
+        public void Add(Home home)
+        {
+            myHomes.Add(home);
+            OnHomeAdded(home);
+        }
+
+        public void Remove(Home home)
+        {
+            myHomes.Remove(home);
+            OnHomeRemoved(home);
         }
 
         public event EventHandler<BotEventArgs> BotAdded;
@@ -87,6 +94,10 @@ namespace CodingArena.Main.Battlefields
         public event EventHandler<ResourceEventArgs> ResourceAdded;
 
         public event EventHandler<ResourceEventArgs> ResourceRemoved;
+
+        public event EventHandler<HomeEventArgs> HomeAdded;
+
+        public event EventHandler<HomeEventArgs> HomeRemoved;
 
         private void OnBotAdded(Bot bot) =>
             BotAdded?.Invoke(this, new BotEventArgs(bot));
@@ -105,5 +116,11 @@ namespace CodingArena.Main.Battlefields
 
         private void OnResourceRemoved(IResource resource) =>
             ResourceRemoved?.Invoke(this, new ResourceEventArgs(resource));
+
+        private void OnHomeAdded(Home home) =>
+            HomeAdded?.Invoke(this, new HomeEventArgs(home));
+
+        private void OnHomeRemoved(Home home) =>
+            HomeRemoved?.Invoke(this, new HomeEventArgs(home));
     }
 }

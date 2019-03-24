@@ -2,6 +2,7 @@
 using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bots.AIs;
 using CodingArena.Main.Battlefields.Bullets;
+using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Main.Battlefields.Resources;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,10 @@ namespace CodingArena.Main.Rounds
                 var newX = centerX + radius * Math.Cos(angle * Math.PI / 180);
                 var newY = centerY + radius * Math.Sin(angle * Math.PI / 180);
                 bot.SetPositionTo(new Point(newX, newY));
+
+                var home = new Home(bot, new Point(newX, newY));
+                Battlefield.Add(home);
+
                 angle += angleDif;
             }
         }

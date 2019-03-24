@@ -9,6 +9,13 @@ namespace CodingArena.Player.Proto
 
         public ITurnAction Update(IBot ownBot, IBattlefield battlefield)
         {
+            if (ownBot.HasResource)
+            {
+                var home = battlefield.Homes.Single(h => h.Name == BotName);
+                return ownBot.DistanceTo(home) > ownBot.Radius
+                    ? TurnAction.MoveTowards(home)
+                    : TurnAction.DropDownResource();
+            }
             if (myAttacker != null)
             {
                 return TurnAction.MoveAwayFrom(myAttacker);
@@ -16,7 +23,7 @@ namespace CodingArena.Player.Proto
             if (battlefield.Resources.Any())
             {
                 var resource = battlefield.Resources.First();
-                if (ownBot.DistanceTo(resource) < 1) return TurnAction.PickUpResource();
+                if (ownBot.DistanceTo(resource) < ownBot.Radius) return TurnAction.PickUpResource();
                 return TurnAction.MoveTowards(resource.Position);
             }
 

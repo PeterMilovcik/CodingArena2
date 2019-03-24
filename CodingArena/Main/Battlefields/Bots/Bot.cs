@@ -1,5 +1,7 @@
 ﻿using CodingArena.Annotations;
 using CodingArena.Common;
+using CodingArena.Main.Battlefields.Homes;
+using CodingArena.Main.Battlefields.Resources;
 using CodingArena.Main.Battlefields.Weapons;
 using CodingArena.Player;
 using CodingArena.Player.TurnActions;
@@ -67,6 +69,9 @@ namespace CodingArena.Main.Battlefields.Bots
                     case PickUpResourceTurnAction pickUpResource:
                         Execute(pickUpResource);
                         break;
+                    case DropDownResourceTurnAction dropDownResource:
+                        Execute(dropDownResource);
+                        break;
                 }
             }
             catch (Exception)
@@ -84,6 +89,22 @@ namespace CodingArena.Main.Battlefields.Bots
                 {
                     PickResource(resource);
                 }
+            }
+        }
+
+        private void Execute(DropDownResourceTurnAction dropDownResource)
+        {
+            if (Resource == null) return;
+            var home = Battlefield.Homes.OfType<Home>().Single(h => h.Name == Name);
+            if (DistanceTo(home) < Radius)
+            {
+                home.IncreaseCount();
+                OnResourceDropped(Resource);
+                Resource = null;
+            }
+            else
+            {
+                DropResource();
             }
         }
 
@@ -247,6 +268,7 @@ namespace CodingArena.Main.Battlefields.Bots
         public void DropResource()
         {
             OnResourceDropped(Resource);
+            Battlefield.Add(new Resource(new Point(Position.X, Position.Y)));
             Resource = null;
         }
 

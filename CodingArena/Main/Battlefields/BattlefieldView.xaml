@@ -14,7 +14,7 @@
         <Viewbox>
             <Grid>
                 <ItemsControl Width="{Binding Width}" Height="{Binding Height}"
-                              ItemsSource="{Binding Bases}">
+                              ItemsSource="{Binding Homes}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <Canvas Background="LightGray"/>

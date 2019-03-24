@@ -7,7 +7,7 @@ namespace CodingArena.Player
         IReadOnlyList<IBot> Bots { get; }
         IReadOnlyList<IBullet> Bullets { get; }
         IReadOnlyList<IResource> Resources { get; }
-        IReadOnlyList<IHome> Bases { get; }
+        IReadOnlyList<IHome> Homes { get; }
         IReadOnlyList<IWeapon> Weapons { get; }
     }
 }

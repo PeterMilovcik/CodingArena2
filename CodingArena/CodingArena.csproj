@@ -59,6 +59,7 @@
     <Compile Include="Common\Collider.cs" />
     <Compile Include="Common\GameObject.cs" />
     <Compile Include="Common\Movable.cs" />
+    <Compile Include="Main\Battlefields\HomeEventArgs.cs" />
     <Compile Include="Main\Battlefields\Homes\Home.cs" />
     <Compile Include="Main\Battlefields\Homes\HomeViewModel.cs" />
     <Compile Include="Main\Battlefields\Homes\HomeView.xaml.cs">

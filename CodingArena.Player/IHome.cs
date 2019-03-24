@@ -5,6 +5,8 @@ namespace CodingArena.Player
     public interface IHome : IGameObject
     {
         string Name { get; }
+        IBot Owner { get; }
         Color Color { get; }
+        int Count { get; }
     }
 }

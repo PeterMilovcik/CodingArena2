@@ -1,16 +1,25 @@
 ﻿using System.Windows.Media;
-using CodingArena.Player;
 
 namespace CodingArena.Main.Battlefields.Homes
 {
     public class HomeViewModel : Observable
     {
-        public HomeViewModel(IHome home)
+        private readonly Home myHome;
+
+        public HomeViewModel(Home home)
         {
-            Name = home.Name;
-            X = home.Position.X;
-            Y = home.Position.Y;
+            myHome = home;
+            Name = myHome.Name;
+            X = myHome.Position.X;
+            Y = myHome.Position.Y;
             Color = new SolidColorBrush(home.Color);
+            myHome.Changed += (sender, args) => Update();
+            Update();
+        }
+
+        private void Update()
+        {
+            Count = myHome.Count;
         }
 
         public string Name { get; }
@@ -20,5 +29,7 @@ namespace CodingArena.Main.Battlefields.Homes
         public double Y { get; }
 
         public Brush Color { get; }
+
+        public int Count { get; set; }
     }
 }

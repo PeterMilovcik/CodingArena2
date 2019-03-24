@@ -1,10 +1,10 @@
 ﻿using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bullets;
+using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Main.Battlefields.Resources;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using CodingArena.Main.Battlefields.Homes;
 
 namespace CodingArena.Main.Battlefields
 {
@@ -16,7 +16,7 @@ namespace CodingArena.Main.Battlefields
         {
             Width = 1600;
             Height = 900;
-            Bases = new ObservableCollection<HomeViewModel>();
+            Homes = new ObservableCollection<HomeViewModel>();
             Bots = new ObservableCollection<BotViewModel>();
             Bullets = new ObservableCollection<BulletViewModel>();
             Resources = new ObservableCollection<ResourceViewModel>();
@@ -25,7 +25,7 @@ namespace CodingArena.Main.Battlefields
         public double Width { get; set; }
         public double Height { get; set; }
 
-        public ObservableCollection<HomeViewModel> Bases { get; set; }
+        public ObservableCollection<HomeViewModel> Homes { get; set; }
         public ObservableCollection<BotViewModel> Bots { get; set; }
         public ObservableCollection<BulletViewModel> Bullets { get; set; }
         public ObservableCollection<ResourceViewModel> Resources { get; set; }
@@ -54,6 +54,11 @@ namespace CodingArena.Main.Battlefields
             foreach (var resource in battlefield.Resources)
             {
                 Resources.Add(new ResourceViewModel(resource));
+            }
+
+            foreach (var home in battlefield.Homes.OfType<Home>())
+            {
+                Homes.Add(new HomeViewModel(home));
             }
 
             myBattlefield = battlefield;
