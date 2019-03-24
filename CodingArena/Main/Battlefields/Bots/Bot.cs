@@ -120,7 +120,7 @@ namespace CodingArena.Main.Battlefields.Bots
         {
             try
             {
-                BotAI.OnDamaged(bullet.Damage);
+                BotAI.OnDamaged(bullet.Damage, bullet.Shooter);
             }
             catch
             {

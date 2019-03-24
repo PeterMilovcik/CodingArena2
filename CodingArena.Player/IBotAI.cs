@@ -4,7 +4,7 @@
     {
         string BotName { get; }
         ITurnAction Update(IBot ownBot, IBattlefield battlefield);
-        void OnDamaged(double damage);
+        void OnDamaged(double damage, IBot shooter);
         void OnMoved(double distance);
         void OnCollisionWith(IBot bot);
     }

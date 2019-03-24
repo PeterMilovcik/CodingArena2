@@ -16,7 +16,7 @@ namespace CodingArena.Player.Scrappie
             return TurnAction.Idle;
         }
 
-        public void OnDamaged(double damage)
+        public void OnDamaged(double damage, IBot shooter)
         {
         }
 
