@@ -121,6 +121,10 @@ namespace CodingArena.Main.Battlefields.Bots
         {
             try
             {
+                if (Weapon.IsReloading)
+                {
+                    myWeapon.Reload();
+                }
                 var turnAction = BotAI.Update(this, myBattlefield);
                 switch (turnAction)
                 {

@@ -44,6 +44,14 @@ namespace CodingArena.Main.Battlefields.Bullets
                 Radius = Radius
             };
 
+            if (afterMove.Position.X > Battlefield.Width - 1 ||
+                afterMove.Position.X < 0 ||
+                afterMove.Position.Y > Battlefield.Height - 1 ||
+                afterMove.Position.Y < 0)
+            {
+                Battlefield.Remove(this);
+            }
+
             var damageBots = Battlefield.Bots.Except(new[] { Shooter }).OfType<Bot>()
                 .Where(bot => bot.IsInCollisionWith(afterMove));
             if (damageBots.Any())

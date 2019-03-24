@@ -8,10 +8,9 @@ namespace CodingArena.Player.Proto
 
         public ITurnAction Update(IBot ownBot, IBattlefield battlefield)
         {
-            var enemies = battlefield.Bots.Except(new[] { ownBot });
-            if (enemies.Any())
+            if (battlefield.Resources.Any())
             {
-                return TurnAction.MoveTowards(enemies.First().Position);
+                return TurnAction.MoveTowards(battlefield.Resources.First().Position);
             }
 
             return TurnAction.Idle;
