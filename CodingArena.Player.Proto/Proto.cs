@@ -15,5 +15,9 @@ namespace CodingArena.Player.Proto
 
             return TurnAction.Idle;
         }
+
+        public void OnDamaged(double damage)
+        {
+        }
     }
 }

@@ -72,6 +72,7 @@ namespace CodingArena.Main.Battlefields.Bots
             var newActual = HitPoints.Actual - bullet.Damage;
             newActual = Math.Max(newActual, 0);
             HitPoints = new Value(HitPoints.Maximum, newActual);
+            BotAI.OnDamaged(bullet.Damage);
             OnChanged();
             if (HitPoints.Actual <= 0)
             {

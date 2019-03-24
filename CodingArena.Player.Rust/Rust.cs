@@ -22,5 +22,9 @@ namespace CodingArena.Player.Rust
 
             return TurnAction.Idle;
         }
+
+        public void OnDamaged(double damage)
+        {
+        }
     }
 }
