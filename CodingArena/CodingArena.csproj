@@ -59,9 +59,9 @@
     <Compile Include="Common\Collider.cs" />
     <Compile Include="Common\GameObject.cs" />
     <Compile Include="Common\Movable.cs" />
-    <Compile Include="Main\Battlefields\Bases\Home.cs" />
-    <Compile Include="Main\Battlefields\Bases\HomeViewModel.cs" />
-    <Compile Include="Main\Battlefields\Bases\HomeView.xaml.cs">
+    <Compile Include="Main\Battlefields\Homes\Home.cs" />
+    <Compile Include="Main\Battlefields\Homes\HomeViewModel.cs" />
+    <Compile Include="Main\Battlefields\Homes\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="DelegateCommand.cs" />
@@ -77,7 +77,7 @@
     <Compile Include="Main\Battlefields\Resources\Resource.cs" />
     <Compile Include="Main\MainViewModel.cs" />
     <Compile Include="Main\Battlefields\Resources\ResourceViewModel.cs" />
-    <Page Include="Main\Battlefields\Bases\HomeView.xaml">
+    <Page Include="Main\Battlefields\Homes\HomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

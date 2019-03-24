@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace CodingArena.Main.Battlefields.Bases
+namespace CodingArena.Main.Battlefields.Homes
 {
     /// <summary>
     /// Interaction logic for HomeView.xaml

@@ -1,7 +1,7 @@
-﻿using CodingArena.Player;
-using System.Windows.Media;
+﻿using System.Windows.Media;
+using CodingArena.Player;
 
-namespace CodingArena.Main.Battlefields.Bases
+namespace CodingArena.Main.Battlefields.Homes
 {
     public class HomeViewModel : Observable
     {

@@ -1,10 +1,10 @@
-﻿using CodingArena.Annotations;
+﻿using System;
+using System.Windows.Media;
+using CodingArena.Annotations;
 using CodingArena.Common;
 using CodingArena.Player;
-using System;
-using System.Windows.Media;
 
-namespace CodingArena.Main.Battlefields.Bases
+namespace CodingArena.Main.Battlefields.Homes
 {
     public class Home : Collider, IHome
     {

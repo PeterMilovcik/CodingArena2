@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace CodingArena
 {
-    public class DelegateCommand : ICommand
+    public sealed class DelegateCommand : ICommand
     {
         private readonly Func<bool> myCanExecute;
         private readonly Action myExecute;
@@ -23,5 +23,7 @@ namespace CodingArena
         public void Execute(object parameter) => myExecute();
 
         public event EventHandler CanExecuteChanged;
+
+        public void OnCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
     }
 }

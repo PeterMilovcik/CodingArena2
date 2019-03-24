@@ -1,10 +1,10 @@
-﻿using CodingArena.Main.Battlefields.Bases;
-using CodingArena.Main.Battlefields.Bots;
+﻿using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Main.Battlefields.Resources;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using CodingArena.Main.Battlefields.Homes;
 
 namespace CodingArena.Main.Battlefields
 {
