@@ -27,5 +27,9 @@ namespace CodingArena.Player.Scrappie
         public void OnCollisionWith(IBot bot)
         {
         }
+
+        public void OnResourcePicked()
+        {
+        }
     }
 }

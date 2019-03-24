@@ -1,6 +1,5 @@
 ﻿using CodingArena.Annotations;
 using CodingArena.Common;
-using CodingArena.Main.Battlefields.Resources;
 using CodingArena.Main.Battlefields.Weapons;
 using CodingArena.Player;
 using CodingArena.Player.TurnActions;
@@ -35,14 +34,11 @@ namespace CodingArena.Main.Battlefields.Bots
         }
 
         public IBotAI BotAI { get; }
-
         public string Name { get; }
-
         public IValue HitPoints { get; private set; }
-        public Resource Resource { get; private set; }
+        public IResource Resource { get; private set; }
         public bool HasResource => Resource != null;
         public bool IsAiming => myRemainingAimTime > TimeSpan.Zero;
-
         public Player.IWeapon Weapon => myWeapon;
 
         public override async Task UpdateAsync()
@@ -68,11 +64,26 @@ namespace CodingArena.Main.Battlefields.Bots
                     case MoveAwayFromTurnAction moveAway:
                         Execute(moveAway);
                         break;
+                    case PickUpResourceTurnAction pickUpResource:
+                        Execute(pickUpResource);
+                        break;
                 }
             }
             catch (Exception)
             {
                 // ignored
+            }
+        }
+
+        private void Execute(PickUpResourceTurnAction pickUpResource)
+        {
+            var resource = Battlefield.Resources.OrderBy(DistanceTo).FirstOrDefault();
+            if (resource != null)
+            {
+                if (DistanceTo(resource) < Radius)
+                {
+                    PickResource(resource);
+                }
             }
         }
 
@@ -212,10 +223,24 @@ namespace CodingArena.Main.Battlefields.Bots
             myRemainingAimTime = myWeapon.AimTime;
         }
 
-        public void PickResource(Resource resource)
+        public void PickResource(IResource resource)
         {
+            if (HasResource) return;
             Resource = resource;
+            OnResourcePicked();
             OnResourcePicked(Resource);
+        }
+
+        private void OnResourcePicked()
+        {
+            try
+            {
+                BotAI.OnResourcePicked();
+            }
+            catch
+            {
+                // ignore
+            }
         }
 
         public void DropResource()
@@ -226,12 +251,12 @@ namespace CodingArena.Main.Battlefields.Bots
 
         public event EventHandler<ResourceEventArgs> ResourcePicked;
 
-        private void OnResourcePicked(Resource resource) =>
+        private void OnResourcePicked(IResource resource) =>
             ResourcePicked?.Invoke(this, new ResourceEventArgs(resource));
 
         public event EventHandler<ResourceEventArgs> ResourceDropped;
 
-        private void OnResourceDropped(Resource resource) =>
+        private void OnResourceDropped(IResource resource) =>
             ResourceDropped?.Invoke(this, new ResourceEventArgs(resource));
 
         public event EventHandler Died;

@@ -24,7 +24,7 @@ namespace CodingArena.Main.Battlefields.Bots
             Name = Bot.Name;
             Bot.Changed += (sender, args) => Update();
             Bot.ResourcePicked += (sender, args) => HasResource = true;
-            Bot.ResourcePicked += (sender, args) => HasResource = false;
+            Bot.ResourceDropped += (sender, args) => HasResource = false;
             Bot.Died += (sender, args) => OnDied();
             Color = Brushes.Black;
             Update();

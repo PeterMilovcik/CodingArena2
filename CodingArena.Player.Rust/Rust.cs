@@ -34,5 +34,9 @@ namespace CodingArena.Player.Rust
         public void OnCollisionWith(IBot bot)
         {
         }
+
+        public void OnResourcePicked()
+        {
+        }
     }
 }

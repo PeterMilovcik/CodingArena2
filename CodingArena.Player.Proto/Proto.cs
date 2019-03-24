@@ -15,7 +15,9 @@ namespace CodingArena.Player.Proto
             }
             if (battlefield.Resources.Any())
             {
-                return TurnAction.MoveTowards(battlefield.Resources.First().Position);
+                var resource = battlefield.Resources.First();
+                if (ownBot.DistanceTo(resource) < 1) return TurnAction.PickUpResource();
+                return TurnAction.MoveTowards(resource.Position);
             }
 
             return TurnAction.Idle;
@@ -31,6 +33,10 @@ namespace CodingArena.Player.Proto
         }
 
         public void OnCollisionWith(IBot bot)
+        {
+        }
+
+        public void OnResourcePicked()
         {
         }
     }

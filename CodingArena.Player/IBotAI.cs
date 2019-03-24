@@ -7,5 +7,6 @@
         void OnDamaged(double damage, IBot shooter);
         void OnMoved(double distance);
         void OnCollisionWith(IBot bot);
+        void OnResourcePicked();
     }
 }
