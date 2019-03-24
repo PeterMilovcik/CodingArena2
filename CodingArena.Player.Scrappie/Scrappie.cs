@@ -23,5 +23,9 @@ namespace CodingArena.Player.Scrappie
         public void OnMoved(double distance)
         {
         }
+
+        public void OnCollisionWith(IBot bot)
+        {
+        }
     }
 }

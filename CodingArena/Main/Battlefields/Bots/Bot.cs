@@ -56,16 +56,49 @@ namespace CodingArena.Main.Battlefields.Bots
                 Radius = Radius
             };
 
-            if (Battlefield.Bots.Except(new[] { this })
-                .Any(bot => bot.IsInCollisionWith(afterMove)))
+
+            var otherBots = Battlefield.Bots.Except(new[] { this });
+            foreach (var bot in otherBots)
             {
-                return false;
+                if (bot.IsInCollisionWith(afterMove))
+                {
+                    OnCollisionWith(bot);
+
+                    return false;
+                }
             }
+
 
             Position = new Point(afterMove.Position.X, afterMove.Position.Y);
             OnChanged();
-            BotAI.OnMoved(movement.Length);
+
+            OnMoved(movement);
+
             return true;
+        }
+
+        private void OnCollisionWith(IBot bot)
+        {
+            try
+            {
+                BotAI.OnCollisionWith(bot);
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
+        private void OnMoved(Vector movement)
+        {
+            try
+            {
+                BotAI.OnMoved(movement.Length);
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         public void TakeDamageFrom(IBullet bullet)
@@ -73,11 +106,25 @@ namespace CodingArena.Main.Battlefields.Bots
             var newActual = HitPoints.Actual - bullet.Damage;
             newActual = Math.Max(newActual, 0);
             HitPoints = new Value(HitPoints.Maximum, newActual);
-            BotAI.OnDamaged(bullet.Damage);
+
+            OnDamaged(bullet);
+
             OnChanged();
             if (HitPoints.Actual <= 0)
             {
                 Die(bullet.Shooter);
+            }
+        }
+
+        private void OnDamaged(IBullet bullet)
+        {
+            try
+            {
+                BotAI.OnDamaged(bullet.Damage);
+            }
+            catch
+            {
+                // ignored
             }
         }
 

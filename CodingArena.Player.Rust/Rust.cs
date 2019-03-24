@@ -30,5 +30,9 @@ namespace CodingArena.Player.Rust
         public void OnMoved(double distance)
         {
         }
+
+        public void OnCollisionWith(IBot bot)
+        {
+        }
     }
 }

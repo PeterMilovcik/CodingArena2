@@ -23,5 +23,9 @@ namespace CodingArena.Player.Proto
         public void OnMoved(double distance)
         {
         }
+
+        public void OnCollisionWith(IBot bot)
+        {
+        }
     }
 }

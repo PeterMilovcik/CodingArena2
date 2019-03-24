@@ -6,5 +6,6 @@
         ITurnAction Update(IBot ownBot, IBattlefield battlefield);
         void OnDamaged(double damage);
         void OnMoved(double distance);
+        void OnCollisionWith(IBot bot);
     }
 }
