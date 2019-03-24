@@ -28,8 +28,10 @@ namespace CodingArena.Main.Battlefields.Weapons
         {
             myBattlefield = battlefield ?? throw new ArgumentNullException(nameof(battlefield));
             Name = "Pistol";
-            var reloadTimeInSeconds = double.Parse(ConfigurationManager.AppSettings["PistolReloadTimeInSeconds"]);
-            ReloadTime = TimeSpan.FromSeconds(reloadTimeInSeconds);
+            var reloadTimeInMilliseconds = double.Parse(ConfigurationManager.AppSettings["PistolReloadTimeInMilliseconds"]);
+            ReloadTime = TimeSpan.FromMilliseconds(reloadTimeInMilliseconds);
+            var aimTimeInMilliseconds = double.Parse(ConfigurationManager.AppSettings["PistolAimTimeInMilliseconds"]);
+            AimTime = TimeSpan.FromMilliseconds(aimTimeInMilliseconds);
             MaxRange = double.Parse(ConfigurationManager.AppSettings["PistolMaxRange"]);
             Bullet = new PistolBullet();
         }
@@ -38,6 +40,7 @@ namespace CodingArena.Main.Battlefields.Weapons
         public double Damage { get; }
         public double MaxRange { get; }
         public TimeSpan ReloadTime { get; }
+        public TimeSpan AimTime { get; }
         public bool IsReloading => RemainingReloadTime > TimeSpan.Zero;
         public TimeSpan RemainingReloadTime { get; private set; }
         public IBulletSpecification Bullet { get; }

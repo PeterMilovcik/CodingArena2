@@ -13,6 +13,7 @@ namespace CodingArena.Player.Rust
             {
                 if (myIsMoved)
                 {
+                    myIsMoved = false;
                     return TurnAction.Shoot();
                 }
                 myIsMoved = true;

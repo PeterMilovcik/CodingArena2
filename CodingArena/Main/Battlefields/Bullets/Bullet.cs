@@ -24,20 +24,17 @@ namespace CodingArena.Main.Battlefields.Bullets
         public IBot Shooter { get; }
         public double Damage { get; }
         public double Distance { get; private set; }
-        public override async Task<bool> MoveAsync()
+        public override async Task UpdateAsync()
         {
-            if (LastUpdate == DateTime.MinValue)
-            {
-                LastUpdate = DateTime.Now;
-            }
+            await base.UpdateAsync();
+            Move();
+        }
 
-            await Task.Delay(1);
-
-            var deltaTime = DateTime.Now - LastUpdate;
-
+        public bool Move()
+        {
             var movement = new Vector(Direction.X, Direction.Y);
-            movement.X *= Speed * deltaTime.TotalSeconds;
-            movement.Y *= Speed * deltaTime.TotalSeconds;
+            movement.X *= Speed * DeltaTime.TotalSeconds;
+            movement.Y *= Speed * DeltaTime.TotalSeconds;
             var afterMove = new Bullet(Battlefield, Shooter, Speed, Damage)
             {
                 Position = new Point(Position.X + movement.X, Position.Y + movement.Y),
@@ -53,7 +50,7 @@ namespace CodingArena.Main.Battlefields.Bullets
             }
 
             var damageBots = Battlefield.Bots.Except(new[] { Shooter }).OfType<Bot>()
-                .Where(bot => bot.IsInCollisionWith(afterMove));
+                .Where(bot => bot.IsInCollisionWith(afterMove)).ToList();
             if (damageBots.Any())
             {
                 foreach (var bot in damageBots)
@@ -61,14 +58,12 @@ namespace CodingArena.Main.Battlefields.Bullets
                     bot.TakeDamageFrom(this);
                 }
 
-                LastUpdate = DateTime.Now;
                 OnChanged();
                 Battlefield.Remove(this);
                 return false;
             }
 
             Position = new Point(afterMove.Position.X, afterMove.Position.Y);
-            LastUpdate = DateTime.Now;
             OnChanged();
             return true;
         }

@@ -73,7 +73,7 @@ namespace CodingArena.Main.Rounds
             {
                 while (!HasWinner)
                 {
-                    var bulletTasks = Battlefield.Bullets.OfType<Bullet>().Select(b => b.MoveAsync());
+                    var bulletTasks = Battlefield.Bullets.ToList().OfType<Bullet>().Select(b => b.UpdateAsync());
                     await Task.WhenAll(bulletTasks);
                     var botTasks = Bots.Select(b => b.UpdateAsync());
                     await Task.WhenAll(botTasks);

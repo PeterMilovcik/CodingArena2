@@ -1,14 +1,12 @@
 ﻿using CodingArena.Annotations;
 using CodingArena.Main.Battlefields;
 using System;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace CodingArena.Common
 {
     public interface IMovable : Player.IMovable
     {
-        Task<bool> MoveAsync();
     }
 
     public abstract class Movable : Collider, IMovable
@@ -57,8 +55,5 @@ namespace CodingArena.Common
                 OnChanged();
             }
         }
-
-        public DateTime LastUpdate { get; protected set; }
-        public abstract Task<bool> MoveAsync();
     }
 }

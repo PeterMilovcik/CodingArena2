@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 
 namespace CodingArena.Player
 {
@@ -10,6 +9,5 @@ namespace CodingArena.Player
         double Speed { get; }
         double Angle { get; }
         Vector Direction { get; }
-        DateTime LastUpdate { get; }
     }
 }

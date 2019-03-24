@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace CodingArena.Common
@@ -12,6 +13,12 @@ namespace CodingArena.Common
     {
         private Point myPosition;
 
+        public GameObject()
+        {
+            LastUpdate = DateTime.MinValue;
+            DeltaTime = TimeSpan.Zero;
+        }
+
         public Point Position
         {
             get => myPosition;
@@ -21,6 +28,19 @@ namespace CodingArena.Common
                 myPosition = value;
                 OnChanged();
             }
+        }
+
+        public DateTime LastUpdate { get; private set; }
+        public TimeSpan DeltaTime { get; private set; }
+
+        public virtual Task UpdateAsync()
+        {
+            if (LastUpdate != DateTime.MinValue)
+            {
+                DeltaTime = DateTime.Now - LastUpdate;
+            }
+            LastUpdate = DateTime.Now;
+            return Task.CompletedTask;
         }
 
         public double DistanceTo(Player.IGameObject gameObject) =>

@@ -18,8 +18,8 @@ namespace CodingArena.Player
         {
             if (maximum <= 0) throw new ArgumentOutOfRangeException(
                 nameof(maximum), "Value is less than or equal to zero.");
-            if (actual <= 0) throw new ArgumentOutOfRangeException(
-                nameof(actual), "Value is less than or equal to zero.");
+            if (actual < 0) throw new ArgumentOutOfRangeException(
+                nameof(actual), "Value is less than zero.");
             if (actual > maximum) throw new ArgumentOutOfRangeException(
                 nameof(actual), $"Value is more than {nameof(maximum)}.");
 

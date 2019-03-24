@@ -1,6 +1,5 @@
 ﻿using CodingArena.Annotations;
 using CodingArena.Common;
-using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Main.Battlefields.Resources;
 using CodingArena.Main.Battlefields.Weapons;
 using CodingArena.Player;
@@ -17,8 +16,10 @@ namespace CodingArena.Main.Battlefields.Bots
 {
     public sealed class Bot : Movable, IBot
     {
+        private const double MinDistance = 0.1;
         private readonly Battlefield myBattlefield;
         private readonly IWeapon myWeapon;
+        private TimeSpan myRemainingAimTime;
 
         public Bot([NotNull] Battlefield battlefield, IBotAI botAI) : base(battlefield)
         {
@@ -31,6 +32,7 @@ namespace CodingArena.Main.Battlefields.Bots
             Speed = double.Parse(ConfigurationManager.AppSettings["BotSpeed"]);
             myWeapon = new Pistol(myBattlefield);
             Angle = 90;
+            myRemainingAimTime = TimeSpan.Zero;
         }
 
         public IBotAI BotAI { get; }
@@ -40,22 +42,15 @@ namespace CodingArena.Main.Battlefields.Bots
         public IValue HitPoints { get; private set; }
         public Resource Resource { get; private set; }
         public bool HasResource => Resource != null;
+        public bool IsAiming => myRemainingAimTime > TimeSpan.Zero;
         public Player.IWeapon Weapon => myWeapon;
 
-        public override async Task<bool> MoveAsync()
+        private bool Move()
         {
-            if (LastUpdate == DateTime.MinValue)
-            {
-                LastUpdate = DateTime.Now;
-            }
-
-            await Task.Delay(1);
-
-            var deltaTime = DateTime.Now - LastUpdate;
-
             var movement = new Vector(Direction.X, Direction.Y);
-            movement.X *= Speed * deltaTime.TotalSeconds;
-            movement.Y *= Speed * deltaTime.TotalSeconds;
+            movement.X *= Speed * DeltaTime.TotalSeconds;
+            movement.Y *= Speed * DeltaTime.TotalSeconds;
+
             var afterMove = new Bot(Battlefield, BotAI)
             {
                 Position = new Point(Position.X + movement.X, Position.Y + movement.Y),
@@ -65,20 +60,21 @@ namespace CodingArena.Main.Battlefields.Bots
             if (Battlefield.Bots.Except(new[] { this })
                 .Any(bot => bot.IsInCollisionWith(afterMove)))
             {
-                LastUpdate = DateTime.Now;
                 return false;
             }
 
             Position = new Point(afterMove.Position.X, afterMove.Position.Y);
-            LastUpdate = DateTime.Now;
             OnChanged();
             return true;
         }
 
         public void TakeDamageFrom(IBullet bullet)
         {
-            HitPoints = new Value(HitPoints.Maximum, HitPoints.Actual - bullet.Damage);
+            var newActual = HitPoints.Actual - bullet.Damage;
+            newActual = Math.Max(newActual, 0);
+            HitPoints = new Value(HitPoints.Maximum, newActual);
             Debug.WriteLine($"{Name} takes {bullet.Damage} damage. Remaining HP: {HitPoints.Actual}");
+            OnChanged();
             if (HitPoints.Actual <= 0)
             {
                 Die(bullet.Shooter);
@@ -92,7 +88,10 @@ namespace CodingArena.Main.Battlefields.Bots
             OnDied();
         }
 
-        public Bullet Shoot() => myWeapon.Fire(this);
+        private void Shoot()
+        {
+            myRemainingAimTime = myWeapon.AimTime;
+        }
 
         public void PickResource(Resource resource)
         {
@@ -117,13 +116,20 @@ namespace CodingArena.Main.Battlefields.Bots
         public event EventHandler Died;
         private void OnDied() => Died?.Invoke(this, EventArgs.Empty);
 
-        public async Task UpdateAsync()
+        public override async Task UpdateAsync()
         {
+            await base.UpdateAsync();
             try
             {
                 if (Weapon.IsReloading)
                 {
                     myWeapon.Reload();
+                }
+
+                if (IsAiming)
+                {
+                    Aim();
+                    return;
                 }
                 var turnAction = BotAI.Update(this, myBattlefield);
                 switch (turnAction)
@@ -132,7 +138,7 @@ namespace CodingArena.Main.Battlefields.Bots
                         Execute(shoot);
                         break;
                     case MoveTowardsTurnAction moveTowards:
-                        await ExecuteAsync(moveTowards);
+                        Execute(moveTowards);
                         break;
                 }
             }
@@ -142,25 +148,33 @@ namespace CodingArena.Main.Battlefields.Bots
             }
         }
 
-        private async Task ExecuteAsync(MoveTowardsTurnAction moveTowards)
+        private void Aim()
         {
+            myRemainingAimTime -= DeltaTime;
+            if (myRemainingAimTime <= TimeSpan.Zero)
+            {
+                var bullet = myWeapon.Fire(this);
+                Battlefield.Add(bullet);
+            }
+        }
+
+        private void Execute(MoveTowardsTurnAction moveTowards)
+        {
+            if (DistanceTo(moveTowards.Position) < MinDistance)
+            {
+                return;
+            }
             var movement = new Vector(moveTowards.Position.X - Position.X, moveTowards.Position.Y - Position.Y);
             movement.Normalize();
             Direction = movement;
-            await MoveAsync();
+            Move();
         }
 
         private void Execute(ShootTurnAction shoot)
         {
-            var bullet = Shoot();
-            if (bullet != null)
-            {
-                myBattlefield.Add(bullet);
-            }
-            else
-            {
-
-            }
+            if (IsAiming) return;
+            if (Weapon.IsReloading) return;
+            Shoot();
         }
 
         public void SetPositionTo(Point position) => Position = position;
