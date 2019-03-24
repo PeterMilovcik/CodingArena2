@@ -2,6 +2,7 @@
 using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bots.AIs;
 using CodingArena.Main.Battlefields.Bullets;
+using CodingArena.Main.Battlefields.Resources;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,6 +15,7 @@ namespace CodingArena.Main.Rounds
     public sealed class Round
     {
         private readonly double myTurnDelay;
+        private readonly Random myRandom;
 
         public Round()
         {
@@ -21,7 +23,7 @@ namespace CodingArena.Main.Rounds
             var botAIs = botAIFactory.CreateBotAIs();
             Battlefield = new Battlefield();
             Bots = new List<Bot>();
-
+            myRandom = new Random();
             foreach (var botAI in botAIs)
             {
                 var bot = new Bot(Battlefield, botAI);
@@ -30,6 +32,7 @@ namespace CodingArena.Main.Rounds
             }
 
             InitializePositions();
+            AddResource();
 
             myTurnDelay = double.Parse(ConfigurationManager.AppSettings["TurnDelayInMilliseconds"]);
         }
@@ -49,6 +52,15 @@ namespace CodingArena.Main.Rounds
                 bot.SetPositionTo(new Point(newX, newY));
                 angle += angleDif;
             }
+        }
+
+        private void AddResource()
+        {
+            var x = myRandom.Next((int)Battlefield.Width);
+            var y = myRandom.Next((int)Battlefield.Height);
+            var position = new Point(x, y);
+            var resource = new Resource(position);
+            Battlefield.Add(resource);
         }
 
         public Battlefield Battlefield { get; }

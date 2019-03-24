@@ -1,4 +1,5 @@
 ﻿using CodingArena.Annotations;
+using CodingArena.Player;
 using System;
 
 namespace CodingArena.Main.Battlefields.Resources
@@ -8,12 +9,14 @@ namespace CodingArena.Main.Battlefields.Resources
         private double myX;
         private double myY;
 
-        public ResourceViewModel([NotNull] Resource resource)
+        public ResourceViewModel([NotNull] IResource resource)
         {
             Resource = resource ?? throw new ArgumentNullException(nameof(resource));
+            X = Resource.Position.X;
+            Y = Resource.Position.Y;
         }
 
-        public Resource Resource { get; }
+        public IResource Resource { get; }
 
         public double X
         {

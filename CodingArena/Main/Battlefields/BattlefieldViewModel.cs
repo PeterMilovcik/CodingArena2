@@ -51,6 +51,11 @@ namespace CodingArena.Main.Battlefields
                 Bots.Add(new BotViewModel(bot));
             }
 
+            foreach (var resource in battlefield.Resources)
+            {
+                Resources.Add(new ResourceViewModel(resource));
+            }
+
             myBattlefield = battlefield;
             myBattlefield.BotAdded += OnBotAdded;
             myBattlefield.BotRemoved += OnBotRemoved;

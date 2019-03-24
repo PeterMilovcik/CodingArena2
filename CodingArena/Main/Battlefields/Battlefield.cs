@@ -64,6 +64,12 @@ namespace CodingArena.Main.Battlefields
             OnBulletRemoved(bullet);
         }
 
+        public void Add(Resource resource)
+        {
+            myResources.Add(resource);
+            OnResourceAdded(resource);
+        }
+
         public void Remove(Resource resource)
         {
             myResources.Remove(resource);
