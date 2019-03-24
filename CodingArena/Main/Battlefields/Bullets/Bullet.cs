@@ -11,7 +11,12 @@ namespace CodingArena.Main.Battlefields.Bullets
 {
     public class Bullet : Movable, IBullet
     {
-        public Bullet([NotNull] Battlefield battlefield, [NotNull] IBot shooter, double speed, double damage) : base(battlefield)
+        public Bullet(
+            [NotNull] Battlefield battlefield,
+            [NotNull] IBot shooter,
+            double speed,
+            double damage,
+            double maxBulletDistance) : base(battlefield)
         {
             Radius = 3;
             Shooter = shooter ?? throw new ArgumentNullException(nameof(shooter));
@@ -19,11 +24,13 @@ namespace CodingArena.Main.Battlefields.Bullets
             Speed = speed;
             Damage = damage;
             Position = new Point(shooter.Position.X, shooter.Position.Y);
+            MaxDistance = maxBulletDistance;
         }
 
         public IBot Shooter { get; }
         public double Damage { get; }
         public double Distance { get; private set; }
+        public double MaxDistance { get; }
         public override async Task UpdateAsync()
         {
             await base.UpdateAsync();
@@ -35,7 +42,8 @@ namespace CodingArena.Main.Battlefields.Bullets
             var movement = new Vector(Direction.X, Direction.Y);
             movement.X *= Speed * DeltaTime.TotalSeconds;
             movement.Y *= Speed * DeltaTime.TotalSeconds;
-            var afterMove = new Bullet(Battlefield, Shooter, Speed, Damage)
+
+            var afterMove = new Bullet(Battlefield, Shooter, Speed, Damage, MaxDistance)
             {
                 Position = new Point(Position.X + movement.X, Position.Y + movement.Y),
                 Radius = Radius
@@ -47,6 +55,14 @@ namespace CodingArena.Main.Battlefields.Bullets
                 afterMove.Position.Y < 0)
             {
                 Battlefield.Remove(this);
+                return true;
+            }
+
+            Distance += movement.Length;
+            if (Distance > MaxDistance)
+            {
+                Battlefield.Remove(this);
+                return true;
             }
 
             var damageBots = Battlefield.Bots.Except(new[] { Shooter }).OfType<Bot>()

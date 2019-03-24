@@ -6,7 +6,6 @@ using CodingArena.Player;
 using CodingArena.Player.TurnActions;
 using System;
 using System.Configuration;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -73,7 +72,6 @@ namespace CodingArena.Main.Battlefields.Bots
             var newActual = HitPoints.Actual - bullet.Damage;
             newActual = Math.Max(newActual, 0);
             HitPoints = new Value(HitPoints.Maximum, newActual);
-            Debug.WriteLine($"{Name} takes {bullet.Damage} damage. Remaining HP: {HitPoints.Actual}");
             OnChanged();
             if (HitPoints.Actual <= 0)
             {
@@ -119,13 +117,9 @@ namespace CodingArena.Main.Battlefields.Bots
         public override async Task UpdateAsync()
         {
             await base.UpdateAsync();
+            await myWeapon.UpdateAsync();
             try
             {
-                if (Weapon.IsReloading)
-                {
-                    myWeapon.Reload();
-                }
-
                 if (IsAiming)
                 {
                     Aim();

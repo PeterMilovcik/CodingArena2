@@ -5,6 +5,7 @@ using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Player;
 using System;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace CodingArena.Main.Battlefields.Weapons
 {
@@ -37,31 +38,35 @@ namespace CodingArena.Main.Battlefields.Weapons
         }
 
         public string Name { get; }
-        public double Damage { get; }
         public double MaxRange { get; }
         public TimeSpan ReloadTime { get; }
         public TimeSpan AimTime { get; }
         public bool IsReloading => RemainingReloadTime > TimeSpan.Zero;
         public TimeSpan RemainingReloadTime { get; private set; }
         public IBulletSpecification Bullet { get; }
-        public DateTime LastUpdate { get; private set; }
+
+        public override async Task UpdateAsync()
+        {
+            await base.UpdateAsync();
+            if (IsReloading)
+            {
+                Reload();
+            }
+        }
 
         public Bullet Fire(Bot shooter)
         {
-            LastUpdate = DateTime.Now;
             if (IsReloading) return null;
             RemainingReloadTime = ReloadTime;
-            return new Bullet(myBattlefield, shooter, Bullet.Speed, Bullet.Damage);
+            return new Bullet(myBattlefield, shooter, Bullet.Speed, Bullet.Damage, MaxRange);
         }
 
         public void Reload()
         {
             if (IsReloading)
             {
-                var deltaTime = DateTime.Now - LastUpdate;
-                RemainingReloadTime -= deltaTime;
+                RemainingReloadTime -= DeltaTime;
             }
-            LastUpdate = DateTime.Now;
         }
     }
 }
