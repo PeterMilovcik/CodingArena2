@@ -64,6 +64,7 @@ namespace CodingArena.Main.Battlefields.Bots
 
             Position = new Point(afterMove.Position.X, afterMove.Position.Y);
             OnChanged();
+            BotAI.OnMoved(movement.Length);
             return true;
         }
 

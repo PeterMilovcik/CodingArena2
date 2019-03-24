@@ -26,5 +26,9 @@ namespace CodingArena.Player.Rust
         public void OnDamaged(double damage)
         {
         }
+
+        public void OnMoved(double distance)
+        {
+        }
     }
 }

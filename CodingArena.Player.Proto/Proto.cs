@@ -19,5 +19,9 @@ namespace CodingArena.Player.Proto
         public void OnDamaged(double damage)
         {
         }
+
+        public void OnMoved(double distance)
+        {
+        }
     }
 }
