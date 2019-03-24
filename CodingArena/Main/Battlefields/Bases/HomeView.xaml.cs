@@ -3,11 +3,11 @@
 namespace CodingArena.Main.Battlefields.Bases
 {
     /// <summary>
-    /// Interaction logic for BaseView.xaml
+    /// Interaction logic for HomeView.xaml
     /// </summary>
-    public partial class BaseView : UserControl
+    public partial class HomeView : UserControl
     {
-        public BaseView()
+        public HomeView()
         {
             InitializeComponent();
         }

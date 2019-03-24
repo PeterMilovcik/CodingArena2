@@ -16,7 +16,7 @@ namespace CodingArena.Main.Battlefields
         {
             Width = 1600;
             Height = 900;
-            Bases = new ObservableCollection<BaseViewModel>();
+            Bases = new ObservableCollection<HomeViewModel>();
             Bots = new ObservableCollection<BotViewModel>();
             Bullets = new ObservableCollection<BulletViewModel>();
             Resources = new ObservableCollection<ResourceViewModel>();
@@ -25,7 +25,7 @@ namespace CodingArena.Main.Battlefields
         public double Width { get; set; }
         public double Height { get; set; }
 
-        public ObservableCollection<BaseViewModel> Bases { get; set; }
+        public ObservableCollection<HomeViewModel> Bases { get; set; }
         public ObservableCollection<BotViewModel> Bots { get; set; }
         public ObservableCollection<BulletViewModel> Bullets { get; set; }
         public ObservableCollection<ResourceViewModel> Resources { get; set; }

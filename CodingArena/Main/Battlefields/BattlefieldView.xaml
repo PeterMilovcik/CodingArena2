@@ -22,11 +22,11 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <bases:BaseView DataContext="{Binding}">
-                                <bases:BaseView.RenderTransform>
+                            <bases:HomeView DataContext="{Binding}">
+                                <bases:HomeView.RenderTransform>
                                     <TranslateTransform X="{Binding X}" Y="{Binding Y}" />
-                                </bases:BaseView.RenderTransform>
-                            </bases:BaseView>
+                                </bases:HomeView.RenderTransform>
+                            </bases:HomeView>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

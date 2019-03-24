@@ -10,7 +10,7 @@ namespace CodingArena.Main.Battlefields
 {
     public sealed class Battlefield : IBattlefield
     {
-        private readonly List<IBase> myBases;
+        private readonly List<IHome> myBases;
         private readonly List<IBot> myBots;
         private readonly List<IBullet> myBullets;
         private readonly List<IResource> myResources;
@@ -20,7 +20,7 @@ namespace CodingArena.Main.Battlefields
         {
             Width = double.Parse(ConfigurationManager.AppSettings["BattlefieldWidth"]);
             Height = double.Parse(ConfigurationManager.AppSettings["BattlefieldHeight"]);
-            myBases = new List<IBase>();
+            myBases = new List<IHome>();
             myBots = new List<IBot>();
             myBullets = new List<IBullet>();
             myResources = new List<IResource>();
@@ -30,7 +30,7 @@ namespace CodingArena.Main.Battlefields
         public double Width { get; }
         public double Height { get; }
 
-        public IReadOnlyList<IBase> Bases => myBases;
+        public IReadOnlyList<IHome> Bases => myBases;
 
         public IReadOnlyList<IBot> Bots => myBots;
 
