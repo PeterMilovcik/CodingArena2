@@ -13,11 +13,18 @@
     <Grid>
         <Viewbox>
             <Grid>
+                <ItemsControl Width="{Binding Width}" Height="{Binding Height}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Background="LightGray"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
                 <ItemsControl Width="{Binding Width}" Height="{Binding Height}"
                               ItemsSource="{Binding Homes}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <Canvas Background="LightGray"/>
+                            <Canvas Background="Transparent"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>

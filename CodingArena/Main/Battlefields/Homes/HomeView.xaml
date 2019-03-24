@@ -22,6 +22,7 @@
         </Ellipse>
         <TextBlock 
             Grid.Row="0"
+            Visibility="{Binding CountVisibility}"
             Text="{Binding Count}" 
             FontSize="42" 
             FontWeight="Bold" 

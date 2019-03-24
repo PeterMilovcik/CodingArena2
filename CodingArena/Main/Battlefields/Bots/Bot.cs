@@ -29,7 +29,9 @@ namespace CodingArena.Main.Battlefields.Bots
             Radius = 20;
             var maxHitPoints = double.Parse(ConfigurationManager.AppSettings["MaxHitPoints"]);
             HitPoints = new Value(maxHitPoints, maxHitPoints);
-            Speed = double.Parse(ConfigurationManager.AppSettings["BotSpeed"]);
+            MaxSpeed = double.Parse(ConfigurationManager.AppSettings["MaxBotSpeed"]);
+            MinSpeed = double.Parse(ConfigurationManager.AppSettings["MinBotSpeed"]);
+            Speed = MaxSpeed;
             myWeapon = new Pistol(myBattlefield);
             Angle = 90;
             myRemainingAimTime = TimeSpan.Zero;
@@ -87,7 +89,7 @@ namespace CodingArena.Main.Battlefields.Bots
             {
                 if (DistanceTo(resource) < Radius)
                 {
-                    PickResource(resource);
+                    PickUpResource(resource);
                 }
             }
         }
@@ -98,13 +100,14 @@ namespace CodingArena.Main.Battlefields.Bots
             var home = Battlefield.Homes.OfType<Home>().Single(h => h.Name == Name);
             if (DistanceTo(home) < Radius)
             {
-                home.IncreaseCount();
+                Speed = MaxSpeed;
                 OnResourceDropped(Resource);
+                home.IncreaseCount();
                 Resource = null;
             }
             else
             {
-                DropResource();
+                DropDownResource();
             }
         }
 
@@ -244,11 +247,12 @@ namespace CodingArena.Main.Battlefields.Bots
             myRemainingAimTime = myWeapon.AimTime;
         }
 
-        public void PickResource(IResource resource)
+        public void PickUpResource(IResource resource)
         {
             if (HasResource) return;
             Resource = resource;
             Battlefield.Remove(resource);
+            Speed = MinSpeed;
             OnResourcePicked();
             OnResourcePicked(Resource);
         }
@@ -265,8 +269,9 @@ namespace CodingArena.Main.Battlefields.Bots
             }
         }
 
-        public void DropResource()
+        public void DropDownResource()
         {
+            Speed = MaxSpeed;
             OnResourceDropped(Resource);
             Battlefield.Add(new Resource(new Point(Position.X, Position.Y)));
             Resource = null;

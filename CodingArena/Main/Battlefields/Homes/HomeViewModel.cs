@@ -1,26 +1,31 @@
-﻿using System.Windows.Media;
+﻿using System.Windows;
+using System.Windows.Media;
 
 namespace CodingArena.Main.Battlefields.Homes
 {
     public class HomeViewModel : Observable
     {
-        private readonly Home myHome;
+        private Visibility myCountVisibility;
 
         public HomeViewModel(Home home)
         {
-            myHome = home;
-            Name = myHome.Name;
-            X = myHome.Position.X;
-            Y = myHome.Position.Y;
+            Home = home;
+            Name = home.Name;
+            X = home.Position.X;
+            Y = home.Position.Y;
             Color = new SolidColorBrush(home.Color);
-            myHome.Changed += (sender, args) => Update();
+            home.Changed += (sender, args) => Update();
             Update();
         }
 
         private void Update()
         {
-            Count = myHome.Count;
+            CountVisibility = Visibility.Hidden;
+            Count = Home.Count;
+            CountVisibility = Visibility.Visible;
         }
+
+        public Home Home { get; }
 
         public string Name { get; }
 
@@ -31,5 +36,16 @@ namespace CodingArena.Main.Battlefields.Homes
         public Brush Color { get; }
 
         public int Count { get; set; }
+
+        public Visibility CountVisibility
+        {
+            get => myCountVisibility;
+            set
+            {
+                if (value == myCountVisibility) return;
+                myCountVisibility = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

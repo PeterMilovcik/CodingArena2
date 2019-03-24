@@ -44,6 +44,8 @@ namespace CodingArena.Main.Battlefields
                 myBattlefield.BulletRemoved -= OnBulletRemoved;
                 myBattlefield.ResourceAdded -= OnResourceAdded;
                 myBattlefield.ResourceRemoved -= OnResourceRemoved;
+                myBattlefield.HomeAdded -= OnHomeAdded;
+                myBattlefield.HomeRemoved -= OnHomeRemoved;
             }
 
             foreach (var bot in bots)
@@ -68,6 +70,8 @@ namespace CodingArena.Main.Battlefields
             myBattlefield.BulletRemoved += OnBulletRemoved;
             myBattlefield.ResourceAdded += OnResourceAdded;
             myBattlefield.ResourceRemoved += OnResourceRemoved;
+            myBattlefield.HomeAdded += OnHomeAdded;
+            myBattlefield.HomeRemoved += OnHomeRemoved;
         }
 
         private void OnBotAdded(object sender, BotEventArgs e) =>
@@ -103,6 +107,18 @@ namespace CodingArena.Main.Battlefields
             if (viewModel != null)
             {
                 Resources.Remove(viewModel);
+            }
+        }
+
+        private void OnHomeAdded(object sender, HomeEventArgs e) =>
+            Homes.Add(new HomeViewModel(e.Home));
+
+        private void OnHomeRemoved(object sender, HomeEventArgs e)
+        {
+            var viewModel = Homes.FirstOrDefault(r => r.Home == e.Home);
+            if (viewModel != null)
+            {
+                Homes.Remove(viewModel);
             }
         }
     }
