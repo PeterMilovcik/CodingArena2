@@ -32,7 +32,6 @@ namespace CodingArena.Main.Rounds
             }
 
             InitializePositions();
-            AddResource();
 
             myTurnDelay = double.Parse(ConfigurationManager.AppSettings["TurnDelayInMilliseconds"]);
         }
@@ -73,6 +72,10 @@ namespace CodingArena.Main.Rounds
             {
                 while (!HasWinner)
                 {
+                    if (!Battlefield.Resources.Any())
+                    {
+                        AddResource();
+                    }
                     var bulletTasks = Battlefield.Bullets.ToList().OfType<Bullet>().Select(b => b.UpdateAsync());
                     await Task.WhenAll(bulletTasks);
                     var botTasks = Bots.Select(b => b.UpdateAsync());

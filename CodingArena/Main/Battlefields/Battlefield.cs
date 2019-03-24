@@ -70,7 +70,7 @@ namespace CodingArena.Main.Battlefields
             OnResourceAdded(resource);
         }
 
-        public void Remove(Resource resource)
+        public void Remove(IResource resource)
         {
             myResources.Remove(resource);
             OnResourceRemoved(resource);
@@ -88,16 +88,22 @@ namespace CodingArena.Main.Battlefields
 
         public event EventHandler<ResourceEventArgs> ResourceRemoved;
 
-        private void OnBotAdded(Bot bot) => BotAdded?.Invoke(this, new BotEventArgs(bot));
+        private void OnBotAdded(Bot bot) =>
+            BotAdded?.Invoke(this, new BotEventArgs(bot));
 
-        private void OnBotRemoved(Bot bot) => BotRemoved?.Invoke(this, new BotEventArgs(bot));
+        private void OnBotRemoved(Bot bot) =>
+            BotRemoved?.Invoke(this, new BotEventArgs(bot));
 
-        private void OnBulletAdded(Bullet bullet) => BulletAdded?.Invoke(this, new BulletEventArgs(bullet));
+        private void OnBulletAdded(Bullet bullet) =>
+            BulletAdded?.Invoke(this, new BulletEventArgs(bullet));
 
-        private void OnBulletRemoved(Bullet bullet) => BulletRemoved?.Invoke(this, new BulletEventArgs(bullet));
+        private void OnBulletRemoved(Bullet bullet) =>
+            BulletRemoved?.Invoke(this, new BulletEventArgs(bullet));
 
-        private void OnResourceAdded(Resource resource) => ResourceAdded?.Invoke(this, new ResourceEventArgs(resource));
+        private void OnResourceAdded(IResource resource) =>
+            ResourceAdded?.Invoke(this, new ResourceEventArgs(resource));
 
-        private void OnResourceRemoved(Resource resource) => ResourceRemoved?.Invoke(this, new ResourceEventArgs(resource));
+        private void OnResourceRemoved(IResource resource) =>
+            ResourceRemoved?.Invoke(this, new ResourceEventArgs(resource));
     }
 }

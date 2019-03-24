@@ -227,6 +227,7 @@ namespace CodingArena.Main.Battlefields.Bots
         {
             if (HasResource) return;
             Resource = resource;
+            Battlefield.Remove(resource);
             OnResourcePicked();
             OnResourcePicked(Resource);
         }
