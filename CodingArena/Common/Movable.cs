@@ -26,7 +26,7 @@ namespace CodingArena.Common
 
         public Vector Direction
         {
-            get => myDirection;
+            get => new Vector(myDirection.X, myDirection.Y);
             protected set
             {
                 if (myDirection.Equals(value)) return;

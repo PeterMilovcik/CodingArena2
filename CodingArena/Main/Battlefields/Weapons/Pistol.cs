@@ -24,25 +24,28 @@ namespace CodingArena.Main.Battlefields.Weapons
     public class Pistol : Collider, IWeapon
     {
         private readonly Battlefield myBattlefield;
+        private TimeSpan myAimTime;
+        private TimeSpan myReloadTime;
+        private TimeSpan myRemainingReloadTime;
 
         public Pistol([NotNull] Battlefield battlefield)
         {
             myBattlefield = battlefield ?? throw new ArgumentNullException(nameof(battlefield));
             Name = "Pistol";
             var reloadTimeInMilliseconds = double.Parse(ConfigurationManager.AppSettings["PistolReloadTimeInMilliseconds"]);
-            ReloadTime = TimeSpan.FromMilliseconds(reloadTimeInMilliseconds);
+            myReloadTime = TimeSpan.FromMilliseconds(reloadTimeInMilliseconds);
             var aimTimeInMilliseconds = double.Parse(ConfigurationManager.AppSettings["PistolAimTimeInMilliseconds"]);
-            AimTime = TimeSpan.FromMilliseconds(aimTimeInMilliseconds);
+            myAimTime = TimeSpan.FromMilliseconds(aimTimeInMilliseconds);
             MaxRange = double.Parse(ConfigurationManager.AppSettings["PistolMaxRange"]);
             Bullet = new PistolBullet();
         }
 
         public string Name { get; }
         public double MaxRange { get; }
-        public TimeSpan ReloadTime { get; }
-        public TimeSpan AimTime { get; }
-        public bool IsReloading => RemainingReloadTime > TimeSpan.Zero;
-        public TimeSpan RemainingReloadTime { get; private set; }
+        public double ReloadTime => myReloadTime.TotalSeconds;
+        public double AimTime => myAimTime.TotalSeconds;
+        public bool IsReloading => myRemainingReloadTime > TimeSpan.Zero;
+        public double RemainingReloadTime { get; private set; }
         public IBulletSpecification Bullet { get; }
 
         public override async Task UpdateAsync()
@@ -65,7 +68,7 @@ namespace CodingArena.Main.Battlefields.Weapons
         {
             if (IsReloading)
             {
-                RemainingReloadTime -= DeltaTime;
+                myRemainingReloadTime -= DeltaTime;
             }
         }
     }

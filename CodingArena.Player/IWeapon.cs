@@ -1,15 +1,13 @@
-﻿using System;
-
-namespace CodingArena.Player
+﻿namespace CodingArena.Player
 {
     public interface IWeapon : ICollider
     {
         string Name { get; }
         double MaxRange { get; }
-        TimeSpan ReloadTime { get; }
-        TimeSpan AimTime { get; }
+        double ReloadTime { get; }
+        double AimTime { get; }
         bool IsReloading { get; }
-        TimeSpan RemainingReloadTime { get; }
+        double RemainingReloadTime { get; }
         IBulletSpecification Bullet { get; }
     }
 }

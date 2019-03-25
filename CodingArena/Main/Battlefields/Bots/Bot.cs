@@ -6,6 +6,7 @@ using CodingArena.Main.Battlefields.Weapons;
 using CodingArena.Player;
 using CodingArena.Player.TurnActions;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,6 +34,7 @@ namespace CodingArena.Main.Battlefields.Bots
             MinSpeed = double.Parse(ConfigurationManager.AppSettings["MinBotSpeed"]);
             Speed = MaxSpeed;
             myWeapon = new Pistol(myBattlefield);
+            AvailableWeapons = new List<Player.IWeapon>(new[] { EquippedWeapon });
             Angle = 90;
             myRemainingAimTime = TimeSpan.Zero;
         }
@@ -43,7 +45,8 @@ namespace CodingArena.Main.Battlefields.Bots
         public IResource Resource { get; private set; }
         public bool HasResource => Resource != null;
         public bool IsAiming => myRemainingAimTime > TimeSpan.Zero;
-        public Player.IWeapon Weapon => myWeapon;
+        public Player.IWeapon EquippedWeapon => myWeapon;
+        public IReadOnlyList<Player.IWeapon> AvailableWeapons { get; }
 
         public override async Task UpdateAsync()
         {
@@ -134,7 +137,7 @@ namespace CodingArena.Main.Battlefields.Bots
         private void Execute(ShootTurnAction shoot)
         {
             if (IsAiming) return;
-            if (Weapon.IsReloading) return;
+            if (EquippedWeapon.IsReloading) return;
             Shoot();
         }
 
@@ -244,7 +247,7 @@ namespace CodingArena.Main.Battlefields.Bots
 
         private void Shoot()
         {
-            myRemainingAimTime = myWeapon.AimTime;
+            myRemainingAimTime = TimeSpan.FromSeconds(myWeapon.AimTime);
         }
 
         public void PickUpResource(IResource resource)
