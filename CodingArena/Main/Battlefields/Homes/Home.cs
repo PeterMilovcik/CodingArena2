@@ -11,7 +11,7 @@ namespace CodingArena.Main.Battlefields.Homes
     {
         public Home([NotNull] IBot bot, Point position)
         {
-            Radius = 30;
+            Radius = 20;
             Owner = bot ?? throw new ArgumentNullException(nameof(bot));
             Name = bot.Name;
             Position = position;

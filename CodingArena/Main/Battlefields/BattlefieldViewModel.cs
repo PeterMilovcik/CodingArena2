@@ -2,7 +2,6 @@
 using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Main.Battlefields.Resources;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -30,11 +29,12 @@ namespace CodingArena.Main.Battlefields
         public ObservableCollection<BulletViewModel> Bullets { get; set; }
         public ObservableCollection<ResourceViewModel> Resources { get; set; }
 
-        public void Set(Battlefield battlefield, List<Bot> bots)
+        public void Set(Battlefield battlefield)
         {
             Bots.Clear();
             Bullets.Clear();
             Resources.Clear();
+            Homes.Clear();
 
             if (myBattlefield != null)
             {
@@ -48,7 +48,7 @@ namespace CodingArena.Main.Battlefields
                 myBattlefield.HomeRemoved -= OnHomeRemoved;
             }
 
-            foreach (var bot in bots)
+            foreach (var bot in battlefield.Bots.OfType<Bot>())
             {
                 Bots.Add(new BotViewModel(bot));
             }

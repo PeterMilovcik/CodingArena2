@@ -1,4 +1,6 @@
-﻿using CodingArena.Main.Battlefields;
+﻿using CodingArena.Annotations;
+using CodingArena.Common;
+using CodingArena.Main.Battlefields;
 using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bots.AIs;
 using CodingArena.Main.Battlefields.Bullets;
@@ -6,20 +8,25 @@ using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Main.Battlefields.Resources;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace CodingArena.Main.Rounds
 {
-    public sealed class Round
+    public sealed class Round : GameObject, INotifyPropertyChanged
     {
         private readonly double myTurnDelay;
         private readonly Random myRandom;
+        private readonly TimeSpan myTimeout;
+        private TimeSpan myTime;
 
         public Round()
         {
+            Time = TimeSpan.Zero;
             var botAIFactory = new BotAIFactory();
             var botAIs = botAIFactory.CreateBotAIs();
             Battlefield = new Battlefield();
@@ -35,6 +42,20 @@ namespace CodingArena.Main.Rounds
             InitializePositions();
 
             myTurnDelay = double.Parse(ConfigurationManager.AppSettings["TurnDelayInMilliseconds"]);
+            myTimeout = TimeSpan
+                .FromSeconds(int.Parse(
+                    ConfigurationManager.AppSettings["RoundTimeoutInSeconds"]));
+        }
+
+        public TimeSpan Time
+        {
+            get => myTime;
+            private set
+            {
+                if (value.Equals(myTime)) return;
+                myTime = value;
+                OnPropertyChanged();
+            }
         }
 
         private void InitializePositions()
@@ -75,21 +96,34 @@ namespace CodingArena.Main.Rounds
         {
             if (Bots.Any())
             {
-                while (!HasWinner)
+                while (!HasWinner && Time < myTimeout)
                 {
-                    if (!Battlefield.Resources.Any())
-                    {
-                        AddResource();
-                    }
-                    var bulletTasks = Battlefield.Bullets.ToList().OfType<Bullet>().Select(b => b.UpdateAsync());
-                    await Task.WhenAll(bulletTasks);
-                    var botTasks = Bots.Select(b => b.UpdateAsync());
-                    await Task.WhenAll(botTasks);
-                    await Task.Delay(TimeSpan.FromMilliseconds(myTurnDelay));
+                    await UpdateAsync();
                 }
             }
         }
 
+        public override async Task UpdateAsync()
+        {
+            await base.UpdateAsync();
+            Time += DeltaTime;
+            if (!Battlefield.Resources.Any())
+            {
+                AddResource();
+            }
+            var bulletTasks = Battlefield.Bullets.ToList().OfType<Bullet>().Select(b => b.UpdateAsync());
+            await Task.WhenAll(bulletTasks);
+            var botTasks = Bots.Select(b => b.UpdateAsync());
+            await Task.WhenAll(botTasks);
+            await Task.Delay(TimeSpan.FromMilliseconds(myTurnDelay));
+        }
+
         public bool HasWinner => Bots.Count(b => b.HitPoints.Actual > 0) <= 1;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

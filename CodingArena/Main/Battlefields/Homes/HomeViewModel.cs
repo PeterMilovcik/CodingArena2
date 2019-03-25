@@ -6,6 +6,7 @@ namespace CodingArena.Main.Battlefields.Homes
     public class HomeViewModel : Observable
     {
         private Visibility myCountVisibility;
+        private int myCount;
 
         public HomeViewModel(Home home)
         {
@@ -35,7 +36,16 @@ namespace CodingArena.Main.Battlefields.Homes
 
         public Brush Color { get; }
 
-        public int Count { get; set; }
+        public int Count
+        {
+            get => myCount;
+            set
+            {
+                if (value == myCount) return;
+                myCount = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Visibility CountVisibility
         {
