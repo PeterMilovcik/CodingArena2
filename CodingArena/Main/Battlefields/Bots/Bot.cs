@@ -47,6 +47,7 @@ namespace CodingArena.Main.Battlefields.Bots
         public bool IsAiming => myRemainingAimTime > TimeSpan.Zero;
         public Player.IWeapon EquippedWeapon => myWeapon;
         public IReadOnlyList<Player.IWeapon> AvailableWeapons { get; }
+        public bool IsDead => HitPoints.Actual <= 0;
 
         public override async Task UpdateAsync()
         {
@@ -62,7 +63,7 @@ namespace CodingArena.Main.Battlefields.Bots
                 var turnAction = BotAI.Update(this, myBattlefield);
                 switch (turnAction)
                 {
-                    case ShootTurnAction shoot:
+                    case ShootAtTurnAction shoot:
                         Execute(shoot);
                         break;
                     case MoveTowardsTurnAction moveTowards:
@@ -134,11 +135,11 @@ namespace CodingArena.Main.Battlefields.Bots
             Move();
         }
 
-        private void Execute(ShootTurnAction shoot)
+        private void Execute(ShootAtTurnAction shootAt)
         {
             if (IsAiming) return;
             if (EquippedWeapon.IsReloading) return;
-            Shoot();
+            ShootAt(shootAt.Position);
         }
 
         private bool Move()
@@ -245,8 +246,11 @@ namespace CodingArena.Main.Battlefields.Bots
             Die();
         }
 
-        private void Shoot()
+        private void ShootAt(Point position)
         {
+            var movement = new Vector(position.X - Position.X, position.Y - Position.Y);
+            movement.Normalize();
+            Direction = movement;
             myRemainingAimTime = TimeSpan.FromSeconds(myWeapon.AimTime);
         }
 
@@ -296,6 +300,7 @@ namespace CodingArena.Main.Battlefields.Bots
 
         private void Aim()
         {
+            if (IsDead) return;
             myRemainingAimTime -= DeltaTime;
             if (myRemainingAimTime <= TimeSpan.Zero)
             {

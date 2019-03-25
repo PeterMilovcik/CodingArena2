@@ -29,8 +29,11 @@ namespace CodingArena.Player
         public static ITurnAction TurnAwayFrom(Point position) =>
             new TurnAwayFromTurnAction(position);
 
-        public static ITurnAction Shoot() =>
-            new ShootTurnAction();
+        public static ITurnAction ShootAt(IGameObject gameObject) =>
+            new ShootAtTurnAction(gameObject.Position);
+
+        public static ITurnAction ShootAt(Point position) =>
+            new ShootAtTurnAction(position);
 
         public static ITurnAction PickUpResource() =>
             new PickUpResourceTurnAction();

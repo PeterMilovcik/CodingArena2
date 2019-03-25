@@ -18,8 +18,19 @@ namespace CodingArena.Player.Proto
             }
             if (myAttacker != null)
             {
-                return TurnAction.MoveAwayFrom(myAttacker);
+                if (ownBot.HasResource)
+                {
+                    return TurnAction.DropDownResource();
+                }
+
+                if (battlefield.Bots.Contains(myAttacker))
+                {
+                    return TurnAction.ShootAt(myAttacker);
+                }
+
+                myAttacker = null;
             }
+
             if (battlefield.Resources.Any())
             {
                 var resource = battlefield.Resources.First();

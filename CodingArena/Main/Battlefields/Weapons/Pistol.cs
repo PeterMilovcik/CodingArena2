@@ -9,16 +9,14 @@ using System.Threading.Tasks;
 
 namespace CodingArena.Main.Battlefields.Weapons
 {
-    public class PistolAmmunition : IAmmunition
+    public class PistolAmmunition : Ammunition
     {
         public PistolAmmunition()
         {
             Speed = double.Parse(ConfigurationManager.AppSettings["PistolAmmunitionSpeed"]);
             Damage = double.Parse(ConfigurationManager.AppSettings["PistolAmmunitionDamage"]);
+            Remaining = int.Parse(ConfigurationManager.AppSettings["PistolAmmunitionCount"]);
         }
-
-        public double Speed { get; }
-        public double Damage { get; }
     }
 
     public class Pistol : Collider, IWeapon
@@ -26,6 +24,7 @@ namespace CodingArena.Main.Battlefields.Weapons
         private readonly Battlefield myBattlefield;
         private readonly TimeSpan myAimTime;
         private readonly TimeSpan myReloadTime;
+        private readonly PistolAmmunition myAmmunition;
         private TimeSpan myRemainingReloadTime;
 
         public Pistol([NotNull] Battlefield battlefield)
@@ -37,7 +36,7 @@ namespace CodingArena.Main.Battlefields.Weapons
             var aimTimeInMilliseconds = double.Parse(ConfigurationManager.AppSettings["PistolAimTimeInMilliseconds"]);
             myAimTime = TimeSpan.FromMilliseconds(aimTimeInMilliseconds);
             MaxRange = double.Parse(ConfigurationManager.AppSettings["PistolMaxRange"]);
-            Ammunition = new PistolAmmunition();
+            myAmmunition = new PistolAmmunition();
         }
 
         public string Name { get; }
@@ -45,8 +44,8 @@ namespace CodingArena.Main.Battlefields.Weapons
         public double ReloadTime => myReloadTime.TotalSeconds;
         public double AimTime => myAimTime.TotalSeconds;
         public bool IsReloading => myRemainingReloadTime > TimeSpan.Zero;
-        public double RemainingReloadTime { get; private set; }
-        public IAmmunition Ammunition { get; }
+        public double RemainingReloadTime => myRemainingReloadTime.TotalSeconds;
+        public IAmmunition Ammunition => myAmmunition;
 
         public override async Task UpdateAsync()
         {
@@ -60,7 +59,9 @@ namespace CodingArena.Main.Battlefields.Weapons
         public Bullet Fire(Bot shooter)
         {
             if (IsReloading) return null;
-            RemainingReloadTime = ReloadTime;
+            if (Ammunition.Remaining <= 0) return null;
+            myRemainingReloadTime = myReloadTime;
+            myAmmunition.Remove(1);
             return new Bullet(myBattlefield, shooter, Ammunition.Speed, Ammunition.Damage, MaxRange);
         }
 

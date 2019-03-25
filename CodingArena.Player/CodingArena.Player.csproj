@@ -63,7 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TurnAction.cs" />
     <Compile Include="TurnActions\PickUpResourceTurnAction.cs" />
-    <Compile Include="TurnActions\ShootTurnAction.cs" />
+    <Compile Include="TurnActions\ShootAtTurnAction.cs" />
     <Compile Include="TurnActions\TurnAwayFromTurnAction.cs" />
     <Compile Include="TurnActions\TurnTowardsTurnAction.cs" />
     <Compile Include="Value.cs" />

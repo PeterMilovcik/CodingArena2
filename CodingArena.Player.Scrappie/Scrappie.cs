@@ -1,10 +1,20 @@
-﻿namespace CodingArena.Player.Scrappie
+﻿using System.Linq;
+
+namespace CodingArena.Player.Scrappie
 {
     public class Scrappie : IBotAI
     {
         public string BotName { get; } = "Scrappie";
         public ITurnAction Update(IBot ownBot, IBattlefield battlefield)
         {
+            var enemies = battlefield.Bots.Except(new[] { ownBot }).ToList();
+            if (enemies.Any())
+            {
+                var first = enemies.First();
+                return ownBot.DistanceTo(first) > ownBot.EquippedWeapon.MaxRange
+                    ? TurnAction.MoveTowards(first)
+                    : TurnAction.ShootAt(first);
+            }
             //var enemies = battlefield.Bots.Except(new[] { ownBot });
             //if (enemies.Any())
             //{
