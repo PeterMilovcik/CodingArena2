@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace CodingArena.Main.Battlefields.Weapons
 {
-    public class PistolBullet : IAmmunition
+    public class PistolAmmunition : IAmmunition
     {
-        public PistolBullet()
+        public PistolAmmunition()
         {
             Speed = double.Parse(ConfigurationManager.AppSettings["PistolAmmunitionSpeed"]);
             Damage = double.Parse(ConfigurationManager.AppSettings["PistolAmmunitionDamage"]);
@@ -37,7 +37,7 @@ namespace CodingArena.Main.Battlefields.Weapons
             var aimTimeInMilliseconds = double.Parse(ConfigurationManager.AppSettings["PistolAimTimeInMilliseconds"]);
             myAimTime = TimeSpan.FromMilliseconds(aimTimeInMilliseconds);
             MaxRange = double.Parse(ConfigurationManager.AppSettings["PistolMaxRange"]);
-            Ammunition = new PistolBullet();
+            Ammunition = new PistolAmmunition();
         }
 
         public string Name { get; }
