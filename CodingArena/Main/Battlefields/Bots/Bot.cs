@@ -21,6 +21,8 @@ namespace CodingArena.Main.Battlefields.Bots
         private readonly Battlefield myBattlefield;
         private readonly IWeapon myWeapon;
         private TimeSpan myRemainingAimTime;
+        private readonly double myRegenerationAfterNoDamageInSeconds;
+        private TimeSpan myRegenerationIn;
 
         public Bot([NotNull] Battlefield battlefield, IBotAI botAI) : base(battlefield)
         {
@@ -37,6 +39,10 @@ namespace CodingArena.Main.Battlefields.Bots
             AvailableWeapons = new List<Player.IWeapon>(new[] { EquippedWeapon });
             Angle = 90;
             myRemainingAimTime = TimeSpan.Zero;
+            myRegenerationAfterNoDamageInSeconds =
+                double.Parse(ConfigurationManager.AppSettings["RegenerationAfterNoDamageInSeconds"]);
+            RegenerationRate = double.Parse(ConfigurationManager.AppSettings["RegenerationPerSecond"]);
+            myRegenerationIn = TimeSpan.Zero;
         }
 
         public IBotAI BotAI { get; }
@@ -47,6 +53,8 @@ namespace CodingArena.Main.Battlefields.Bots
         public bool IsAiming => myRemainingAimTime > TimeSpan.Zero;
         public Player.IWeapon EquippedWeapon => myWeapon;
         public IReadOnlyList<Player.IWeapon> AvailableWeapons { get; }
+        public double RegenerationIn => myRegenerationIn.TotalSeconds;
+        public double RegenerationRate { get; }
         public bool IsDead => HitPoints.Actual <= 0;
 
         public override async Task UpdateAsync()
@@ -55,6 +63,14 @@ namespace CodingArena.Main.Battlefields.Bots
             await myWeapon.UpdateAsync();
             try
             {
+                if (myRegenerationIn <= TimeSpan.Zero)
+                {
+                    Regenerate();
+                }
+                else
+                {
+                    myRegenerationIn -= DeltaTime;
+                }
                 if (IsAiming)
                 {
                     Aim();
@@ -84,6 +100,14 @@ namespace CodingArena.Main.Battlefields.Bots
             {
                 // ignored
             }
+        }
+
+        private void Regenerate()
+        {
+            var newActual = HitPoints.Actual + RegenerationRate * DeltaTime.TotalSeconds;
+            newActual = Math.Min(newActual, HitPoints.Maximum);
+            HitPoints = new Value(HitPoints.Maximum, newActual);
+            OnChanged();
         }
 
         private void Execute(PickUpResourceTurnAction pickUpResource)
@@ -212,7 +236,7 @@ namespace CodingArena.Main.Battlefields.Bots
             var newActual = HitPoints.Actual - bullet.Damage;
             newActual = Math.Max(newActual, 0);
             HitPoints = new Value(HitPoints.Maximum, newActual);
-
+            myRegenerationIn = TimeSpan.FromSeconds(myRegenerationAfterNoDamageInSeconds);
             OnDamaged(bullet);
 
             OnChanged();

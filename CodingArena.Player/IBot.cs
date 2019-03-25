@@ -10,5 +10,7 @@ namespace CodingArena.Player
         bool IsAiming { get; }
         IWeapon EquippedWeapon { get; }
         IReadOnlyList<IWeapon> AvailableWeapons { get; }
+        double RegenerationIn { get; }
+        double RegenerationRate { get; }
     }
 }

@@ -1,14 +1,38 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 
 namespace CodingArena.Player.Proto
 {
     public class Proto : IBotAI
     {
         private IBot myAttacker;
+        private Random Random { get; }
         public string BotName { get; } = "Proto";
+        private List<Point> Corners { get; }
+        private Point SafePoint { get; set; }
+
+        public Proto()
+        {
+            Random = new Random();
+            Corners = new List<Point>();
+        }
 
         public ITurnAction Update(IBot ownBot, IBattlefield battlefield)
         {
+            if (!Corners.Any())
+            {
+                Corners.Add(new Point(10, 10));
+                Corners.Add(new Point(10, battlefield.Height - 10));
+                Corners.Add(new Point(battlefield.Width - 10, battlefield.Height - 10));
+                Corners.Add(new Point(battlefield.Width - 10, 10));
+            }
+            if (ownBot.HitPoints.Percent < 90)
+            {
+                return TurnAction.MoveTowards(SafePoint);
+            }
+
             if (ownBot.HasResource)
             {
                 var home = battlefield.Homes.Single(h => h.Name == BotName);
@@ -16,6 +40,7 @@ namespace CodingArena.Player.Proto
                     ? TurnAction.MoveTowards(home)
                     : TurnAction.DropDownResource();
             }
+
             if (myAttacker != null)
             {
                 if (ownBot.HasResource)
@@ -44,6 +69,7 @@ namespace CodingArena.Player.Proto
         public void OnDamaged(double damage, IBot shooter)
         {
             myAttacker = shooter;
+            SafePoint = Corners[Random.Next(4)];
         }
 
         public void OnMoved(double distance)
