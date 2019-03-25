@@ -1,6 +1,6 @@
 ﻿namespace CodingArena.Player
 {
-    public interface IBulletSpecification
+    public interface IAmmunition
     {
         double Speed { get; }
         double Damage { get; }

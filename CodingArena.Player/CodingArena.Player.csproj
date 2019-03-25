@@ -48,7 +48,7 @@
     <Compile Include="IBattlefield.cs" />
     <Compile Include="IBot.cs" />
     <Compile Include="IBullet.cs" />
-    <Compile Include="IBulletSpecification.cs" />
+    <Compile Include="IAmmunition.cs" />
     <Compile Include="IBotAI.cs" />
     <Compile Include="ICollider.cs" />
     <Compile Include="IGameObject.cs" />

@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace CodingArena.Main.Battlefields.Weapons
 {
-    public class PistolBullet : IBulletSpecification
+    public class PistolBullet : IAmmunition
     {
         public PistolBullet()
         {
-            Speed = double.Parse(ConfigurationManager.AppSettings["PistolBulletSpeed"]);
-            Damage = double.Parse(ConfigurationManager.AppSettings["PistolBulletDamage"]);
+            Speed = double.Parse(ConfigurationManager.AppSettings["PistolAmmunitionSpeed"]);
+            Damage = double.Parse(ConfigurationManager.AppSettings["PistolAmmunitionDamage"]);
         }
 
         public double Speed { get; }
@@ -24,8 +24,8 @@ namespace CodingArena.Main.Battlefields.Weapons
     public class Pistol : Collider, IWeapon
     {
         private readonly Battlefield myBattlefield;
-        private TimeSpan myAimTime;
-        private TimeSpan myReloadTime;
+        private readonly TimeSpan myAimTime;
+        private readonly TimeSpan myReloadTime;
         private TimeSpan myRemainingReloadTime;
 
         public Pistol([NotNull] Battlefield battlefield)
@@ -37,7 +37,7 @@ namespace CodingArena.Main.Battlefields.Weapons
             var aimTimeInMilliseconds = double.Parse(ConfigurationManager.AppSettings["PistolAimTimeInMilliseconds"]);
             myAimTime = TimeSpan.FromMilliseconds(aimTimeInMilliseconds);
             MaxRange = double.Parse(ConfigurationManager.AppSettings["PistolMaxRange"]);
-            Bullet = new PistolBullet();
+            Ammunition = new PistolBullet();
         }
 
         public string Name { get; }
@@ -46,7 +46,7 @@ namespace CodingArena.Main.Battlefields.Weapons
         public double AimTime => myAimTime.TotalSeconds;
         public bool IsReloading => myRemainingReloadTime > TimeSpan.Zero;
         public double RemainingReloadTime { get; private set; }
-        public IBulletSpecification Bullet { get; }
+        public IAmmunition Ammunition { get; }
 
         public override async Task UpdateAsync()
         {
@@ -61,7 +61,7 @@ namespace CodingArena.Main.Battlefields.Weapons
         {
             if (IsReloading) return null;
             RemainingReloadTime = ReloadTime;
-            return new Bullet(myBattlefield, shooter, Bullet.Speed, Bullet.Damage, MaxRange);
+            return new Bullet(myBattlefield, shooter, Ammunition.Speed, Ammunition.Damage, MaxRange);
         }
 
         public void Reload()

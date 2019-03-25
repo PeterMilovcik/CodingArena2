@@ -8,6 +8,6 @@
         double AimTime { get; }
         bool IsReloading { get; }
         double RemainingReloadTime { get; }
-        IBulletSpecification Bullet { get; }
+        IAmmunition Ammunition { get; }
     }
 }
