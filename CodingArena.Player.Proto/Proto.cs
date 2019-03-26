@@ -28,6 +28,15 @@ namespace CodingArena.Player.Proto
                 Corners.Add(new Point(battlefield.Width - 10, battlefield.Height - 10));
                 Corners.Add(new Point(battlefield.Width - 10, 10));
             }
+
+            var ammo = battlefield.Ammos.OrderBy(a => a.DistanceTo(ownBot)).FirstOrDefault();
+            if (ammo != null)
+            {
+                return ownBot.DistanceTo(ammo) > ownBot.Radius
+                    ? TurnAction.MoveTowards(ammo)
+                    : TurnAction.PickUpAmmo();
+            }
+
             //if (ownBot.HitPoints.Percent < 90)
             //{
             //    if (ownBot.HasResource) return TurnAction.DropDownResource();
@@ -81,6 +90,10 @@ namespace CodingArena.Player.Proto
         }
 
         public void OnResourcePicked()
+        {
+        }
+
+        public void OnAmmoPicked(IAmmo ammo)
         {
         }
     }

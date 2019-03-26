@@ -8,6 +8,7 @@
              xmlns:bots="clr-namespace:CodingArena.Main.Battlefields.Bots"
              xmlns:bullets="clr-namespace:CodingArena.Main.Battlefields.Bullets"
              xmlns:homes="clr-namespace:CodingArena.Main.Battlefields.Homes"
+             xmlns:ammunitions="clr-namespace:CodingArena.Main.Battlefields.Ammos"
              mc:Ignorable="d" 
              d:DesignWidth="1600" d:DesignHeight="900" >
     <Grid>
@@ -51,6 +52,23 @@
                                     <TranslateTransform X="{Binding X}" Y="{Binding Y}" />
                                 </resources:ResourceView.RenderTransform>
                             </resources:ResourceView>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl Width="{Binding Width}" Height="{Binding Height}"
+                              ItemsSource="{Binding Ammos}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Background="Transparent"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ammunitions:AmmoView DataContext="{Binding}">
+                                <ammunitions:AmmoView.RenderTransform>
+                                    <TranslateTransform X="{Binding X}" Y="{Binding Y}" />
+                                </ammunitions:AmmoView.RenderTransform>
+                            </ammunitions:AmmoView>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

@@ -1,4 +1,5 @@
-﻿using CodingArena.Main.Battlefields.Bots;
+﻿using CodingArena.Main.Battlefields.Ammos;
+using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Main.Battlefields.Resources;
@@ -19,6 +20,7 @@ namespace CodingArena.Main.Battlefields
             Bots = new ObservableCollection<BotViewModel>();
             Bullets = new ObservableCollection<BulletViewModel>();
             Resources = new ObservableCollection<ResourceViewModel>();
+            Ammos = new ObservableCollection<AmmoViewModel>();
         }
 
         public double Width { get; set; }
@@ -28,6 +30,7 @@ namespace CodingArena.Main.Battlefields
         public ObservableCollection<BotViewModel> Bots { get; set; }
         public ObservableCollection<BulletViewModel> Bullets { get; set; }
         public ObservableCollection<ResourceViewModel> Resources { get; set; }
+        public ObservableCollection<AmmoViewModel> Ammos { get; set; }
 
         public void Set(Battlefield battlefield)
         {
@@ -35,6 +38,7 @@ namespace CodingArena.Main.Battlefields
             Bullets.Clear();
             Resources.Clear();
             Homes.Clear();
+            Ammos.Clear();
 
             if (myBattlefield != null)
             {
@@ -46,6 +50,8 @@ namespace CodingArena.Main.Battlefields
                 myBattlefield.ResourceRemoved -= OnResourceRemoved;
                 myBattlefield.HomeAdded -= OnHomeAdded;
                 myBattlefield.HomeRemoved -= OnHomeRemoved;
+                myBattlefield.AmmoAdded -= OnAmmoAdded;
+                myBattlefield.AmmoRemoved -= OnAmmoRemoved;
             }
 
             foreach (var bot in battlefield.Bots.OfType<Bot>())
@@ -56,6 +62,11 @@ namespace CodingArena.Main.Battlefields
             foreach (var resource in battlefield.Resources)
             {
                 Resources.Add(new ResourceViewModel(resource));
+            }
+
+            foreach (var ammo in battlefield.Ammos.OfType<Ammo>())
+            {
+                Ammos.Add(new AmmoViewModel(ammo));
             }
 
             foreach (var home in battlefield.Homes.OfType<Home>())
@@ -72,6 +83,8 @@ namespace CodingArena.Main.Battlefields
             myBattlefield.ResourceRemoved += OnResourceRemoved;
             myBattlefield.HomeAdded += OnHomeAdded;
             myBattlefield.HomeRemoved += OnHomeRemoved;
+            myBattlefield.AmmoAdded += OnAmmoAdded;
+            myBattlefield.AmmoRemoved += OnAmmoRemoved;
         }
 
         private void OnBotAdded(object sender, BotEventArgs e) =>
@@ -121,5 +134,18 @@ namespace CodingArena.Main.Battlefields
                 Homes.Remove(viewModel);
             }
         }
+
+        private void OnAmmoAdded(object sender, AmmoEventArgs e) =>
+            Ammos.Add(new AmmoViewModel(e.Ammo));
+
+        private void OnAmmoRemoved(object sender, AmmoEventArgs e)
+        {
+            var viewModel = Ammos.FirstOrDefault(r => r.Ammo == e.Ammo);
+            if (viewModel != null)
+            {
+                Ammos.Remove(viewModel);
+            }
+        }
+
     }
 }

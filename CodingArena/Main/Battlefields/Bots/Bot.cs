@@ -1,5 +1,6 @@
 ﻿using CodingArena.Annotations;
 using CodingArena.Common;
+using CodingArena.Main.Battlefields.Ammos;
 using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Main.Battlefields.Resources;
 using CodingArena.Main.Battlefields.Weapons;
@@ -98,6 +99,9 @@ namespace CodingArena.Main.Battlefields.Bots
                     case DropDownResourceTurnAction dropDownResource:
                         Execute(dropDownResource);
                         break;
+                    case PickUpAmmoTurnAction pickUpAmmo:
+                        Execute(pickUpAmmo);
+                        break;
                 }
             }
             catch (Exception)
@@ -122,6 +126,18 @@ namespace CodingArena.Main.Battlefields.Bots
                 if (DistanceTo(resource) < Radius)
                 {
                     PickUpResource(resource);
+                }
+            }
+        }
+
+        private void Execute(PickUpAmmoTurnAction pickUpAmmo)
+        {
+            var ammo = Battlefield.Ammos.OfType<Ammo>().OrderBy(DistanceTo).FirstOrDefault();
+            if (ammo != null)
+            {
+                if (DistanceTo(ammo) < Radius)
+                {
+                    PickUpAmmo(ammo);
                 }
             }
         }
@@ -296,11 +312,32 @@ namespace CodingArena.Main.Battlefields.Bots
             OnResourcePicked(Resource);
         }
 
+        private void PickUpAmmo(Ammo ammo)
+        {
+            var weapon = AvailableWeapons.SingleOrDefault(w => w.Name == ammo.Weapon);
+            (weapon?.Ammunition as Ammunition)?.Add(ammo.Count);
+            Battlefield.Remove(ammo);
+            OnAmmoPicked(ammo);
+        }
+
         private void OnResourcePicked()
         {
             try
             {
                 BotAI.OnResourcePicked();
+            }
+            catch
+            {
+                // ignore
+            }
+        }
+
+        private void OnAmmoPicked(IAmmo ammo)
+        {
+            OnAmmoPicked(new AmmoEventArgs(ammo));
+            try
+            {
+                BotAI.OnAmmoPicked(ammo);
             }
             catch
             {
@@ -321,10 +358,15 @@ namespace CodingArena.Main.Battlefields.Bots
         private void OnResourcePicked(IResource resource) =>
             ResourcePicked?.Invoke(this, new ResourceEventArgs(resource));
 
+
         public event EventHandler<ResourceEventArgs> ResourceDropped;
 
         private void OnResourceDropped(IResource resource) =>
             ResourceDropped?.Invoke(this, new ResourceEventArgs(resource));
+
+        public event EventHandler<AmmoEventArgs> AmmoPicked;
+
+        private void OnAmmoPicked(AmmoEventArgs e) => AmmoPicked?.Invoke(this, e);
 
         public event EventHandler Died;
 

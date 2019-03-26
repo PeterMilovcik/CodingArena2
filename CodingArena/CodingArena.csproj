@@ -59,6 +59,13 @@
     <Compile Include="Common\Collider.cs" />
     <Compile Include="Common\GameObject.cs" />
     <Compile Include="Common\Movable.cs" />
+    <Compile Include="Main\Battlefields\AmmoEventArgs.cs" />
+    <Compile Include="Main\Battlefields\Ammos\Ammo.cs" />
+    <Compile Include="Main\Battlefields\Ammos\AmmoView.xaml.cs">
+      <DependentUpon>AmmoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Main\Battlefields\Ammos\AmmoViewModel.cs" />
+    <Compile Include="Main\Battlefields\Ammos\PistolAmmo.cs" />
     <Compile Include="Main\Battlefields\HomeEventArgs.cs" />
     <Compile Include="Main\Battlefields\Homes\Home.cs" />
     <Compile Include="Main\Battlefields\Homes\HomeViewModel.cs" />
@@ -79,6 +86,10 @@
     <Compile Include="Main\Battlefields\Resources\Resource.cs" />
     <Compile Include="Main\MainViewModel.cs" />
     <Compile Include="Main\Battlefields\Resources\ResourceViewModel.cs" />
+    <Page Include="Main\Battlefields\Ammos\AmmoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Main\Battlefields\Homes\HomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

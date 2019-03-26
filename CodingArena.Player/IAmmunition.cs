@@ -5,5 +5,6 @@
         double Speed { get; }
         double Damage { get; }
         int Remaining { get; }
+        int MaxCount { get; }
     }
 }

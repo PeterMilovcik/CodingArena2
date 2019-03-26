@@ -11,5 +11,6 @@ namespace CodingArena.Player
         IReadOnlyList<IResource> Resources { get; }
         IReadOnlyList<IHome> Homes { get; }
         IReadOnlyList<IWeapon> Weapons { get; }
+        IReadOnlyList<IAmmo> Ammos { get; }
     }
 }

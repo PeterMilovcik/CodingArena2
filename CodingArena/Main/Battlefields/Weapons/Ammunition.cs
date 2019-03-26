@@ -8,8 +8,13 @@ namespace CodingArena.Main.Battlefields.Weapons
         public double Speed { get; protected set; }
         public double Damage { get; protected set; }
         public int Remaining { get; protected set; }
+        public int MaxCount { get; protected set; }
 
-        public void Add(int count) => Remaining += count;
+        public void Add(int count)
+        {
+            Remaining += count;
+            Remaining = Math.Min(MaxCount, Remaining);
+        }
 
         public void Remove(int count)
         {

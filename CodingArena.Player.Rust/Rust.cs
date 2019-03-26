@@ -34,5 +34,9 @@ namespace CodingArena.Player.Rust
         public void OnResourcePicked()
         {
         }
+
+        public void OnAmmoPicked(IAmmo ammo)
+        {
+        }
     }
 }

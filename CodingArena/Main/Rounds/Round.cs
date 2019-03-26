@@ -1,6 +1,7 @@
 ﻿using CodingArena.Annotations;
 using CodingArena.Common;
 using CodingArena.Main.Battlefields;
+using CodingArena.Main.Battlefields.Ammos;
 using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bots.AIs;
 using CodingArena.Main.Battlefields.Bullets;
@@ -88,6 +89,15 @@ namespace CodingArena.Main.Rounds
             Battlefield.Add(resource);
         }
 
+        private void AddAmmo()
+        {
+            var x = myRandom.Next((int)Battlefield.Width);
+            var y = myRandom.Next((int)Battlefield.Height);
+            var position = new Point(x, y);
+            var ammo = new Ammo(position, "Pistol", 10);
+            Battlefield.Add(ammo);
+        }
+
         public Battlefield Battlefield { get; }
 
         public List<Bot> Bots { get; }
@@ -110,6 +120,10 @@ namespace CodingArena.Main.Rounds
             if (!Battlefield.Resources.Any())
             {
                 AddResource();
+            }
+            if (!Battlefield.Ammos.Any())
+            {
+                AddAmmo();
             }
             var bulletTasks = Battlefield.Bullets.ToList().OfType<Bullet>().Select(b => b.UpdateAsync());
             await Task.WhenAll(bulletTasks);

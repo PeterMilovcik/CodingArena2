@@ -39,5 +39,9 @@ namespace CodingArena.Player.Scrappie
         public void OnResourcePicked()
         {
         }
+
+        public void OnAmmoPicked(IAmmo ammo)
+        {
+        }
     }
 }

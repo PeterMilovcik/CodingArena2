@@ -41,6 +41,9 @@ namespace CodingArena.Player
         public static ITurnAction DropDownResource() =>
             new DropDownResourceTurnAction();
 
+        public static ITurnAction PickUpAmmo() =>
+            new PickUpAmmoTurnAction();
+
         public static ITurnAction Idle =>
             new IdleTurnAction();
     }

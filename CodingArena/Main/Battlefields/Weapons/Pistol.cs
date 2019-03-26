@@ -15,32 +15,26 @@ namespace CodingArena.Main.Battlefields.Weapons
         {
             Speed = double.Parse(ConfigurationManager.AppSettings["PistolAmmunitionSpeed"]);
             Damage = double.Parse(ConfigurationManager.AppSettings["PistolAmmunitionDamage"]);
-            Remaining = int.Parse(ConfigurationManager.AppSettings["PistolAmmunitionCount"]);
+            MaxCount = int.Parse(ConfigurationManager.AppSettings["PistolAmmunitionCount"]);
+            Remaining = MaxCount / 2;
         }
     }
 
-    public class Pistol : Collider, IWeapon
+    public abstract class Weapon : Collider
     {
-        private readonly Battlefield myBattlefield;
-        private readonly TimeSpan myAimTime;
-        private readonly TimeSpan myReloadTime;
-        private readonly PistolAmmunition myAmmunition;
-        private TimeSpan myRemainingReloadTime;
+        protected Battlefield myBattlefield;
+        protected TimeSpan myAimTime;
+        protected TimeSpan myReloadTime;
+        protected Ammunition myAmmunition;
+        protected TimeSpan myRemainingReloadTime;
 
-        public Pistol([NotNull] Battlefield battlefield)
+        protected Weapon([NotNull] Battlefield battlefield)
         {
             myBattlefield = battlefield ?? throw new ArgumentNullException(nameof(battlefield));
-            Name = "Pistol";
-            var reloadTimeInMilliseconds = double.Parse(ConfigurationManager.AppSettings["PistolReloadTimeInMilliseconds"]);
-            myReloadTime = TimeSpan.FromMilliseconds(reloadTimeInMilliseconds);
-            var aimTimeInMilliseconds = double.Parse(ConfigurationManager.AppSettings["PistolAimTimeInMilliseconds"]);
-            myAimTime = TimeSpan.FromMilliseconds(aimTimeInMilliseconds);
-            MaxRange = double.Parse(ConfigurationManager.AppSettings["PistolMaxRange"]);
-            myAmmunition = new PistolAmmunition();
         }
 
-        public string Name { get; }
-        public double MaxRange { get; }
+        public string Name { get; protected set; }
+        public double MaxRange { get; protected set; }
         public TimeSpan ReloadTime => new TimeSpan(myReloadTime.Ticks);
         public TimeSpan AimTime => new TimeSpan(myAimTime.Ticks);
         public bool IsReloading => myRemainingReloadTime > TimeSpan.Zero;
@@ -56,21 +50,37 @@ namespace CodingArena.Main.Battlefields.Weapons
             }
         }
 
-        public Bullet Fire(Bot shooter)
-        {
-            if (IsReloading) return null;
-            if (Ammunition.Remaining <= 0) return null;
-            myRemainingReloadTime = myReloadTime;
-            myAmmunition.Remove(1);
-            return new Bullet(myBattlefield, shooter, Ammunition.Speed, Ammunition.Damage, MaxRange);
-        }
-
         public void Reload()
         {
             if (IsReloading)
             {
                 myRemainingReloadTime -= DeltaTime;
             }
+        }
+
+        public abstract Bullet Fire(Bot shooter);
+    }
+
+    public class Pistol : Weapon, IWeapon
+    {
+        public Pistol([NotNull] Battlefield battlefield) : base(battlefield)
+        {
+            Name = "Pistol";
+            var reloadTimeInMilliseconds = double.Parse(ConfigurationManager.AppSettings["PistolReloadTimeInMilliseconds"]);
+            myReloadTime = TimeSpan.FromMilliseconds(reloadTimeInMilliseconds);
+            var aimTimeInMilliseconds = double.Parse(ConfigurationManager.AppSettings["PistolAimTimeInMilliseconds"]);
+            myAimTime = TimeSpan.FromMilliseconds(aimTimeInMilliseconds);
+            MaxRange = double.Parse(ConfigurationManager.AppSettings["PistolMaxRange"]);
+            myAmmunition = new PistolAmmunition();
+        }
+
+        public override Bullet Fire(Bot shooter)
+        {
+            if (IsReloading) return null;
+            if (Ammunition.Remaining <= 0) return null;
+            myRemainingReloadTime = myReloadTime;
+            myAmmunition.Remove(1);
+            return new Bullet(myBattlefield, shooter, Ammunition.Speed, Ammunition.Damage, MaxRange);
         }
     }
 }

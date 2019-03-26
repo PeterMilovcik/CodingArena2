@@ -1,4 +1,5 @@
-﻿using CodingArena.Main.Battlefields.Bots;
+﻿using CodingArena.Main.Battlefields.Ammos;
+using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Player;
@@ -15,6 +16,7 @@ namespace CodingArena.Main.Battlefields
         private readonly List<IBullet> myBullets;
         private readonly List<IResource> myResources;
         private readonly List<IWeapon> myWeapons;
+        private readonly List<IAmmo> myAmmos;
 
         public Battlefield()
         {
@@ -25,6 +27,7 @@ namespace CodingArena.Main.Battlefields
             myBullets = new List<IBullet>();
             myResources = new List<IResource>();
             myWeapons = new List<IWeapon>();
+            myAmmos = new List<IAmmo>();
         }
 
         public double Width { get; }
@@ -34,6 +37,7 @@ namespace CodingArena.Main.Battlefields
         public IReadOnlyList<IBullet> Bullets => myBullets;
         public IReadOnlyList<IResource> Resources => myResources;
         public IReadOnlyList<IWeapon> Weapons => myWeapons;
+        public IReadOnlyList<IAmmo> Ammos => myAmmos;
 
         public void Add(Bot bot)
         {
@@ -83,6 +87,18 @@ namespace CodingArena.Main.Battlefields
             OnHomeRemoved(home);
         }
 
+        public void Add(Ammo ammo)
+        {
+            myAmmos.Add(ammo);
+            OnAmmoAdded(ammo);
+        }
+
+        public void Remove(Ammo ammo)
+        {
+            myAmmos.Remove(ammo);
+            OnAmmoRemoved(ammo);
+        }
+
         public event EventHandler<BotEventArgs> BotAdded;
 
         public event EventHandler<BotEventArgs> BotRemoved;
@@ -98,6 +114,10 @@ namespace CodingArena.Main.Battlefields
         public event EventHandler<HomeEventArgs> HomeAdded;
 
         public event EventHandler<HomeEventArgs> HomeRemoved;
+
+        public event EventHandler<AmmoEventArgs> AmmoAdded;
+
+        public event EventHandler<AmmoEventArgs> AmmoRemoved;
 
         private void OnBotAdded(Bot bot) =>
             BotAdded?.Invoke(this, new BotEventArgs(bot));
@@ -122,5 +142,11 @@ namespace CodingArena.Main.Battlefields
 
         private void OnHomeRemoved(Home home) =>
             HomeRemoved?.Invoke(this, new HomeEventArgs(home));
+
+        private void OnAmmoAdded(Ammo ammo) =>
+            AmmoAdded?.Invoke(this, new AmmoEventArgs(ammo));
+
+        private void OnAmmoRemoved(Ammo ammo) =>
+            AmmoRemoved?.Invoke(this, new AmmoEventArgs(ammo));
     }
 }
