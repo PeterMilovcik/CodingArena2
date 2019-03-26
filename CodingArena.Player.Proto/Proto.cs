@@ -36,30 +36,29 @@ namespace CodingArena.Player.Proto
 
             if (ownBot.HasResource)
             {
-                var home = battlefield.Homes.Single(h => h.Name == BotName);
-                return ownBot.DistanceTo(home) > ownBot.Radius
-                    ? TurnAction.MoveTowards(home)
+                return ownBot.DistanceTo(ownBot.Home) > ownBot.Radius
+                    ? TurnAction.MoveTowards(ownBot.Home)
                     : TurnAction.DropDownResource();
             }
 
-            if (myAttacker != null)
-            {
-                if (ownBot.HasResource)
-                {
-                    return TurnAction.DropDownResource();
-                }
+            //if (myAttacker != null)
+            //{
+            //    if (ownBot.HasResource)
+            //    {
+            //        return TurnAction.DropDownResource();
+            //    }
 
-                if (battlefield.Bots.Contains(myAttacker))
-                {
-                    return TurnAction.ShootAt(myAttacker);
-                }
+            //    if (battlefield.Bots.Contains(myAttacker))
+            //    {
+            //        return TurnAction.ShootAt(myAttacker);
+            //    }
 
-                myAttacker = null;
-            }
+            //    myAttacker = null;
+            //}
 
             if (battlefield.Resources.Any())
             {
-                var resource = battlefield.Resources.First();
+                var resource = battlefield.Resources.OrderBy(r => r.DistanceTo(ownBot)).First();
                 if (ownBot.DistanceTo(resource) < ownBot.Radius) return TurnAction.PickUpResource();
                 return TurnAction.MoveTowards(resource.Position);
             }

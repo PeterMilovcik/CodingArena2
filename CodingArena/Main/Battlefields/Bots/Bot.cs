@@ -264,6 +264,10 @@ namespace CodingArena.Main.Battlefields.Bots
 
         private void Die()
         {
+            if (HasResource)
+            {
+                DropDownResource();
+            }
             HitPoints = new Value(HitPoints.Maximum, 0);
             Battlefield.Remove(this);
             OnDied();
