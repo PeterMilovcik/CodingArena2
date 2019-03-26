@@ -1,6 +1,7 @@
 ﻿using CodingArena.Annotations;
 using CodingArena.Player;
 using System;
+using System.Windows;
 
 namespace CodingArena.Main.Battlefields.Resources
 {
@@ -8,6 +9,7 @@ namespace CodingArena.Main.Battlefields.Resources
     {
         private double myX;
         private double myY;
+        private Visibility myResourceVisibility;
 
         public ResourceViewModel([NotNull] IResource resource)
         {
@@ -36,6 +38,17 @@ namespace CodingArena.Main.Battlefields.Resources
             {
                 if (value.Equals(myY)) return;
                 myY = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility ResourceVisibility
+        {
+            get => myResourceVisibility;
+            set
+            {
+                if (value == myResourceVisibility) return;
+                myResourceVisibility = value;
                 OnPropertyChanged();
             }
         }
