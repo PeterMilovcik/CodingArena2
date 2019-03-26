@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CodingArena.Player
 {
@@ -10,7 +11,7 @@ namespace CodingArena.Player
         bool IsAiming { get; }
         IWeapon EquippedWeapon { get; }
         IReadOnlyList<IWeapon> AvailableWeapons { get; }
-        double RegenerationIn { get; }
+        TimeSpan RegenerationActiveIn { get; }
         double RegenerationRate { get; }
     }
 }

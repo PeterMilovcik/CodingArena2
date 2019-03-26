@@ -22,7 +22,7 @@ namespace CodingArena.Main.Battlefields.Bots
         private readonly IWeapon myWeapon;
         private TimeSpan myRemainingAimTime;
         private readonly double myRegenerationAfterNoDamageInSeconds;
-        private TimeSpan myRegenerationIn;
+        private TimeSpan myRegenerationActiveIn;
 
         public Bot([NotNull] Battlefield battlefield, IBotAI botAI) : base(battlefield)
         {
@@ -42,7 +42,7 @@ namespace CodingArena.Main.Battlefields.Bots
             myRegenerationAfterNoDamageInSeconds =
                 double.Parse(ConfigurationManager.AppSettings["RegenerationAfterNoDamageInSeconds"]);
             RegenerationRate = double.Parse(ConfigurationManager.AppSettings["RegenerationPerSecond"]);
-            myRegenerationIn = TimeSpan.Zero;
+            myRegenerationActiveIn = TimeSpan.Zero;
         }
 
         public IBotAI BotAI { get; }
@@ -53,7 +53,7 @@ namespace CodingArena.Main.Battlefields.Bots
         public bool IsAiming => myRemainingAimTime > TimeSpan.Zero;
         public Player.IWeapon EquippedWeapon => myWeapon;
         public IReadOnlyList<Player.IWeapon> AvailableWeapons { get; }
-        public double RegenerationIn => myRegenerationIn.TotalSeconds;
+        public TimeSpan RegenerationActiveIn => new TimeSpan(myRegenerationActiveIn.Ticks);
         public double RegenerationRate { get; }
         public bool IsDead => HitPoints.Actual <= 0;
 
@@ -63,13 +63,13 @@ namespace CodingArena.Main.Battlefields.Bots
             await myWeapon.UpdateAsync();
             try
             {
-                if (myRegenerationIn <= TimeSpan.Zero)
+                if (myRegenerationActiveIn <= TimeSpan.Zero)
                 {
                     Regenerate();
                 }
                 else
                 {
-                    myRegenerationIn -= DeltaTime;
+                    myRegenerationActiveIn -= DeltaTime;
                 }
                 if (IsAiming)
                 {
@@ -236,7 +236,7 @@ namespace CodingArena.Main.Battlefields.Bots
             var newActual = HitPoints.Actual - bullet.Damage;
             newActual = Math.Max(newActual, 0);
             HitPoints = new Value(HitPoints.Maximum, newActual);
-            myRegenerationIn = TimeSpan.FromSeconds(myRegenerationAfterNoDamageInSeconds);
+            myRegenerationActiveIn = TimeSpan.FromSeconds(myRegenerationAfterNoDamageInSeconds);
             OnDamaged(bullet);
 
             OnChanged();
