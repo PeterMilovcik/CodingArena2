@@ -1,13 +1,15 @@
-﻿namespace CodingArena.Player
+﻿using System;
+
+namespace CodingArena.Player
 {
     public interface IWeapon : ICollider
     {
         string Name { get; }
         double MaxRange { get; }
-        double ReloadTime { get; }
-        double AimTime { get; }
+        TimeSpan ReloadTime { get; }
+        TimeSpan AimTime { get; }
         bool IsReloading { get; }
-        double RemainingReloadTime { get; }
+        TimeSpan RemainingReloadTime { get; }
         IAmmunition Ammunition { get; }
     }
 }

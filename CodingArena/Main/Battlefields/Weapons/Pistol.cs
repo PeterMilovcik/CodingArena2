@@ -41,10 +41,10 @@ namespace CodingArena.Main.Battlefields.Weapons
 
         public string Name { get; }
         public double MaxRange { get; }
-        public double ReloadTime => myReloadTime.TotalSeconds;
-        public double AimTime => myAimTime.TotalSeconds;
+        public TimeSpan ReloadTime => new TimeSpan(myReloadTime.Ticks);
+        public TimeSpan AimTime => new TimeSpan(myAimTime.Ticks);
         public bool IsReloading => myRemainingReloadTime > TimeSpan.Zero;
-        public double RemainingReloadTime => myRemainingReloadTime.TotalSeconds;
+        public TimeSpan RemainingReloadTime => new TimeSpan(myRemainingReloadTime.Ticks);
         public IAmmunition Ammunition => myAmmunition;
 
         public override async Task UpdateAsync()

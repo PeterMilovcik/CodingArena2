@@ -275,7 +275,7 @@ namespace CodingArena.Main.Battlefields.Bots
             var movement = new Vector(position.X - Position.X, position.Y - Position.Y);
             movement.Normalize();
             Direction = movement;
-            myRemainingAimTime = TimeSpan.FromSeconds(myWeapon.AimTime);
+            myRemainingAimTime = new TimeSpan(myWeapon.AimTime.Ticks);
         }
 
         public void PickUpResource(IResource resource)
