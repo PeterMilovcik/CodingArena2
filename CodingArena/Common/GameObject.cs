@@ -12,6 +12,8 @@ namespace CodingArena.Common
     public class GameObject : IGameObject
     {
         private Point myPosition;
+        private DateTime myLastUpdate;
+        private TimeSpan myDeltaTime;
 
         public GameObject()
         {
@@ -30,8 +32,17 @@ namespace CodingArena.Common
             }
         }
 
-        public DateTime LastUpdate { get; private set; }
-        public TimeSpan DeltaTime { get; private set; }
+        public DateTime LastUpdate
+        {
+            get => new DateTime(myLastUpdate.Ticks);
+            set => myLastUpdate = value;
+        }
+
+        public TimeSpan DeltaTime
+        {
+            get => new TimeSpan(myDeltaTime.Ticks);
+            set => myDeltaTime = value;
+        }
 
         public virtual Task UpdateAsync()
         {
