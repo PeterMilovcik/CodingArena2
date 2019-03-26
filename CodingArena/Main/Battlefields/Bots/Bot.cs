@@ -53,6 +53,7 @@ namespace CodingArena.Main.Battlefields.Bots
         public bool IsAiming => myRemainingAimTime > TimeSpan.Zero;
         public Player.IWeapon EquippedWeapon => myWeapon;
         public IReadOnlyList<Player.IWeapon> AvailableWeapons { get; }
+        public IHome Home => myBattlefield.Homes.SingleOrDefault(h => h.Name == Name);
         public TimeSpan RegenerationActiveIn => new TimeSpan(myRegenerationActiveIn.Ticks);
         public double RegenerationRate { get; }
         public bool IsDead => HitPoints.Actual <= 0;

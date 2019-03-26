@@ -28,10 +28,11 @@ namespace CodingArena.Player.Proto
                 Corners.Add(new Point(battlefield.Width - 10, battlefield.Height - 10));
                 Corners.Add(new Point(battlefield.Width - 10, 10));
             }
-            if (ownBot.HitPoints.Percent < 90)
-            {
-                return TurnAction.MoveTowards(SafePoint);
-            }
+            //if (ownBot.HitPoints.Percent < 90)
+            //{
+            //    if (ownBot.HasResource) return TurnAction.DropDownResource();
+            //    return TurnAction.MoveTowards(SafePoint);
+            //}
 
             if (ownBot.HasResource)
             {

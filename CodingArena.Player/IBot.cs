@@ -11,6 +11,7 @@ namespace CodingArena.Player
         bool IsAiming { get; }
         IWeapon EquippedWeapon { get; }
         IReadOnlyList<IWeapon> AvailableWeapons { get; }
+        IHome Home { get; }
         TimeSpan RegenerationActiveIn { get; }
         double RegenerationRate { get; }
     }

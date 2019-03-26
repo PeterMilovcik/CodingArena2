@@ -10,10 +10,10 @@ namespace CodingArena.Player.Scrappie
             var enemies = battlefield.Bots.Except(new[] { ownBot }).ToList();
             if (enemies.Any())
             {
-                var first = enemies.First();
-                return ownBot.DistanceTo(first) > ownBot.EquippedWeapon.MaxRange
-                    ? TurnAction.MoveTowards(first)
-                    : TurnAction.ShootAt(first);
+                var closest = enemies.OrderBy(e => e.DistanceTo(ownBot)).First();
+                return ownBot.DistanceTo(closest) > ownBot.EquippedWeapon.MaxRange
+                    ? TurnAction.MoveTowards(closest)
+                    : TurnAction.ShootAt(closest);
             }
             //var enemies = battlefield.Bots.Except(new[] { ownBot });
             //if (enemies.Any())

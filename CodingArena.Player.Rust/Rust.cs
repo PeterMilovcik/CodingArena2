@@ -8,9 +8,15 @@ namespace CodingArena.Player.Rust
         public ITurnAction Update(IBot ownBot, IBattlefield battlefield)
         {
             var enemies = battlefield.Bots.Except(new[] { ownBot }).ToList();
-            return enemies.Any()
-                ? TurnAction.ShootAt(enemies.First())
-                : TurnAction.Idle;
+            if (enemies.Any())
+            {
+                var closest = enemies.OrderBy(e => e.DistanceTo(ownBot)).First();
+                return ownBot.DistanceTo(closest) > ownBot.EquippedWeapon.MaxRange
+                    ? TurnAction.MoveTowards(closest)
+                    : TurnAction.ShootAt(closest);
+            }
+
+            return TurnAction.Idle;
         }
 
         public void OnDamaged(double damage, IBot shooter)
