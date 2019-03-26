@@ -60,6 +60,9 @@ namespace CodingArena.Main.Battlefields.Bots
         public override async Task UpdateAsync()
         {
             await base.UpdateAsync();
+
+            if (IsDead) return;
+
             await myWeapon.UpdateAsync();
             try
             {
