@@ -7,6 +7,16 @@ namespace CodingArena.Player.Rust
         public string BotName { get; } = "Rust";
         public ITurnAction Update(IBot ownBot, IBattlefield battlefield)
         {
+            if (ownBot.EquippedWeapon.Ammunition.Remaining == 0)
+            {
+                var ammo = battlefield.Ammos.OrderBy(a => a.DistanceTo(ownBot)).FirstOrDefault();
+                if (ammo != null)
+                {
+                    return ownBot.DistanceTo(ammo) > ownBot.Radius
+                        ? TurnAction.MoveTowards(ammo)
+                        : TurnAction.PickUpAmmo();
+                }
+            }
             var enemies = battlefield.Bots.Except(new[] { ownBot }).ToList();
             if (enemies.Any())
             {

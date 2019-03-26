@@ -8,7 +8,7 @@
              d:DesignHeight="40" d:DesignWidth="50">
     <Grid>
         <Grid.RenderTransform>
-            <TranslateTransform X="-50" Y="-20" />
+            <TranslateTransform X="-50" Y="-10" />
         </Grid.RenderTransform>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

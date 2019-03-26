@@ -23,7 +23,9 @@ namespace CodingArena.Main.Battlefields.Bullets
             Direction = new Vector(Shooter.Direction.X, Shooter.Direction.Y);
             Speed = speed;
             Damage = damage;
-            Position = new Point(shooter.Position.X, shooter.Position.Y);
+            var weaponX = Shooter.Position.X + 30 * Math.Cos(Shooter.Angle * Math.PI / 180);
+            var weaponY = Shooter.Position.Y + 30 * Math.Sin(Shooter.Angle * Math.PI / 180);
+            Position = new Point(weaponX, weaponY);
             MaxDistance = maxBulletDistance;
         }
 
