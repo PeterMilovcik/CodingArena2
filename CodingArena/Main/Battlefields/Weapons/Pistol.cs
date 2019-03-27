@@ -15,8 +15,8 @@ namespace CodingArena.Main.Battlefields.Weapons
         {
             Speed = double.Parse(ConfigurationManager.AppSettings["PistolAmmunitionSpeed"]);
             Damage = double.Parse(ConfigurationManager.AppSettings["PistolAmmunitionDamage"]);
-            MaxCount = int.Parse(ConfigurationManager.AppSettings["PistolAmmunitionCount"]);
-            Remaining = MaxCount / 2;
+            MaxCount = int.Parse(ConfigurationManager.AppSettings["PistolAmmunitionMaxCount"]);
+            Remaining = int.Parse(ConfigurationManager.AppSettings["PistolAmmunitionCount"]);
         }
     }
 

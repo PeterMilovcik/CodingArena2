@@ -9,7 +9,7 @@ namespace CodingArena.Player.Proto
     {
         private IBot myAttacker;
         private Random Random { get; }
-        public string BotName { get; } = "Proto";
+        public string BotName { get; } = nameof(Proto);
         private List<Point> Corners { get; }
         private Point SafePoint { get; set; }
 
@@ -29,19 +29,22 @@ namespace CodingArena.Player.Proto
                 Corners.Add(new Point(battlefield.Width - 10, 10));
             }
 
-            var ammo = battlefield.Ammos.OrderBy(a => a.DistanceTo(ownBot)).FirstOrDefault();
-            if (ammo != null)
+            if (ownBot.EquippedWeapon.Ammunition.Remaining == 0)
             {
-                return ownBot.DistanceTo(ammo) > ownBot.Radius
-                    ? TurnAction.MoveTowards(ammo)
-                    : TurnAction.PickUpAmmo();
+                var ammo = battlefield.Ammos.OrderBy(a => a.DistanceTo(ownBot)).FirstOrDefault();
+                if (ammo != null)
+                {
+                    return ownBot.DistanceTo(ammo) > ownBot.Radius
+                        ? TurnAction.MoveTowards(ammo)
+                        : TurnAction.PickUpAmmo();
+                }
             }
 
-            //if (ownBot.HitPoints.Percent < 90)
-            //{
-            //    if (ownBot.HasResource) return TurnAction.DropDownResource();
-            //    return TurnAction.MoveTowards(SafePoint);
-            //}
+            if (ownBot.HitPoints.Percent < 50)
+            {
+                if (ownBot.HasResource) return TurnAction.DropDownResource();
+                return TurnAction.MoveTowards(SafePoint);
+            }
 
             if (ownBot.HasResource)
             {
@@ -50,20 +53,33 @@ namespace CodingArena.Player.Proto
                     : TurnAction.DropDownResource();
             }
 
-            //if (myAttacker != null)
-            //{
-            //    if (ownBot.HasResource)
-            //    {
-            //        return TurnAction.DropDownResource();
-            //    }
+            var target = battlefield.Bots.Except(new[] { ownBot })
+                .Where(b => b.HasResource)
+                .OrderBy(b => b.DistanceTo(ownBot))
+                .FirstOrDefault();
+            if (target != null)
+            {
+                return ownBot.DistanceTo(target) < ownBot.EquippedWeapon.MaxRange
+                    ? TurnAction.ShootAt(target)
+                    : TurnAction.MoveTowards(target);
+            }
 
-            //    if (battlefield.Bots.Contains(myAttacker))
-            //    {
-            //        return TurnAction.ShootAt(myAttacker);
-            //    }
+            if (myAttacker != null)
+            {
+                if (ownBot.HasResource)
+                {
+                    return TurnAction.DropDownResource();
+                }
 
-            //    myAttacker = null;
-            //}
+                if (battlefield.Bots.Contains(myAttacker))
+                {
+                    return ownBot.DistanceTo(myAttacker) < ownBot.EquippedWeapon.MaxRange
+                        ? TurnAction.ShootAt(myAttacker)
+                        : TurnAction.MoveTowards(myAttacker);
+                }
+
+                myAttacker = null;
+            }
 
             if (battlefield.Resources.Any())
             {
