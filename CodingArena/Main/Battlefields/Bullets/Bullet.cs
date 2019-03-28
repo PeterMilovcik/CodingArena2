@@ -11,6 +11,8 @@ namespace CodingArena.Main.Battlefields.Bullets
 {
     public class Bullet : Movable, IBullet
     {
+        private static readonly Random myRandom = new Random();
+
         public Bullet(
             [NotNull] Battlefield battlefield,
             [NotNull] IBot shooter,
@@ -34,9 +36,8 @@ namespace CodingArena.Main.Battlefields.Bullets
             var angle = Shooter.Angle;
             var accuracy = Shooter.EquippedWeapon.Accuracy;
             var angleDif = (360 - 360 * accuracy / 100) / 2;
-            var random = new Random();
-            angleDif = random.NextDouble() * angleDif;
-            var newAngle = random.Next(2) == 1 ? angle - angleDif : angle + angleDif;
+            angleDif = myRandom.NextDouble() * angleDif;
+            var newAngle = myRandom.Next(2) == 1 ? angle - angleDif : angle + angleDif;
             return new Vector(Math.Cos(newAngle * Math.PI / 180), Math.Sin(newAngle * Math.PI / 180));
         }
 

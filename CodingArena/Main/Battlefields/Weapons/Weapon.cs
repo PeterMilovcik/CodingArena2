@@ -70,7 +70,7 @@ namespace CodingArena.Main.Battlefields.Weapons
         protected bool CanFire() => !IsReloading && Ammunition.Remaining > 0;
         protected void ResetRemainingReloadTime() => myRemainingReloadTime = myReloadTime;
 
-        protected IEnumerable<Bullet> CreateBullets(Bot shooter) =>
+        protected virtual IEnumerable<Bullet> CreateBullets(Bot shooter) =>
             new List<Bullet>
             {
                 new Bullet(myBattlefield, shooter, Ammunition.Speed, Ammunition.Damage, MaxRange)
