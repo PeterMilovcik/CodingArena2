@@ -8,6 +8,7 @@ namespace CodingArena.Player
         double MaxRange { get; }
         TimeSpan ReloadTime { get; }
         TimeSpan AimTime { get; }
+        double Accuracy { get; }
         bool IsReloading { get; }
         TimeSpan RemainingReloadTime { get; }
         IAmmunition Ammunition { get; }

@@ -36,7 +36,7 @@ namespace CodingArena.Main.Battlefields.Bots
             MaxSpeed = double.Parse(ConfigurationManager.AppSettings["MaxBotSpeed"]);
             MinSpeed = double.Parse(ConfigurationManager.AppSettings["MinBotSpeed"]);
             Speed = MaxSpeed;
-            myWeapon = new Pistol(myBattlefield);
+            myWeapon = new Pistol(myBattlefield, new Point());
             myAvailableWeapons = new List<Weapon>(new[] { myWeapon });
             Angle = 90;
             myRemainingAimTime = TimeSpan.Zero;

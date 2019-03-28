@@ -1,44 +1,13 @@
 ﻿using CodingArena.Annotations;
-using CodingArena.Main.Battlefields.Bots;
-using CodingArena.Main.Battlefields.Bullets;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Windows;
 
 namespace CodingArena.Main.Battlefields.Weapons
 {
-    public class Rifle : Weapon, IWeapon
+    public class Rifle : Weapon
     {
-        public Rifle([NotNull] Battlefield battlefield) : base(battlefield)
+        public Rifle([NotNull] Battlefield battlefield, Point position)
+            : base(battlefield, position, "Rifle")
         {
-            Init();
-        }
-
-        public Rifle([NotNull] Battlefield battlefield, Point position) : base(battlefield, position)
-        {
-            Init();
-        }
-
-        private void Init()
-        {
-            Name = "Rifle";
-            var reloadTimeInMilliseconds =
-                double.Parse(ConfigurationManager.AppSettings["RifleReloadTimeInMilliseconds"]);
-            myReloadTime = TimeSpan.FromMilliseconds(reloadTimeInMilliseconds);
-            var aimTimeInMilliseconds = double.Parse(ConfigurationManager.AppSettings["RifleAimTimeInMilliseconds"]);
-            myAimTime = TimeSpan.FromMilliseconds(aimTimeInMilliseconds);
-            MaxRange = double.Parse(ConfigurationManager.AppSettings["RifleMaxRange"]);
-            myAmmunition = new RifleAmmunition();
-        }
-
-        public override IEnumerable<Bullet> Fire(Bot shooter)
-        {
-            if (IsReloading) return null;
-            if (Ammunition.Remaining <= 0) return null;
-            myRemainingReloadTime = myReloadTime;
-            myAmmunition.Remove(1);
-            return new List<Bullet> { new Bullet(myBattlefield, shooter, Ammunition.Speed, Ammunition.Damage, MaxRange) };
         }
     }
 }
