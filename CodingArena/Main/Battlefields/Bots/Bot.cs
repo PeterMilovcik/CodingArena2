@@ -387,8 +387,11 @@ namespace CodingArena.Main.Battlefields.Bots
             myRemainingAimTime -= DeltaTime;
             if (myRemainingAimTime <= TimeSpan.Zero)
             {
-                var bullet = myWeapon.Fire(this);
-                Battlefield.Add(bullet);
+                var bullets = myWeapon.Fire(this);
+                foreach (var bullet in bullets)
+                {
+                    Battlefield.Add(bullet);
+                }
             }
         }
 

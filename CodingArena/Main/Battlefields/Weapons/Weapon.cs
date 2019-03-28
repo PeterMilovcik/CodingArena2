@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using CodingArena.Annotations;
@@ -53,6 +54,6 @@ namespace CodingArena.Main.Battlefields.Weapons
             }
         }
 
-        public abstract Bullet Fire(Bot shooter);
+        public abstract IEnumerable<Bullet> Fire(Bot shooter);
     }
 }
