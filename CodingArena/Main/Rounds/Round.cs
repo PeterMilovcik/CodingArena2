@@ -95,21 +95,28 @@ namespace CodingArena.Main.Rounds
             var y = myRandom.Next((int)Battlefield.Height);
             var position = new Point(x, y);
 
-            var weaponChance = myRandom.Next(100);
             Weapon weapon = new Pistol(Battlefield, position);
-            if (weaponChance < double.Parse(ConfigurationManager.AppSettings["RifleChance"]))
-            {
-                weapon = new Rifle(Battlefield, position);
-            }
 
-            if (weaponChance < double.Parse(ConfigurationManager.AppSettings["MachineGunChance"]))
-            {
-                weapon = new MachineGun(Battlefield, position);
-            }
+            int sniperRifleChance = int.Parse(ConfigurationManager.AppSettings["SniperRifleChance"]);
+            int machineGunChance = int.Parse(ConfigurationManager.AppSettings["MachineGunChance"]);
+            int rifleChance = int.Parse(ConfigurationManager.AppSettings["RifleChance"]);
+            int pistolChance = int.Parse(ConfigurationManager.AppSettings["PistolChance"]);
 
-            if (weaponChance < double.Parse(ConfigurationManager.AppSettings["SniperRifleChance"]))
+            var weaponChance = myRandom.Next(sniperRifleChance + machineGunChance + rifleChance + pistolChance);
+            switch (weaponChance)
             {
-                weapon = new SniperRifle(Battlefield, position);
+                case int n when n < sniperRifleChance:
+                    weapon = new SniperRifle(Battlefield, position);
+                    break;
+                case int n when n >= sniperRifleChance && n < sniperRifleChance + machineGunChance:
+                    weapon = new MachineGun(Battlefield, position);
+                    break;
+                case int n when n >= sniperRifleChance + machineGunChance && n < sniperRifleChance + machineGunChance + rifleChance:
+                    weapon = new Rifle(Battlefield, position);
+                    break;
+                case int n when n >= sniperRifleChance + machineGunChance + rifleChance:
+                    weapon = new Pistol(Battlefield, position);
+                    break;
             }
 
             Battlefield.Add(weapon);
