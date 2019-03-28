@@ -7,27 +7,29 @@ using System.Windows;
 
 namespace CodingArena.Main.Battlefields.Weapons
 {
-    public class Pistol : Weapon, IWeapon
+    public class MachineGun : Weapon, IWeapon
     {
-        public Pistol([NotNull] Battlefield battlefield) : base(battlefield)
+        public MachineGun([NotNull] Battlefield battlefield) : base(battlefield)
         {
             Init();
         }
 
-        public Pistol([NotNull] Battlefield battlefield, Point position) : base(battlefield, position)
+        public MachineGun([NotNull] Battlefield battlefield, Point position) : base(battlefield, position)
         {
             Init();
         }
 
         private void Init()
         {
-            Name = "Pistol";
-            var reloadTimeInMilliseconds = double.Parse(ConfigurationManager.AppSettings["PistolReloadTimeInMilliseconds"]);
+            Name = "Machine Gun";
+            var reloadTimeInMilliseconds =
+                double.Parse(ConfigurationManager.AppSettings["MachineGunReloadTimeInMilliseconds"]);
             myReloadTime = TimeSpan.FromMilliseconds(reloadTimeInMilliseconds);
-            var aimTimeInMilliseconds = double.Parse(ConfigurationManager.AppSettings["PistolAimTimeInMilliseconds"]);
+            var aimTimeInMilliseconds =
+                double.Parse(ConfigurationManager.AppSettings["MachineGunAimTimeInMilliseconds"]);
             myAimTime = TimeSpan.FromMilliseconds(aimTimeInMilliseconds);
-            MaxRange = double.Parse(ConfigurationManager.AppSettings["PistolMaxRange"]);
-            myAmmunition = new PistolAmmunition();
+            MaxRange = double.Parse(ConfigurationManager.AppSettings["MachineGunMaxRange"]);
+            myAmmunition = new MachineGunAmmunition();
         }
 
         public override Bullet Fire(Bot shooter)

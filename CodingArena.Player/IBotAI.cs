@@ -8,6 +8,6 @@
         void OnMoved(double distance);
         void OnCollisionWith(IBot bot);
         void OnResourcePicked();
-        void OnAmmoPicked(IAmmo ammo);
+        void OnWeaponPicked(IWeapon weapon);
     }
 }

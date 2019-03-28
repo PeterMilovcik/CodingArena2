@@ -59,13 +59,18 @@
     <Compile Include="Common\Collider.cs" />
     <Compile Include="Common\GameObject.cs" />
     <Compile Include="Common\Movable.cs" />
-    <Compile Include="Main\Battlefields\AmmoEventArgs.cs" />
-    <Compile Include="Main\Battlefields\Ammos\Ammo.cs" />
-    <Compile Include="Main\Battlefields\Ammos\AmmoView.xaml.cs">
-      <DependentUpon>AmmoView.xaml</DependentUpon>
+    <Compile Include="Main\Battlefields\WeaponEventArgs.cs" />
+    <Compile Include="Main\Battlefields\Weapons\MachineGun.cs" />
+    <Compile Include="Main\Battlefields\Weapons\MachineGunAmmunition.cs" />
+    <Compile Include="Main\Battlefields\Weapons\PistolAmmunition.cs" />
+    <Compile Include="Main\Battlefields\Weapons\Rifle.cs" />
+    <Compile Include="Main\Battlefields\Weapons\RifleAmmunition.cs" />
+    <Compile Include="Main\Battlefields\Weapons\SniperRifle.cs" />
+    <Compile Include="Main\Battlefields\Weapons\SniperRifleAmmunition.cs" />
+    <Compile Include="Main\Battlefields\Weapons\WeaponView.xaml.cs">
+      <DependentUpon>WeaponView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Main\Battlefields\Ammos\AmmoViewModel.cs" />
-    <Compile Include="Main\Battlefields\Ammos\PistolAmmo.cs" />
+    <Compile Include="Main\Battlefields\Weapons\WeaponViewModel.cs" />
     <Compile Include="Main\Battlefields\HomeEventArgs.cs" />
     <Compile Include="Main\Battlefields\Homes\Home.cs" />
     <Compile Include="Main\Battlefields\Homes\HomeViewModel.cs" />
@@ -84,9 +89,10 @@
     <Compile Include="Main\Battlefields\Bullets\Bullet.cs" />
     <Compile Include="Main\Battlefields\ResourceEventArgs.cs" />
     <Compile Include="Main\Battlefields\Resources\Resource.cs" />
+    <Compile Include="Main\Battlefields\Weapons\Weapon.cs" />
     <Compile Include="Main\MainViewModel.cs" />
     <Compile Include="Main\Battlefields\Resources\ResourceViewModel.cs" />
-    <Page Include="Main\Battlefields\Ammos\AmmoView.xaml">
+    <Page Include="Main\Battlefields\Weapons\WeaponView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

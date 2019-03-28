@@ -1,11 +1,13 @@
-﻿using CodingArena.Main.Battlefields.Ammos;
-using CodingArena.Main.Battlefields.Bots;
+﻿using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Main.Battlefields.Homes;
+using CodingArena.Main.Battlefields.Weapons;
 using CodingArena.Player;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using IWeapon = CodingArena.Player.IWeapon;
 
 namespace CodingArena.Main.Battlefields
 {
@@ -15,8 +17,7 @@ namespace CodingArena.Main.Battlefields
         private readonly List<IBot> myBots;
         private readonly List<IBullet> myBullets;
         private readonly List<IResource> myResources;
-        private readonly List<IWeapon> myWeapons;
-        private readonly List<IAmmo> myAmmos;
+        private readonly List<Weapon> myWeapons;
 
         public Battlefield()
         {
@@ -26,8 +27,7 @@ namespace CodingArena.Main.Battlefields
             myBots = new List<IBot>();
             myBullets = new List<IBullet>();
             myResources = new List<IResource>();
-            myWeapons = new List<IWeapon>();
-            myAmmos = new List<IAmmo>();
+            myWeapons = new List<Weapon>();
         }
 
         public double Width { get; }
@@ -36,8 +36,7 @@ namespace CodingArena.Main.Battlefields
         public IReadOnlyList<IBot> Bots => myBots;
         public IReadOnlyList<IBullet> Bullets => myBullets;
         public IReadOnlyList<IResource> Resources => myResources;
-        public IReadOnlyList<IWeapon> Weapons => myWeapons;
-        public IReadOnlyList<IAmmo> Ammos => myAmmos;
+        public IReadOnlyList<IWeapon> Weapons => myWeapons.OfType<IWeapon>().ToList();
 
         public void Add(Bot bot)
         {
@@ -87,16 +86,16 @@ namespace CodingArena.Main.Battlefields
             OnHomeRemoved(home);
         }
 
-        public void Add(Ammo ammo)
+        public void Add(Weapon weapon)
         {
-            myAmmos.Add(ammo);
-            OnAmmoAdded(ammo);
+            myWeapons.Add(weapon);
+            OnWeaponAdded(weapon);
         }
 
-        public void Remove(Ammo ammo)
+        public void Remove(Weapon weapon)
         {
-            myAmmos.Remove(ammo);
-            OnAmmoRemoved(ammo);
+            myWeapons.Remove(weapon);
+            OnWeaponRemoved(weapon);
         }
 
         public event EventHandler<BotEventArgs> BotAdded;
@@ -115,9 +114,9 @@ namespace CodingArena.Main.Battlefields
 
         public event EventHandler<HomeEventArgs> HomeRemoved;
 
-        public event EventHandler<AmmoEventArgs> AmmoAdded;
+        public event EventHandler<WeaponEventArgs> WeaponAdded;
 
-        public event EventHandler<AmmoEventArgs> AmmoRemoved;
+        public event EventHandler<WeaponEventArgs> WeaponRemoved;
 
         private void OnBotAdded(Bot bot) =>
             BotAdded?.Invoke(this, new BotEventArgs(bot));
@@ -143,10 +142,10 @@ namespace CodingArena.Main.Battlefields
         private void OnHomeRemoved(Home home) =>
             HomeRemoved?.Invoke(this, new HomeEventArgs(home));
 
-        private void OnAmmoAdded(Ammo ammo) =>
-            AmmoAdded?.Invoke(this, new AmmoEventArgs(ammo));
+        private void OnWeaponAdded(Weapon weapon) =>
+            WeaponAdded?.Invoke(this, new WeaponEventArgs(weapon));
 
-        private void OnAmmoRemoved(Ammo ammo) =>
-            AmmoRemoved?.Invoke(this, new AmmoEventArgs(ammo));
+        private void OnWeaponRemoved(Weapon weapon) =>
+            WeaponRemoved?.Invoke(this, new WeaponEventArgs(weapon));
     }
 }

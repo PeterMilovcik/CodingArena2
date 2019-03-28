@@ -1,12 +1,12 @@
 ﻿using CodingArena.Annotations;
 using CodingArena.Common;
 using CodingArena.Main.Battlefields;
-using CodingArena.Main.Battlefields.Ammos;
 using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bots.AIs;
 using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Main.Battlefields.Resources;
+using CodingArena.Main.Battlefields.Weapons;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -89,13 +89,30 @@ namespace CodingArena.Main.Rounds
             Battlefield.Add(resource);
         }
 
-        private void AddAmmo()
+        private void AddWeapon()
         {
             var x = myRandom.Next((int)Battlefield.Width);
             var y = myRandom.Next((int)Battlefield.Height);
             var position = new Point(x, y);
-            var ammo = new Ammo(position, "Pistol", 10);
-            Battlefield.Add(ammo);
+
+            var weaponChance = myRandom.Next(100);
+            Weapon weapon = new Pistol(Battlefield, position);
+            if (weaponChance < double.Parse(ConfigurationManager.AppSettings["RifleChance"]))
+            {
+                weapon = new Rifle(Battlefield, position);
+            }
+
+            if (weaponChance < double.Parse(ConfigurationManager.AppSettings["MachineGunChance"]))
+            {
+                weapon = new MachineGun(Battlefield, position);
+            }
+
+            if (weaponChance < double.Parse(ConfigurationManager.AppSettings["SniperRifleChance"]))
+            {
+                weapon = new SniperRifle(Battlefield, position);
+            }
+
+            Battlefield.Add(weapon);
         }
 
         public Battlefield Battlefield { get; }
@@ -121,9 +138,9 @@ namespace CodingArena.Main.Rounds
             {
                 AddResource();
             }
-            if (!Battlefield.Ammos.Any())
+            if (!Battlefield.Weapons.Any())
             {
-                AddAmmo();
+                AddWeapon();
             }
             var bulletTasks = Battlefield.Bullets.ToList().OfType<Bullet>().Select(b => b.UpdateAsync());
             await Task.WhenAll(bulletTasks);

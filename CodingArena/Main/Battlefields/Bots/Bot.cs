@@ -1,6 +1,5 @@
 ﻿using CodingArena.Annotations;
 using CodingArena.Common;
-using CodingArena.Main.Battlefields.Ammos;
 using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Main.Battlefields.Resources;
 using CodingArena.Main.Battlefields.Weapons;
@@ -12,7 +11,7 @@ using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using IWeapon = CodingArena.Main.Battlefields.Weapons.IWeapon;
+using IWeapon = CodingArena.Player.IWeapon;
 
 namespace CodingArena.Main.Battlefields.Bots
 {
@@ -20,10 +19,11 @@ namespace CodingArena.Main.Battlefields.Bots
     {
         private const double MinDistance = 0.1;
         private readonly Battlefield myBattlefield;
-        private readonly IWeapon myWeapon;
+        private Weapon myWeapon;
         private TimeSpan myRemainingAimTime;
         private readonly double myRegenerationAfterNoDamageInSeconds;
         private TimeSpan myRegenerationActiveIn;
+        private readonly List<Weapon> myAvailableWeapons;
 
         public Bot([NotNull] Battlefield battlefield, IBotAI botAI) : base(battlefield)
         {
@@ -37,7 +37,7 @@ namespace CodingArena.Main.Battlefields.Bots
             MinSpeed = double.Parse(ConfigurationManager.AppSettings["MinBotSpeed"]);
             Speed = MaxSpeed;
             myWeapon = new Pistol(myBattlefield);
-            AvailableWeapons = new List<Player.IWeapon>(new[] { EquippedWeapon });
+            myAvailableWeapons = new List<Weapon>(new[] { myWeapon });
             Angle = 90;
             myRemainingAimTime = TimeSpan.Zero;
             myRegenerationAfterNoDamageInSeconds =
@@ -52,8 +52,9 @@ namespace CodingArena.Main.Battlefields.Bots
         public IResource Resource { get; private set; }
         public bool HasResource => Resource != null;
         public bool IsAiming => myRemainingAimTime > TimeSpan.Zero;
-        public Player.IWeapon EquippedWeapon => myWeapon;
-        public IReadOnlyList<Player.IWeapon> AvailableWeapons { get; }
+        public IWeapon EquippedWeapon => (IWeapon)myWeapon;
+        public IReadOnlyList<IWeapon> AvailableWeapons =>
+            myAvailableWeapons.OfType<IWeapon>().ToList();
         public IHome Home => myBattlefield.Homes.SingleOrDefault(h => h.Name == Name);
         public TimeSpan RegenerationActiveIn => new TimeSpan(myRegenerationActiveIn.Ticks);
         public double RegenerationRate { get; }
@@ -99,7 +100,7 @@ namespace CodingArena.Main.Battlefields.Bots
                     case DropDownResourceTurnAction dropDownResource:
                         Execute(dropDownResource);
                         break;
-                    case PickUpAmmoTurnAction pickUpAmmo:
+                    case PickUpWeaponTurnAction pickUpAmmo:
                         Execute(pickUpAmmo);
                         break;
                 }
@@ -130,14 +131,14 @@ namespace CodingArena.Main.Battlefields.Bots
             }
         }
 
-        private void Execute(PickUpAmmoTurnAction pickUpAmmo)
+        private void Execute(PickUpWeaponTurnAction pickUpWeapon)
         {
-            var ammo = Battlefield.Ammos.OfType<Ammo>().OrderBy(DistanceTo).FirstOrDefault();
-            if (ammo != null)
+            var weapon = Battlefield.Weapons.OfType<Weapon>().OrderBy(DistanceTo).FirstOrDefault();
+            if (weapon != null)
             {
-                if (DistanceTo(ammo) < Radius)
+                if (DistanceTo(weapon) < Radius)
                 {
-                    PickUpAmmo(ammo);
+                    PickUpWeapon(weapon);
                 }
             }
         }
@@ -312,12 +313,20 @@ namespace CodingArena.Main.Battlefields.Bots
             OnResourcePicked(Resource);
         }
 
-        private void PickUpAmmo(Ammo ammo)
+        private void PickUpWeapon(Weapon weaponToPickUp)
         {
-            var weapon = AvailableWeapons.SingleOrDefault(w => w.Name == ammo.Weapon);
-            (weapon?.Ammunition as Ammunition)?.Add(ammo.Count);
-            Battlefield.Remove(ammo);
-            OnAmmoPicked(ammo);
+            var weapon = AvailableWeapons.SingleOrDefault(w => w.Name == weaponToPickUp.Name);
+            if (weapon != null)
+            {
+                (weapon.Ammunition as Ammunition)?.Add(weaponToPickUp.Ammunition.Remaining);
+            }
+            else
+            {
+                myAvailableWeapons.Add(weaponToPickUp);
+                myWeapon = weaponToPickUp;
+            }
+            Battlefield.Remove(weaponToPickUp);
+            OnWeaponPicked(weaponToPickUp);
         }
 
         private void OnResourcePicked()
@@ -332,12 +341,12 @@ namespace CodingArena.Main.Battlefields.Bots
             }
         }
 
-        private void OnAmmoPicked(IAmmo ammo)
+        private void OnWeaponPicked(Weapon weapon)
         {
-            OnAmmoPicked(new AmmoEventArgs(ammo));
+            OnWeaponPicked(new WeaponEventArgs(weapon));
             try
             {
-                BotAI.OnAmmoPicked(ammo);
+                BotAI.OnWeaponPicked((IWeapon)weapon);
             }
             catch
             {
@@ -364,9 +373,9 @@ namespace CodingArena.Main.Battlefields.Bots
         private void OnResourceDropped(IResource resource) =>
             ResourceDropped?.Invoke(this, new ResourceEventArgs(resource));
 
-        public event EventHandler<AmmoEventArgs> AmmoPicked;
+        public event EventHandler<WeaponEventArgs> WeaponPicked;
 
-        private void OnAmmoPicked(AmmoEventArgs e) => AmmoPicked?.Invoke(this, e);
+        private void OnWeaponPicked(WeaponEventArgs e) => WeaponPicked?.Invoke(this, e);
 
         public event EventHandler Died;
 

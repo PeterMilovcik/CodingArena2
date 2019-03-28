@@ -31,12 +31,12 @@ namespace CodingArena.Player.Scrappie
 
             if (ownBot.EquippedWeapon.Ammunition.Remaining == 0)
             {
-                var ammo = battlefield.Ammos.OrderBy(a => a.DistanceTo(ownBot)).FirstOrDefault();
-                if (ammo != null)
+                var weapon = battlefield.Weapons.OrderBy(a => a.DistanceTo(ownBot)).FirstOrDefault();
+                if (weapon != null)
                 {
-                    return ownBot.DistanceTo(ammo) > ownBot.Radius
-                        ? TurnAction.MoveTowards(ammo)
-                        : TurnAction.PickUpAmmo();
+                    return ownBot.DistanceTo(weapon) > ownBot.Radius
+                        ? TurnAction.MoveTowards(weapon)
+                        : TurnAction.PickUpWeapon();
                 }
             }
 
@@ -109,7 +109,7 @@ namespace CodingArena.Player.Scrappie
         {
         }
 
-        public void OnAmmoPicked(IAmmo ammo)
+        public void OnWeaponPicked(IWeapon weapon)
         {
         }
     }
