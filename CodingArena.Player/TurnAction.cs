@@ -44,6 +44,9 @@ namespace CodingArena.Player
         public static ITurnAction PickUpWeapon() =>
             new PickUpWeaponTurnAction();
 
+        public static ITurnAction EquipWeapon(IWeapon weapon) =>
+            new EquipWeaponTurnAction(weapon);
+
         public static ITurnAction Idle =>
             new IdleTurnAction();
     }

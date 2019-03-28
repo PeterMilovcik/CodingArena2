@@ -49,9 +49,8 @@ namespace CodingArena.Common
             get => myAngle;
             protected set
             {
-                if (Math.Abs(myAngle - value) < 0.0001) return;
                 myAngle = value;
-                myDirection = new Vector(Math.Cos(Angle), Math.Sin(Angle));
+                myDirection = new Vector(Math.Cos(Angle * Math.PI / 180), Math.Sin(Angle * Math.PI / 180));
                 OnChanged();
             }
         }

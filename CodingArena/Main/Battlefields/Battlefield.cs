@@ -5,7 +5,6 @@ using CodingArena.Main.Battlefields.Weapons;
 using CodingArena.Player;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using IWeapon = CodingArena.Player.IWeapon;
 
@@ -19,10 +18,10 @@ namespace CodingArena.Main.Battlefields
         private readonly List<IResource> myResources;
         private readonly List<Weapon> myWeapons;
 
-        public Battlefield()
+        public Battlefield(double width, double height)
         {
-            Width = double.Parse(ConfigurationManager.AppSettings["BattlefieldWidth"]);
-            Height = double.Parse(ConfigurationManager.AppSettings["BattlefieldHeight"]);
+            Width = width;
+            Height = height;
             myHomes = new List<IHome>();
             myBots = new List<IBot>();
             myBullets = new List<IBullet>();

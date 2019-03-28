@@ -52,7 +52,7 @@ namespace CodingArena.Main.Battlefields.Bots
         public IResource Resource { get; private set; }
         public bool HasResource => Resource != null;
         public bool IsAiming => myRemainingAimTime > TimeSpan.Zero;
-        public IWeapon EquippedWeapon => (IWeapon)myWeapon;
+        public IWeapon EquippedWeapon => myWeapon;
         public IReadOnlyList<IWeapon> AvailableWeapons =>
             myAvailableWeapons.OfType<IWeapon>().ToList();
         public IHome Home => myBattlefield.Homes.SingleOrDefault(h => h.Name == Name);
@@ -102,6 +102,9 @@ namespace CodingArena.Main.Battlefields.Bots
                         break;
                     case PickUpWeaponTurnAction pickUpAmmo:
                         Execute(pickUpAmmo);
+                        break;
+                    case EquipWeaponTurnAction equipWeapon:
+                        Execute(equipWeapon);
                         break;
                 }
             }
@@ -185,6 +188,13 @@ namespace CodingArena.Main.Battlefields.Bots
             if (IsAiming) return;
             if (EquippedWeapon.IsReloading) return;
             ShootAt(shootAt.Position);
+        }
+
+        private void Execute(EquipWeaponTurnAction equipWeapon)
+        {
+            if (!AvailableWeapons.Contains(equipWeapon.Weapon)) return;
+            if (EquippedWeapon == equipWeapon.Weapon) return;
+            myWeapon = (Weapon)equipWeapon.Weapon;
         }
 
         private bool Move()
@@ -323,8 +333,8 @@ namespace CodingArena.Main.Battlefields.Bots
             else
             {
                 myAvailableWeapons.Add(weaponToPickUp);
-                myWeapon = weaponToPickUp;
             }
+            myWeapon = weaponToPickUp;
             Battlefield.Remove(weaponToPickUp);
             OnWeaponPicked(weaponToPickUp);
         }

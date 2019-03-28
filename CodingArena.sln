@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingArena.Player.Rust", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingArena.Player.Proto", "CodingArena.Player.Proto\CodingArena.Player.Proto.csproj", "{AD934FA1-2D8C-43A3-8528-314A5A893A76}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingArena.Tests", "CodingArena.Tests\CodingArena.Tests.csproj", "{42CCA574-B433-4A3F-BC81-2C434634AA6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{AD934FA1-2D8C-43A3-8528-314A5A893A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD934FA1-2D8C-43A3-8528-314A5A893A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD934FA1-2D8C-43A3-8528-314A5A893A76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42CCA574-B433-4A3F-BC81-2C434634AA6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42CCA574-B433-4A3F-BC81-2C434634AA6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42CCA574-B433-4A3F-BC81-2C434634AA6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42CCA574-B433-4A3F-BC81-2C434634AA6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

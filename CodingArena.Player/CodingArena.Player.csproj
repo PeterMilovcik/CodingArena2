@@ -58,6 +58,7 @@
     <Compile Include="ITurnAction.cs" />
     <Compile Include="IWeapon.cs" />
     <Compile Include="TurnActions\DropDownResourceTurnAction.cs" />
+    <Compile Include="TurnActions\EquipWeaponTurnAction.cs" />
     <Compile Include="TurnActions\IdleTurnAction.cs" />
     <Compile Include="TurnActions\MoveAwayFromTurnAction.cs" />
     <Compile Include="TurnActions\MoveTowardsTurnAction.cs" />

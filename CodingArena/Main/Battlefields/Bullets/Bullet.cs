@@ -20,13 +20,24 @@ namespace CodingArena.Main.Battlefields.Bullets
         {
             Radius = 3;
             Shooter = shooter ?? throw new ArgumentNullException(nameof(shooter));
-            Direction = new Vector(Shooter.Direction.X, Shooter.Direction.Y);
+            Direction = CalculateDirection();
             Speed = speed;
             Damage = damage;
             var weaponX = Shooter.Position.X + 30 * Math.Cos(Shooter.Angle * Math.PI / 180);
             var weaponY = Shooter.Position.Y + 30 * Math.Sin(Shooter.Angle * Math.PI / 180);
             Position = new Point(weaponX, weaponY);
             MaxDistance = maxBulletDistance;
+        }
+
+        private Vector CalculateDirection()
+        {
+            var angle = Shooter.Angle;
+            var accuracy = Shooter.EquippedWeapon.Accuracy;
+            var angleDif = (360 - 360 * accuracy / 100) / 2;
+            var random = new Random();
+            angleDif = random.NextDouble() * angleDif;
+            var newAngle = random.Next(2) == 1 ? angle - angleDif : angle + angleDif;
+            return new Vector(Math.Cos(newAngle * Math.PI / 180), Math.Sin(newAngle * Math.PI / 180));
         }
 
         public IBot Shooter { get; }

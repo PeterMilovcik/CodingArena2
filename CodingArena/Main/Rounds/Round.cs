@@ -30,7 +30,9 @@ namespace CodingArena.Main.Rounds
             Time = TimeSpan.Zero;
             var botAIFactory = new BotAIFactory();
             var botAIs = botAIFactory.CreateBotAIs();
-            Battlefield = new Battlefield();
+            var width = double.Parse(ConfigurationManager.AppSettings["BattlefieldWidth"]);
+            var height = double.Parse(ConfigurationManager.AppSettings["BattlefieldHeight"]);
+            Battlefield = new Battlefield(width, height);
             Bots = new List<Bot>();
             myRandom = new Random();
             foreach (var botAI in botAIs)
