@@ -99,10 +99,13 @@ namespace CodingArena.Main.Rounds
 
             int sniperRifleChance = int.Parse(ConfigurationManager.AppSettings["SniperRifleChance"]);
             int machineGunChance = int.Parse(ConfigurationManager.AppSettings["MachineGunChance"]);
+            int shotgunChance = int.Parse(ConfigurationManager.AppSettings["MachineGunChance"]);
             int rifleChance = int.Parse(ConfigurationManager.AppSettings["RifleChance"]);
             int pistolChance = int.Parse(ConfigurationManager.AppSettings["PistolChance"]);
 
-            var weaponChance = myRandom.Next(sniperRifleChance + machineGunChance + rifleChance + pistolChance);
+            var weaponChance = myRandom.Next(
+                sniperRifleChance + machineGunChance + shotgunChance + rifleChance + pistolChance);
+
             switch (weaponChance)
             {
                 case int n when n < sniperRifleChance:
@@ -114,7 +117,10 @@ namespace CodingArena.Main.Rounds
                 case int n when n >= sniperRifleChance + machineGunChance && n < sniperRifleChance + machineGunChance + rifleChance:
                     weapon = new Rifle(Battlefield, position);
                     break;
-                case int n when n >= sniperRifleChance + machineGunChance + rifleChance:
+                case int n when n >= sniperRifleChance + machineGunChance + rifleChance && n < sniperRifleChance + machineGunChance + rifleChance + shotgunChance:
+                    weapon = new Shotgun(Battlefield, position);
+                    break;
+                case int n when n >= sniperRifleChance + machineGunChance + rifleChance + shotgunChance:
                     weapon = new Pistol(Battlefield, position);
                     break;
             }
