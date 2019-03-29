@@ -1,6 +1,7 @@
 ﻿using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Main.Battlefields.Homes;
+using CodingArena.Main.Battlefields.Hospitals;
 using CodingArena.Main.Battlefields.Weapons;
 using CodingArena.Player;
 using System;
@@ -17,6 +18,7 @@ namespace CodingArena.Main.Battlefields
         private readonly List<IBullet> myBullets;
         private readonly List<IResource> myResources;
         private readonly List<Weapon> myWeapons;
+        private readonly List<Hospital> myHospitals;
 
         public Battlefield(double width, double height)
         {
@@ -27,6 +29,7 @@ namespace CodingArena.Main.Battlefields
             myBullets = new List<IBullet>();
             myResources = new List<IResource>();
             myWeapons = new List<Weapon>();
+            myHospitals = new List<Hospital>();
         }
 
         public double Width { get; }
@@ -36,6 +39,7 @@ namespace CodingArena.Main.Battlefields
         public IReadOnlyList<IBullet> Bullets => myBullets;
         public IReadOnlyList<IResource> Resources => myResources;
         public IReadOnlyList<IWeapon> Weapons => myWeapons.OfType<IWeapon>().ToList();
+        public IReadOnlyList<IHospital> Hospitals => myHospitals.OfType<IHospital>().ToList();
 
         public void Add(Bot bot)
         {
@@ -97,6 +101,18 @@ namespace CodingArena.Main.Battlefields
             OnWeaponRemoved(weapon);
         }
 
+        public void Add(Hospital hospital)
+        {
+            myHospitals.Add(hospital);
+            OnHospitalAdded(hospital);
+        }
+
+        public void Remove(Hospital hospital)
+        {
+            myHospitals.Remove(hospital);
+            OnHospitalRemoved(hospital);
+        }
+
         public event EventHandler<BotEventArgs> BotAdded;
 
         public event EventHandler<BotEventArgs> BotRemoved;
@@ -116,6 +132,10 @@ namespace CodingArena.Main.Battlefields
         public event EventHandler<WeaponEventArgs> WeaponAdded;
 
         public event EventHandler<WeaponEventArgs> WeaponRemoved;
+
+        public event EventHandler<HospitalEventArgs> HospitalAdded;
+
+        public event EventHandler<HospitalEventArgs> HospitalRemoved;
 
         private void OnBotAdded(Bot bot) =>
             BotAdded?.Invoke(this, new BotEventArgs(bot));
@@ -146,5 +166,11 @@ namespace CodingArena.Main.Battlefields
 
         private void OnWeaponRemoved(Weapon weapon) =>
             WeaponRemoved?.Invoke(this, new WeaponEventArgs(weapon));
+
+        private void OnHospitalAdded(Hospital hospital) =>
+            HospitalAdded?.Invoke(this, new HospitalEventArgs(hospital));
+
+        private void OnHospitalRemoved(Hospital hospital) =>
+            HospitalRemoved?.Invoke(this, new HospitalEventArgs(hospital));
     }
 }

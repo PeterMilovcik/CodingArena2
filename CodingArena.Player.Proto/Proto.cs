@@ -43,7 +43,7 @@ namespace CodingArena.Player.Proto
             if (ownBot.HitPoints.Percent < 50)
             {
                 if (ownBot.HasResource) return TurnAction.DropDownResource();
-                return TurnAction.MoveTowards(SafePoint);
+                return TurnAction.MoveTowards(battlefield.Hospitals.First());
             }
 
             if (ownBot.HasResource)

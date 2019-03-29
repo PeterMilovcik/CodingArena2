@@ -1,6 +1,7 @@
 ﻿using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Main.Battlefields.Homes;
+using CodingArena.Main.Battlefields.Hospitals;
 using CodingArena.Main.Battlefields.Resources;
 using CodingArena.Main.Battlefields.Stats;
 using CodingArena.Main.Battlefields.Weapons;
@@ -25,6 +26,7 @@ namespace CodingArena.Main.Battlefields
             Resources = new ObservableCollection<ResourceViewModel>();
             Weapons = new ObservableCollection<WeaponViewModel>();
             Stats = new ObservableCollection<BotStatsViewModel>();
+            Hospitals = new ObservableCollection<HospitalViewModel>();
         }
 
         public double Width { get; set; }
@@ -35,6 +37,7 @@ namespace CodingArena.Main.Battlefields
         public ObservableCollection<BulletViewModel> Bullets { get; set; }
         public ObservableCollection<ResourceViewModel> Resources { get; set; }
         public ObservableCollection<WeaponViewModel> Weapons { get; set; }
+        public ObservableCollection<HospitalViewModel> Hospitals { get; set; }
 
         public ObservableCollection<BotStatsViewModel> Stats
         {
@@ -54,6 +57,7 @@ namespace CodingArena.Main.Battlefields
             Resources.Clear();
             Homes.Clear();
             Weapons.Clear();
+            Hospitals.Clear();
             Stats.Clear();
 
             if (myBattlefield != null)
@@ -68,6 +72,8 @@ namespace CodingArena.Main.Battlefields
                 myBattlefield.HomeRemoved -= OnHomeRemoved;
                 myBattlefield.WeaponAdded -= OnWeaponAdded;
                 myBattlefield.WeaponRemoved -= OnWeaponRemoved;
+                myBattlefield.HospitalAdded -= OnHospitalAdded;
+                myBattlefield.HospitalRemoved -= OnHospitalRemoved;
             }
 
             foreach (var bot in battlefield.Bots.OfType<Bot>())
@@ -92,6 +98,11 @@ namespace CodingArena.Main.Battlefields
                 Homes.Add(new HomeViewModel(home));
             }
 
+            foreach (var hospital in battlefield.Hospitals.OfType<Hospital>())
+            {
+                Hospitals.Add(new HospitalViewModel(hospital));
+            }
+
             myBattlefield = battlefield;
             myBattlefield.BotAdded += OnBotAdded;
             myBattlefield.BotRemoved += OnBotRemoved;
@@ -103,6 +114,8 @@ namespace CodingArena.Main.Battlefields
             myBattlefield.HomeRemoved += OnHomeRemoved;
             myBattlefield.WeaponAdded += OnWeaponAdded;
             myBattlefield.WeaponRemoved += OnWeaponRemoved;
+            myBattlefield.HospitalAdded += OnHospitalAdded;
+            myBattlefield.HospitalRemoved += OnHospitalRemoved;
         }
 
         private void UpdateStats(object sender, EventArgs e) =>
@@ -166,6 +179,18 @@ namespace CodingArena.Main.Battlefields
             if (viewModel != null)
             {
                 Weapons.Remove(viewModel);
+            }
+        }
+
+        private void OnHospitalAdded(object sender, HospitalEventArgs e) =>
+            Hospitals.Add(new HospitalViewModel(e.Hospital));
+
+        private void OnHospitalRemoved(object sender, HospitalEventArgs e)
+        {
+            var viewModel = Hospitals.FirstOrDefault(r => r.Hospital == e.Hospital);
+            if (viewModel != null)
+            {
+                Hospitals.Remove(viewModel);
             }
         }
     }

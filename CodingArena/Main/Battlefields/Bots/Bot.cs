@@ -114,13 +114,15 @@ namespace CodingArena.Main.Battlefields.Bots
             }
         }
 
-        private void Regenerate()
+        public void Regenerate(double amount)
         {
-            var newActual = HitPoints.Actual + RegenerationRate * DeltaTime.TotalSeconds;
+            var newActual = HitPoints.Actual + amount;
             newActual = Math.Min(newActual, HitPoints.Maximum);
             HitPoints = new Value(HitPoints.Maximum, newActual);
             OnChanged();
         }
+
+        private void Regenerate() => Regenerate(RegenerationRate * DeltaTime.TotalSeconds);
 
         private void Execute(PickUpResourceTurnAction pickUpResource)
         {

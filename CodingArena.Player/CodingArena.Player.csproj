@@ -53,6 +53,7 @@
     <Compile Include="IBotAI.cs" />
     <Compile Include="ICollider.cs" />
     <Compile Include="IGameObject.cs" />
+    <Compile Include="IHospital.cs" />
     <Compile Include="IMovable.cs" />
     <Compile Include="IResource.cs" />
     <Compile Include="ITurnAction.cs" />

@@ -5,6 +5,7 @@ using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bots.AIs;
 using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Main.Battlefields.Homes;
+using CodingArena.Main.Battlefields.Hospitals;
 using CodingArena.Main.Battlefields.Resources;
 using CodingArena.Main.Battlefields.Weapons;
 using System;
@@ -23,6 +24,7 @@ namespace CodingArena.Main.Rounds
         private readonly double myTurnDelay;
         private readonly Random myRandom;
         private readonly TimeSpan myTimeout;
+
         private TimeSpan myElapsedTime;
 
         public Round()
@@ -41,6 +43,7 @@ namespace CodingArena.Main.Rounds
                 Battlefield.Add(bot);
                 Bots.Add(bot);
             }
+            AddHospital();
 
             InitializePositions();
 
@@ -48,6 +51,27 @@ namespace CodingArena.Main.Rounds
             myTimeout = TimeSpan
                 .FromSeconds(int.Parse(
                     ConfigurationManager.AppSettings["RoundTimeoutInSeconds"]));
+        }
+
+        public override async Task UpdateAsync()
+        {
+            await base.UpdateAsync();
+            ElapsedTime += DeltaTime;
+            if (!Battlefield.Resources.Any())
+            {
+                AddResource();
+            }
+            if (!Battlefield.Weapons.Any())
+            {
+                AddWeapon();
+            }
+            var bulletTasks = Battlefield.Bullets.ToList().OfType<Bullet>().Select(b => b.UpdateAsync());
+            await Task.WhenAll(bulletTasks);
+            var botTasks = Bots.Select(b => b.UpdateAsync());
+            await Task.WhenAll(botTasks);
+            var hospitalTasks = Battlefield.Hospitals.ToList().OfType<Hospital>().Select(b => b.UpdateAsync());
+            await Task.WhenAll(hospitalTasks);
+            await Task.Delay(TimeSpan.FromMilliseconds(myTurnDelay));
         }
 
         public TimeSpan ElapsedTime
@@ -92,6 +116,15 @@ namespace CodingArena.Main.Rounds
             var position = new Point(x, y);
             var resource = new Resource(position);
             Battlefield.Add(resource);
+        }
+
+        private void AddHospital()
+        {
+            var x = Battlefield.Width / 2;
+            var y = Battlefield.Height / 2;
+            var position = new Point(x, y);
+            var hospital = new Hospital(Battlefield, position);
+            Battlefield.Add(hospital);
         }
 
         private void AddWeapon()
@@ -146,25 +179,6 @@ namespace CodingArena.Main.Rounds
                     await UpdateAsync();
                 }
             }
-        }
-
-        public override async Task UpdateAsync()
-        {
-            await base.UpdateAsync();
-            ElapsedTime += DeltaTime;
-            if (!Battlefield.Resources.Any())
-            {
-                AddResource();
-            }
-            if (!Battlefield.Weapons.Any())
-            {
-                AddWeapon();
-            }
-            var bulletTasks = Battlefield.Bullets.ToList().OfType<Bullet>().Select(b => b.UpdateAsync());
-            await Task.WhenAll(bulletTasks);
-            var botTasks = Bots.Select(b => b.UpdateAsync());
-            await Task.WhenAll(botTasks);
-            await Task.Delay(TimeSpan.FromMilliseconds(myTurnDelay));
         }
 
         public bool HasWinner => Bots.Count(b => b.HitPoints.Actual > 0) <= 1;
