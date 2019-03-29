@@ -14,15 +14,7 @@ namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
 
         public ITurnAction Update(IBot ownBot, IBattlefield battlefield)
         {
-            var enemies = battlefield.Bots.Except(new[] { ownBot });
-
-            if (ownBot.AvailableWeapons.Count == 1)
-            {
-                var closestWeapon = battlefield.Weapons.OrderBy(ownBot.DistanceTo).First();
-                return ownBot.DistanceTo(closestWeapon) < ownBot.Radius
-                    ? TurnAction.PickUpWeapon()
-                    : TurnAction.MoveTowards(closestWeapon);
-            }
+            var enemies = battlefield.Bots.Except(new[] { ownBot }).Where(b => b.HasResource);
 
             if (enemies.Any())
             {
@@ -39,7 +31,13 @@ namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
                     ? TurnAction.PickUpWeapon()
                     : TurnAction.MoveTowards(closestWeapon);
             }
-            return TurnAction.Idle;
+            else
+            {
+                var closestWeapon = battlefield.Weapons.OrderBy(ownBot.DistanceTo).First();
+                return ownBot.DistanceTo(closestWeapon) < ownBot.Radius
+                    ? TurnAction.PickUpWeapon()
+                    : TurnAction.MoveTowards(closestWeapon);
+            }
         }
 
         public void OnDamaged(double damage, IBot shooter)

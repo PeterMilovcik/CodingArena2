@@ -13,6 +13,7 @@ namespace CodingArena.Player
         IReadOnlyList<IWeapon> AvailableWeapons { get; }
         IHome Home { get; }
         bool IsDead { get; }
+        TimeSpan RespawnIn { get; }
         TimeSpan RegenerationActiveIn { get; }
         double RegenerationRate { get; }
     }

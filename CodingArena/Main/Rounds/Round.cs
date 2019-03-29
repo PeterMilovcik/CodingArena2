@@ -27,6 +27,7 @@ namespace CodingArena.Main.Rounds
 
         private TimeSpan myElapsedTime;
         private readonly int myWeaponsCount;
+        private readonly int myResourceCount;
 
         public Round(IBotAIFactory botAIFactory)
         {
@@ -52,13 +53,14 @@ namespace CodingArena.Main.Rounds
                 .FromSeconds(int.Parse(
                     ConfigurationManager.AppSettings["RoundTimeoutInSeconds"]));
             myWeaponsCount = int.Parse(ConfigurationManager.AppSettings["WeaponsCount"]);
+            myResourceCount = int.Parse(ConfigurationManager.AppSettings["ResourceCount"]);
         }
 
         public override async Task UpdateAsync()
         {
             await base.UpdateAsync();
             ElapsedTime += DeltaTime;
-            if (!Battlefield.Resources.Any())
+            if (Battlefield.Resources.Count < myResourceCount)
             {
                 AddResource();
             }

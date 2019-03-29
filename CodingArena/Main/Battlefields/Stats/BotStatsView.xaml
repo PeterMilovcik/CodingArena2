@@ -10,7 +10,7 @@
         BorderBrush="Black"
         BorderThickness="2"
         CornerRadius="5">
-        <Grid>
+        <Grid Background="{Binding Background}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -37,7 +37,7 @@
                        FontSize="20"
                        FontFamily="Corbel"/>
             <Border Grid.Column="2" Grid.Row="1" Height="1" BorderBrush="Black" BorderThickness="1"/>
-            <Grid Grid.Column="2" Row="2">
+            <Grid Grid.Column="2" Row="2" Visibility="{Binding AliveGridVisibility}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -54,6 +54,13 @@
                            HorizontalAlignment="Left"
                            FontFamily="Consolas" 
                            FontWeight="Bold"/>
+            </Grid>
+            <Grid Grid.Column="2" Row="2" Visibility="{Binding DeadGridVisibility}">
+                <TextBlock Text="{Binding RespawnIn, StringFormat=Respawn in: \{0:h\\:mm\\:ss\}}" 
+                           FontSize="15" 
+                           FontFamily="Consolas" 
+                           FontWeight="Bold"
+                           Margin="3,0"/>
             </Grid>
         </Grid>
     </Border>

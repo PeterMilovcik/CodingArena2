@@ -17,15 +17,21 @@ namespace CodingArena.Main.Battlefields.Bots
 {
     public sealed class Bot : Movable, IBot
     {
-        private const double MinDistance = 0.1;
-        private readonly Battlefield myBattlefield;
+        private const double MinDistance = 0.5;
+        private Battlefield myBattlefield;
         private Weapon myWeapon;
         private TimeSpan myRemainingAimTime;
-        private readonly double myRegenerationAfterNoDamageInSeconds;
+        private double myRegenerationAfterNoDamageInSeconds;
         private TimeSpan myRegenerationActiveIn;
-        private readonly List<Weapon> myAvailableWeapons;
+        private TimeSpan myRespawnIn;
+        private List<Weapon> myAvailableWeapons;
 
         public Bot([NotNull] Battlefield battlefield, IBotAI botAI) : base(battlefield)
+        {
+            Init(battlefield, botAI);
+        }
+
+        private void Init(Battlefield battlefield, IBotAI botAI)
         {
             BotAI = botAI;
             Name = BotAI.BotName;
@@ -44,10 +50,11 @@ namespace CodingArena.Main.Battlefields.Bots
                 double.Parse(ConfigurationManager.AppSettings["RegenerationAfterNoDamageInSeconds"]);
             RegenerationRate = double.Parse(ConfigurationManager.AppSettings["RegenerationPerSecond"]);
             myRegenerationActiveIn = TimeSpan.Zero;
+            myRespawnIn = TimeSpan.FromSeconds(int.Parse(ConfigurationManager.AppSettings["RespawnInSeconds"]));
         }
 
-        public IBotAI BotAI { get; }
-        public string Name { get; }
+        public IBotAI BotAI { get; set; }
+        public string Name { get; set; }
         public IValue HitPoints { get; private set; }
         public IResource Resource { get; private set; }
         public bool HasResource => Resource != null;
@@ -57,14 +64,25 @@ namespace CodingArena.Main.Battlefields.Bots
             myAvailableWeapons.OfType<IWeapon>().ToList();
         public IHome Home => myBattlefield.Homes.SingleOrDefault(h => h.Name == Name);
         public TimeSpan RegenerationActiveIn => new TimeSpan(myRegenerationActiveIn.Ticks);
-        public double RegenerationRate { get; }
+        public double RegenerationRate { get; set; }
         public bool IsDead => HitPoints.Actual <= 0;
+        public TimeSpan RespawnIn => new TimeSpan(myRespawnIn.Ticks);
 
         public override async Task UpdateAsync()
         {
             await base.UpdateAsync();
 
-            if (IsDead) return;
+            if (IsDead)
+            {
+                myRespawnIn -= DeltaTime;
+                OnChanged();
+                if (myRespawnIn < TimeSpan.Zero)
+                {
+                    Respawn();
+                }
+
+                return;
+            }
 
             await myWeapon.UpdateAsync();
             try
@@ -112,6 +130,14 @@ namespace CodingArena.Main.Battlefields.Bots
             {
                 // ignored
             }
+        }
+
+        private void Respawn()
+        {
+            Init(Battlefield, BotAI);
+            Position = new Point(Home.Position.X, Home.Position.Y);
+            Battlefield.Add(this);
+            OnRespawned();
         }
 
         public void Regenerate(double amount)
@@ -392,6 +418,10 @@ namespace CodingArena.Main.Battlefields.Bots
         public event EventHandler Died;
 
         private void OnDied() => Died?.Invoke(this, EventArgs.Empty);
+
+        public event EventHandler Respawned;
+
+        private void OnRespawned() => Respawned?.Invoke(this, EventArgs.Empty);
 
         private void Aim()
         {
