@@ -59,6 +59,9 @@
     <Compile Include="Common\Collider.cs" />
     <Compile Include="Common\GameObject.cs" />
     <Compile Include="Common\Movable.cs" />
+    <Compile Include="Main\Battlefields\Stats\BotStatsView.xaml.cs">
+      <DependentUpon>BotStatsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Main\Battlefields\WeaponEventArgs.cs" />
     <Compile Include="Main\Battlefields\Weapons\MachineGun.cs" />
     <Compile Include="Main\Battlefields\Weapons\Rifle.cs" />
@@ -89,6 +92,10 @@
     <Compile Include="Main\Battlefields\Weapons\Weapon.cs" />
     <Compile Include="Main\MainViewModel.cs" />
     <Compile Include="Main\Battlefields\Resources\ResourceViewModel.cs" />
+    <Page Include="Main\Battlefields\Stats\BotStatsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Main\Battlefields\Weapons\WeaponView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

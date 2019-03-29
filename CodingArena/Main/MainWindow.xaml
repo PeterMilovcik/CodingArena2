@@ -38,16 +38,31 @@
             <battlefields:BattlefieldView Grid.Column="0"
                                           Margin="20"
                                           DataContext="{Binding Battlefield}"/>
-            <GroupBox
-                Grid.Column="1" Header="Time">
-                <TextBlock 
-                    Text="{Binding Round.Time, StringFormat=\{0:h\\:mm\\:ss\}}"
-                    FontSize="36"
-                    TextAlignment="Center"
-                    FontWeight="Bold"
-                    FontFamily="Consolas"/>
-            </GroupBox>
-
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <GroupBox
+                    Grid.Row="0" Header="Elapsed Time" FontFamily="Corbel" FontSize="16" FontWeight="Bold">
+                    <TextBlock 
+                        Text="{Binding Round.ElapsedTime, StringFormat=\{0:h\\:mm\\:ss\}}"
+                        FontSize="36"
+                        TextAlignment="Center"
+                        FontWeight="Bold"
+                        FontFamily="Consolas"/>
+                </GroupBox>
+                <GroupBox
+                    Grid.Row="1" Header="Remaining Time" FontFamily="Corbel" FontSize="16" FontWeight="Bold">
+                    <TextBlock 
+                        Text="{Binding Round.RemainingTime, StringFormat=\{0:h\\:mm\\:ss\}}"
+                        FontSize="36"
+                        TextAlignment="Center"
+                        FontWeight="Bold"
+                        FontFamily="Consolas"/>
+                </GroupBox>
+            </Grid>
         </Grid>
         <StatusBar Grid.Row="2">
             <StatusBarItem Content="{Binding Status}"/>

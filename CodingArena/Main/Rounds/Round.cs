@@ -23,11 +23,11 @@ namespace CodingArena.Main.Rounds
         private readonly double myTurnDelay;
         private readonly Random myRandom;
         private readonly TimeSpan myTimeout;
-        private TimeSpan myTime;
+        private TimeSpan myElapsedTime;
 
         public Round()
         {
-            Time = TimeSpan.Zero;
+            ElapsedTime = TimeSpan.Zero;
             var botAIFactory = new BotAIFactory();
             var botAIs = botAIFactory.CreateBotAIs();
             var width = double.Parse(ConfigurationManager.AppSettings["BattlefieldWidth"]);
@@ -50,16 +50,19 @@ namespace CodingArena.Main.Rounds
                     ConfigurationManager.AppSettings["RoundTimeoutInSeconds"]));
         }
 
-        public TimeSpan Time
+        public TimeSpan ElapsedTime
         {
-            get => myTime;
+            get => myElapsedTime;
             private set
             {
-                if (value.Equals(myTime)) return;
-                myTime = value;
+                if (value.Equals(myElapsedTime)) return;
+                myElapsedTime = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(RemainingTime));
             }
         }
+
+        public TimeSpan RemainingTime => myTimeout - myElapsedTime;
 
         private void InitializePositions()
         {
@@ -138,7 +141,7 @@ namespace CodingArena.Main.Rounds
         {
             if (Bots.Any())
             {
-                while (!HasWinner && Time < myTimeout)
+                while (!HasWinner && ElapsedTime < myTimeout)
                 {
                     await UpdateAsync();
                 }
@@ -148,7 +151,7 @@ namespace CodingArena.Main.Rounds
         public override async Task UpdateAsync()
         {
             await base.UpdateAsync();
-            Time += DeltaTime;
+            ElapsedTime += DeltaTime;
             if (!Battlefield.Resources.Any())
             {
                 AddResource();

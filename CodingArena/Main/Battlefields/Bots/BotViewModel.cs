@@ -16,6 +16,7 @@ namespace CodingArena.Main.Battlefields.Bots
         private Visibility myWeaponVisibility;
         private Visibility myResourceVisibility;
         private Brush myColor;
+        private string myWeapon;
         private const double WeaponSize = 30;
 
         public BotViewModel(Bot bot)
@@ -39,6 +40,7 @@ namespace CodingArena.Main.Battlefields.Bots
             Angle = Bot.Angle;
             HP = Bot.HitPoints.Actual;
             HasResource = Bot.HasResource;
+            Weapon = Bot.EquippedWeapon.Name;
         }
 
         public event EventHandler Died;
@@ -169,6 +171,17 @@ namespace CodingArena.Main.Battlefields.Bots
                     WeaponVisibility = Visibility.Visible;
                     ResourceVisibility = Visibility.Hidden;
                 }
+            }
+        }
+
+        public string Weapon
+        {
+            get => myWeapon;
+            set
+            {
+                if (value == myWeapon) return;
+                myWeapon = value;
+                OnPropertyChanged();
             }
         }
 
