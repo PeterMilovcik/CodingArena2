@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace CodingArena.Main.Battlefields.Bots.AIs
 {
-    public class BotAIFactory
+    public class BotAIFactory : IBotAIFactory
     {
         public List<IBotAI> CreateBotAIs()
         {

@@ -1,19 +1,20 @@
-﻿using System;
+﻿using CodingArena.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
-namespace CodingArena.Player.Scrappie
+namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
 {
-    public class Scrappie : IBotAI
+    public class Proto : IBotAI
     {
         private IBot myAttacker;
         private Random Random { get; }
-        public string BotName { get; } = nameof(Scrappie);
+        public string BotName { get; } = nameof(Proto);
         private List<Point> Corners { get; }
         private Point SafePoint { get; set; }
 
-        public Scrappie()
+        public Proto()
         {
             Random = new Random();
             Corners = new List<Point>();
@@ -104,6 +105,7 @@ namespace CodingArena.Player.Scrappie
         public void OnCollisionWith(IBot bot)
         {
         }
+
 
         public void OnResourcePicked()
         {

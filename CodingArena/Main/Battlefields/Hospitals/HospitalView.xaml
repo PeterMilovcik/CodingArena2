@@ -8,7 +8,7 @@
              d:DesignHeight="100" d:DesignWidth="100">
     <Grid>
         <Grid.RenderTransform>
-            <TranslateTransform X="-50" Y="-50" />
+            <TranslateTransform X="-30" Y="-30" />
         </Grid.RenderTransform>
         <Ellipse 
             Grid.Row="0"

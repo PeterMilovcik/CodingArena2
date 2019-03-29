@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using CodingArena.Player;
 
-namespace CodingArena.Player.Rust
+namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
 {
     public class Rust : IBotAI
     {

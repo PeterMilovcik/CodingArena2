@@ -1,34 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CodingArena.Player;
 using System.Linq;
-using System.Windows;
 
-namespace CodingArena.Player.Proto
+namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
 {
-    public class Proto : IBotAI
+    internal class Sparky : IBotAI
     {
-        private IBot myAttacker;
-        private Random Random { get; }
-        public string BotName { get; } = nameof(Proto);
-        private List<Point> Corners { get; }
-        private Point SafePoint { get; set; }
-
-        public Proto()
+        public Sparky()
         {
-            Random = new Random();
-            Corners = new List<Point>();
+            BotName = nameof(Sparky);
         }
+        public string BotName { get; }
 
         public ITurnAction Update(IBot ownBot, IBattlefield battlefield)
         {
-            if (!Corners.Any())
-            {
-                Corners.Add(new Point(10, 10));
-                Corners.Add(new Point(10, battlefield.Height - 10));
-                Corners.Add(new Point(battlefield.Width - 10, battlefield.Height - 10));
-                Corners.Add(new Point(battlefield.Width - 10, 10));
-            }
-
             if (ownBot.EquippedWeapon.Ammunition.Remaining == 0)
             {
                 var weapon = battlefield.Weapons.OrderBy(a => a.DistanceTo(ownBot)).FirstOrDefault();
@@ -40,7 +24,7 @@ namespace CodingArena.Player.Proto
                 }
             }
 
-            if (ownBot.HitPoints.Percent < 50)
+            if (ownBot.HitPoints.Percent < 30)
             {
                 if (ownBot.HasResource) return TurnAction.DropDownResource();
                 return TurnAction.MoveTowards(battlefield.Hospitals.First());
@@ -64,23 +48,6 @@ namespace CodingArena.Player.Proto
                     : TurnAction.MoveTowards(target);
             }
 
-            if (myAttacker != null)
-            {
-                if (ownBot.HasResource)
-                {
-                    return TurnAction.DropDownResource();
-                }
-
-                if (battlefield.Bots.Contains(myAttacker))
-                {
-                    return ownBot.DistanceTo(myAttacker) < ownBot.EquippedWeapon.MaxRange
-                        ? TurnAction.ShootAt(myAttacker)
-                        : TurnAction.MoveTowards(myAttacker);
-                }
-
-                myAttacker = null;
-            }
-
             if (battlefield.Resources.Any())
             {
                 var resource = battlefield.Resources.OrderBy(r => r.DistanceTo(ownBot)).First();
@@ -93,8 +60,6 @@ namespace CodingArena.Player.Proto
 
         public void OnDamaged(double damage, IBot shooter)
         {
-            myAttacker = shooter;
-            SafePoint = Corners[Random.Next(4)];
         }
 
         public void OnMoved(double distance)

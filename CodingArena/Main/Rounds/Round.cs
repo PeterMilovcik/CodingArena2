@@ -26,11 +26,11 @@ namespace CodingArena.Main.Rounds
         private readonly TimeSpan myTimeout;
 
         private TimeSpan myElapsedTime;
+        private readonly int myWeaponsCount;
 
-        public Round()
+        public Round(IBotAIFactory botAIFactory)
         {
             ElapsedTime = TimeSpan.Zero;
-            var botAIFactory = new BotAIFactory();
             var botAIs = botAIFactory.CreateBotAIs();
             var width = double.Parse(ConfigurationManager.AppSettings["BattlefieldWidth"]);
             var height = double.Parse(ConfigurationManager.AppSettings["BattlefieldHeight"]);
@@ -51,6 +51,7 @@ namespace CodingArena.Main.Rounds
             myTimeout = TimeSpan
                 .FromSeconds(int.Parse(
                     ConfigurationManager.AppSettings["RoundTimeoutInSeconds"]));
+            myWeaponsCount = int.Parse(ConfigurationManager.AppSettings["WeaponsCount"]);
         }
 
         public override async Task UpdateAsync()
@@ -61,7 +62,7 @@ namespace CodingArena.Main.Rounds
             {
                 AddResource();
             }
-            if (!Battlefield.Weapons.Any())
+            if (Battlefield.Weapons.Count < myWeaponsCount)
             {
                 AddWeapon();
             }
@@ -74,10 +75,10 @@ namespace CodingArena.Main.Rounds
             await Task.Delay(TimeSpan.FromMilliseconds(myTurnDelay));
         }
 
-        public TimeSpan ElapsedTime
+        private TimeSpan ElapsedTime
         {
             get => myElapsedTime;
-            private set
+            set
             {
                 if (value.Equals(myElapsedTime)) return;
                 myElapsedTime = value;
