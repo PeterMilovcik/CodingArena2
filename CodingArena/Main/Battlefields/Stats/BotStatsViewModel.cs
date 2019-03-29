@@ -7,6 +7,8 @@ namespace CodingArena.Main.Battlefields.Stats
         private readonly Bot myBot;
         private string myBotName;
         private int myResourceCount;
+        private int myAmmo;
+        private string myWeapon;
 
         public BotStatsViewModel(Bot bot)
         {
@@ -22,6 +24,8 @@ namespace CodingArena.Main.Battlefields.Stats
         {
             BotName = myBot.Name;
             ResourceCount = myBot.Home.Count;
+            Ammo = myBot.EquippedWeapon.Ammunition.Remaining;
+            Weapon = myBot.EquippedWeapon.Name;
         }
 
         public string BotName
@@ -42,6 +46,28 @@ namespace CodingArena.Main.Battlefields.Stats
             {
                 if (value == myResourceCount) return;
                 myResourceCount = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int Ammo
+        {
+            get => myAmmo;
+            set
+            {
+                if (value == myAmmo) return;
+                myAmmo = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Weapon
+        {
+            get => myWeapon;
+            set
+            {
+                if (value == myWeapon) return;
+                myWeapon = value;
                 OnPropertyChanged();
             }
         }
