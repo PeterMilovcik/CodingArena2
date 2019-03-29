@@ -2,7 +2,9 @@
 using CodingArena.Main.Battlefields.Bullets;
 using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Main.Battlefields.Resources;
+using CodingArena.Main.Battlefields.Stats;
 using CodingArena.Main.Battlefields.Weapons;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -11,6 +13,7 @@ namespace CodingArena.Main.Battlefields
     public class BattlefieldViewModel : Observable
     {
         private Battlefield myBattlefield;
+        private ObservableCollection<BotStatsViewModel> myStats;
 
         public BattlefieldViewModel()
         {
@@ -21,6 +24,7 @@ namespace CodingArena.Main.Battlefields
             Bullets = new ObservableCollection<BulletViewModel>();
             Resources = new ObservableCollection<ResourceViewModel>();
             Weapons = new ObservableCollection<WeaponViewModel>();
+            Stats = new ObservableCollection<BotStatsViewModel>();
         }
 
         public double Width { get; set; }
@@ -32,6 +36,17 @@ namespace CodingArena.Main.Battlefields
         public ObservableCollection<ResourceViewModel> Resources { get; set; }
         public ObservableCollection<WeaponViewModel> Weapons { get; set; }
 
+        public ObservableCollection<BotStatsViewModel> Stats
+        {
+            get => myStats;
+            set
+            {
+                if (Equals(value, myStats)) return;
+                myStats = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void Set(Battlefield battlefield)
         {
             Bots.Clear();
@@ -39,6 +54,7 @@ namespace CodingArena.Main.Battlefields
             Resources.Clear();
             Homes.Clear();
             Weapons.Clear();
+            Stats.Clear();
 
             if (myBattlefield != null)
             {
@@ -57,6 +73,8 @@ namespace CodingArena.Main.Battlefields
             foreach (var bot in battlefield.Bots.OfType<Bot>())
             {
                 Bots.Add(new BotViewModel(bot));
+                Stats.Add(new BotStatsViewModel(bot));
+                bot.Changed += UpdateStats;
             }
 
             foreach (var resource in battlefield.Resources)
@@ -86,6 +104,10 @@ namespace CodingArena.Main.Battlefields
             myBattlefield.WeaponAdded += OnWeaponAdded;
             myBattlefield.WeaponRemoved += OnWeaponRemoved;
         }
+
+        private void UpdateStats(object sender, EventArgs e) =>
+            Stats = new ObservableCollection<BotStatsViewModel>(
+                Stats.OrderByDescending(b => b.ResourceCount));
 
         private void OnBotAdded(object sender, BotEventArgs e) =>
             Bots.Add(new BotViewModel(e.Bot));

@@ -62,6 +62,7 @@
     <Compile Include="Main\Battlefields\Stats\BotStatsView.xaml.cs">
       <DependentUpon>BotStatsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Main\Battlefields\Stats\BotStatsViewModel.cs" />
     <Compile Include="Main\Battlefields\WeaponEventArgs.cs" />
     <Compile Include="Main\Battlefields\Weapons\MachineGun.cs" />
     <Compile Include="Main\Battlefields\Weapons\Rifle.cs" />

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:main="clr-namespace:CodingArena.Main"
         xmlns:battlefields="clr-namespace:CodingArena.Main.Battlefields"
+        xmlns:stats="clr-namespace:CodingArena.Main.Battlefields.Stats"
         mc:Ignorable="d"
         WindowState="Maximized"
         Title="Coding Arena" Height="450" Width="800">
@@ -62,6 +63,18 @@
                         FontWeight="Bold"
                         FontFamily="Consolas"/>
                 </GroupBox>
+                <ListView Grid.Row="2" ItemsSource="{Binding Battlefield.Stats}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <stats:BotStatsView />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </Grid>
         </Grid>
         <StatusBar Grid.Row="2">

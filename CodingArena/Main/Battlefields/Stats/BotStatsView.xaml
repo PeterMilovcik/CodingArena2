@@ -6,24 +6,30 @@
              xmlns:local="clr-namespace:CodingArena.Main.Battlefields.Stats"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="100">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <TextBlock Text="{Binding ResourceCount}" 
-                   Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
-                   FontSize="15"
-                   FontWeight="Bold"
-                   FontFamily="Corbel"/>
-        <TextBlock Text="{Binding BotName}"
-                   Grid.Column="1" Grid.Row="0"
-                   FontWeight="Bold"
-                   FontSize="15"
-                   FontFamily="Corbel"/>
-    </Grid>
+    <Border
+        BorderBrush="Black"
+        BorderThickness="2"
+        CornerRadius="5">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="{Binding ResourceCount}" 
+                       Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                       FontSize="30"
+                       FontWeight="Bold"
+                       FontFamily="Consolas"
+                       Margin="10"/>
+            <Label Content="{Binding BotName}"
+                       Grid.Column="1" Grid.Row="0"
+                       FontWeight="Bold"
+                       FontSize="15"
+                       FontFamily="Corbel"/>
+        </Grid>
+    </Border>
 </UserControl>
