@@ -177,14 +177,12 @@ namespace CodingArena.Main.Rounds
         {
             if (Bots.Any())
             {
-                while (!HasWinner && ElapsedTime < myTimeout)
+                while (ElapsedTime < myTimeout)
                 {
                     await UpdateAsync();
                 }
             }
         }
-
-        public bool HasWinner => Bots.Count(b => b.HitPoints.Actual > 0) <= 1;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
