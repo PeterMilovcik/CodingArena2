@@ -1,5 +1,5 @@
-﻿using CodingArena.Player;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Bots.AIs
 {

@@ -71,6 +71,7 @@
     <Compile Include="Main\Battlefields\Bots\AIs\Demo\Tinker.cs" />
     <Compile Include="Main\Battlefields\Bots\AIs\Demo\Twobit.cs" />
     <Compile Include="Main\Battlefields\Bots\AIs\IBotAIFactory.cs" />
+    <Compile Include="Main\Battlefields\Bots\Regeneration.cs" />
     <Compile Include="Main\Battlefields\FirstAidKitEventArgs.cs" />
     <Compile Include="Main\Battlefields\FirstAidKits\FirstAidKit.cs" />
     <Compile Include="Main\Battlefields\FirstAidKits\FirstAidKitViewModel.cs" />
@@ -212,9 +213,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodingArena.Player\CodingArena.Player.csproj">
+    <ProjectReference Include="..\CodingArena.Player\CodingArena.AI.csproj">
       <Project>{ade7e948-f1b0-4eaa-b5b3-c1eb8577e7ad}</Project>
-      <Name>CodingArena.Player</Name>
+      <Name>CodingArena.AI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

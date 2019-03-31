@@ -1,6 +1,6 @@
 ﻿using CodingArena.Main.Battlefields.Bots.AIs.Demo;
-using CodingArena.Player;
 using System.Collections.Generic;
+using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Bots.AIs
 {

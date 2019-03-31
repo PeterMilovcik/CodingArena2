@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace CodingArena.Common
 {
-    public interface IGameObject : Player.IGameObject
+    public interface IGameObject : AI.IGameObject
     {
         event EventHandler Changed;
     }
@@ -54,7 +54,7 @@ namespace CodingArena.Common
             return Task.CompletedTask;
         }
 
-        public double DistanceTo(Player.IGameObject gameObject) =>
+        public double DistanceTo(AI.IGameObject gameObject) =>
             DistanceTo(gameObject.Position);
 
         public double DistanceTo(Point position) =>
@@ -62,7 +62,7 @@ namespace CodingArena.Common
 
         public event EventHandler Changed;
 
-        protected virtual void OnChanged() =>
+        public virtual void OnChanged() =>
             Changed?.Invoke(this, EventArgs.Empty);
     }
 }

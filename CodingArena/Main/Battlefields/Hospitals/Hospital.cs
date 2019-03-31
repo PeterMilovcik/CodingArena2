@@ -4,11 +4,11 @@
 
 using CodingArena.Common;
 using CodingArena.Main.Battlefields.Bots;
-using CodingArena.Player;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Hospitals
 {
@@ -32,7 +32,7 @@ namespace CodingArena.Main.Battlefields.Hospitals
             var amount = myRegenerationPerSecond * DeltaTime.TotalSeconds;
             foreach (var bot in botsToHeal)
             {
-                bot.Regenerate(amount);
+                bot.Regeneration.Regenerate(amount);
             }
 
         }

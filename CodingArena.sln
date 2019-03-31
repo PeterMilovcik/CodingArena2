@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingArena", "CodingArena\CodingArena.csproj", "{A33960E0-1F95-4E0D-B448-308E220406E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingArena.Player", "CodingArena.Player\CodingArena.Player.csproj", "{ADE7E948-F1B0-4EAA-B5B3-C1EB8577E7AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingArena.AI", "CodingArena.Player\CodingArena.AI.csproj", "{ADE7E948-F1B0-4EAA-B5B3-C1EB8577E7AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingArena.Tests", "CodingArena.Tests\CodingArena.Tests.csproj", "{42CCA574-B433-4A3F-BC81-2C434634AA6E}"
 EndProject

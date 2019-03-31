@@ -1,9 +1,9 @@
-﻿using CodingArena.Player;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Bots.AIs
 {

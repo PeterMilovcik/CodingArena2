@@ -1,6 +1,6 @@
-﻿using CodingArena.Player;
-using System;
+﻿using System;
 using System.Configuration;
+using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Weapons
 {

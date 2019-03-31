@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CodingArena.Main.Battlefields.Weapons
 {
-    public interface IWeapon : Player.IWeapon
+    public interface IWeapon : AI.IWeapon
     {
         Task UpdateAsync();
         IEnumerable<Bullet> Fire(Bot shooter);

@@ -2,8 +2,8 @@
    Restricted - Copyright (C) Siemens Healthcare GmbH/Siemens Medical Solutions USA, Inc., 2019. All rights reserved
    ------------------------------------------------------------------------------------------------- */
 
-using CodingArena.Player;
 using System.Linq;
+using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
 {

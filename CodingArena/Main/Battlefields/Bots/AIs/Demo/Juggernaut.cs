@@ -1,5 +1,5 @@
-﻿using CodingArena.Player;
-using System.Linq;
+﻿using System.Linq;
+using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
 {

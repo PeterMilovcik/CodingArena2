@@ -1,7 +1,7 @@
 ﻿using CodingArena.Annotations;
-using CodingArena.Player;
 using System;
 using System.Windows;
+using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Resources
 {

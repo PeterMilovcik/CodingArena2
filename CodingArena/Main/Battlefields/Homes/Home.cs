@@ -1,9 +1,9 @@
 ﻿using CodingArena.Annotations;
 using CodingArena.Common;
-using CodingArena.Player;
 using System;
 using System.Windows;
 using System.Windows.Media;
+using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Homes
 {

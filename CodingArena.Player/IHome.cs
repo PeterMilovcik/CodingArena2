@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace CodingArena.Player
+namespace CodingArena.AI
 {
     public interface IHome : IGameObject
     {

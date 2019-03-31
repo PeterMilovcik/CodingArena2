@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace CodingArena.Player.TurnActions
+namespace CodingArena.AI.TurnActions
 {
     public class ShootAtTurnAction : ITurnAction
     {

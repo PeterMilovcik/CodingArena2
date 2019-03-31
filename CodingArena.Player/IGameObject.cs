@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace CodingArena.Player
+namespace CodingArena.AI
 {
     public interface IGameObject
     {

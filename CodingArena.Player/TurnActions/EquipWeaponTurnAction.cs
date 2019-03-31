@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CodingArena.Player.TurnActions
+namespace CodingArena.AI.TurnActions
 {
     public class EquipWeaponTurnAction : ITurnAction
     {

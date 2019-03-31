@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CodingArena.Player
+namespace CodingArena.AI
 {
     public interface IWeapon : ICollider
     {

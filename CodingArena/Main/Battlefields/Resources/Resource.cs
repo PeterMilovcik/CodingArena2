@@ -1,6 +1,6 @@
 ﻿using CodingArena.Common;
-using CodingArena.Player;
 using System.Windows;
+using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Resources
 {

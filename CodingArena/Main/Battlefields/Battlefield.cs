@@ -4,11 +4,11 @@ using CodingArena.Main.Battlefields.FirstAidKits;
 using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Main.Battlefields.Hospitals;
 using CodingArena.Main.Battlefields.Weapons;
-using CodingArena.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using IWeapon = CodingArena.Player.IWeapon;
+using CodingArena.AI;
+using IWeapon = CodingArena.AI.IWeapon;
 
 namespace CodingArena.Main.Battlefields
 {

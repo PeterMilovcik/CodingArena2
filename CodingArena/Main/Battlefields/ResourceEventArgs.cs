@@ -1,6 +1,6 @@
 ﻿using CodingArena.Annotations;
-using CodingArena.Player;
 using System;
+using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields
 {

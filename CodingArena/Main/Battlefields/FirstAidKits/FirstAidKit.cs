@@ -1,9 +1,9 @@
 ﻿using CodingArena.Annotations;
 using CodingArena.Common;
-using CodingArena.Player;
 using System;
 using System.Configuration;
 using System.Windows;
+using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.FirstAidKits
 {

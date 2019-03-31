@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace CodingArena.Player
+namespace CodingArena.AI
 {
     public interface IValue
     {

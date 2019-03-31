@@ -1,11 +1,11 @@
 ﻿using CodingArena.Annotations;
 using CodingArena.Common;
 using CodingArena.Main.Battlefields.Bots;
-using CodingArena.Player;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Bullets
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CodingArena.Player
+namespace CodingArena.AI
 {
     public interface IBattlefield
     {

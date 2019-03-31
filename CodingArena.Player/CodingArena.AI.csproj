@@ -7,8 +7,8 @@
     <ProjectGuid>{ADE7E948-F1B0-4EAA-B5B3-C1EB8577E7AD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CodingArena.Player</RootNamespace>
-    <AssemblyName>CodingArena.Player</AssemblyName>
+    <RootNamespace>CodingArena.AI</RootNamespace>
+    <AssemblyName>CodingArena.AI</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

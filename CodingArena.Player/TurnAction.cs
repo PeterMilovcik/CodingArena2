@@ -1,7 +1,7 @@
-﻿using CodingArena.Player.TurnActions;
-using System.Windows;
+﻿using System.Windows;
+using CodingArena.AI.TurnActions;
 
-namespace CodingArena.Player
+namespace CodingArena.AI
 {
     public static class TurnAction
     {

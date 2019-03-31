@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace CodingArena.Common
 {
-    public interface IMovable : Player.IMovable
+    public interface IMovable : AI.IMovable
     {
     }
 
