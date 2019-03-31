@@ -9,5 +9,6 @@
         void OnCollisionWith(IBot bot);
         void OnResourcePicked();
         void OnWeaponPicked(IWeapon weapon);
+        void OnRegenerated();
     }
 }

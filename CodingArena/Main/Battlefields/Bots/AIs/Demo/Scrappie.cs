@@ -1,8 +1,8 @@
-﻿using System;
+﻿using CodingArena.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using CodingArena.Player;
 
 namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
 {
@@ -111,6 +111,10 @@ namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
         }
 
         public void OnWeaponPicked(IWeapon weapon)
+        {
+        }
+
+        public void OnRegenerated()
         {
         }
     }

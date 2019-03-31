@@ -44,7 +44,12 @@ namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
             if (ownBot.HitPoints.Percent < 50)
             {
                 if (ownBot.HasResource) return TurnAction.DropDownResource();
-                return TurnAction.MoveTowards(battlefield.Hospitals.First());
+                var firstAidKit = battlefield.FirstAidKits.OrderBy(f => ownBot.DistanceTo(f)).FirstOrDefault();
+                if (firstAidKit != null)
+                {
+                    if (ownBot.DistanceTo(firstAidKit) < ownBot.Radius) return TurnAction.PickUpFirstAidKit();
+                    return TurnAction.MoveTowards(firstAidKit.Position);
+                }
             }
 
             if (ownBot.HasResource)
@@ -112,6 +117,10 @@ namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
         }
 
         public void OnWeaponPicked(IWeapon weapon)
+        {
+        }
+
+        public void OnRegenerated()
         {
         }
     }

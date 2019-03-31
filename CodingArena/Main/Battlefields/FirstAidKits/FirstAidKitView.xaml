@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="CodingArena.Main.Battlefields.FirstAidKits.FirstAidKitView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="100">
+    <Grid>
+        <Grid.RenderTransform>
+            <TranslateTransform X="-50" Y="-10" />
+        </Grid.RenderTransform>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Rectangle 
+            Grid.Row="0"
+            Height="20" Width="20" 
+            Fill="Green"
+            Stroke="Black" 
+            StrokeThickness="2">
+        </Rectangle>
+        <TextBlock 
+            Grid.Row="1"
+            Text="First Aid Kit" FontSize="15" 
+            Width="100" 
+            FontWeight="SemiBold" 
+            HorizontalAlignment="Center"
+            Foreground="Black"
+            TextAlignment="Center" 
+            FontFamily="Corbel"/>
+    </Grid>
+</UserControl>

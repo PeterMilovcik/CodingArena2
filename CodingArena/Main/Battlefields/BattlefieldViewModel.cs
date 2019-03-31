@@ -1,5 +1,6 @@
 ﻿using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bullets;
+using CodingArena.Main.Battlefields.FirstAidKits;
 using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Main.Battlefields.Hospitals;
 using CodingArena.Main.Battlefields.Resources;
@@ -27,6 +28,7 @@ namespace CodingArena.Main.Battlefields
             Weapons = new ObservableCollection<WeaponViewModel>();
             Stats = new ObservableCollection<BotStatsViewModel>();
             Hospitals = new ObservableCollection<HospitalViewModel>();
+            FirstAidKits = new ObservableCollection<FirstAidKitViewModel>();
         }
 
         public double Width { get; set; }
@@ -38,6 +40,7 @@ namespace CodingArena.Main.Battlefields
         public ObservableCollection<ResourceViewModel> Resources { get; set; }
         public ObservableCollection<WeaponViewModel> Weapons { get; set; }
         public ObservableCollection<HospitalViewModel> Hospitals { get; set; }
+        public ObservableCollection<FirstAidKitViewModel> FirstAidKits { get; set; }
 
         public ObservableCollection<BotStatsViewModel> Stats
         {
@@ -58,6 +61,7 @@ namespace CodingArena.Main.Battlefields
             Homes.Clear();
             Weapons.Clear();
             Hospitals.Clear();
+            FirstAidKits.Clear();
             Stats.Clear();
 
             if (myBattlefield != null)
@@ -74,6 +78,8 @@ namespace CodingArena.Main.Battlefields
                 myBattlefield.WeaponRemoved -= OnWeaponRemoved;
                 myBattlefield.HospitalAdded -= OnHospitalAdded;
                 myBattlefield.HospitalRemoved -= OnHospitalRemoved;
+                myBattlefield.FirstAidKitAdded -= OnFirstAidKitAdded;
+                myBattlefield.FirstAidKitRemoved -= OnFirstAidKitRemoved;
             }
 
             foreach (var bot in battlefield.Bots.OfType<Bot>())
@@ -103,6 +109,11 @@ namespace CodingArena.Main.Battlefields
                 Hospitals.Add(new HospitalViewModel(hospital));
             }
 
+            foreach (var firstAidKit in battlefield.FirstAidKits.OfType<FirstAidKit>())
+            {
+                FirstAidKits.Add(new FirstAidKitViewModel(firstAidKit));
+            }
+
             myBattlefield = battlefield;
             myBattlefield.BotAdded += OnBotAdded;
             myBattlefield.BotRemoved += OnBotRemoved;
@@ -116,6 +127,8 @@ namespace CodingArena.Main.Battlefields
             myBattlefield.WeaponRemoved += OnWeaponRemoved;
             myBattlefield.HospitalAdded += OnHospitalAdded;
             myBattlefield.HospitalRemoved += OnHospitalRemoved;
+            myBattlefield.FirstAidKitAdded += OnFirstAidKitAdded;
+            myBattlefield.FirstAidKitRemoved += OnFirstAidKitRemoved;
         }
 
         private void UpdateStats(object sender, EventArgs e) =>
@@ -191,6 +204,18 @@ namespace CodingArena.Main.Battlefields
             if (viewModel != null)
             {
                 Hospitals.Remove(viewModel);
+            }
+        }
+
+        private void OnFirstAidKitAdded(object sender, FirstAidKitEventArgs e) =>
+            FirstAidKits.Add(new FirstAidKitViewModel(e.FirstAidKit));
+
+        private void OnFirstAidKitRemoved(object sender, FirstAidKitEventArgs e)
+        {
+            var viewModel = FirstAidKits.FirstOrDefault(r => r.FirstAidKit == e.FirstAidKit);
+            if (viewModel != null)
+            {
+                FirstAidKits.Remove(viewModel);
             }
         }
     }

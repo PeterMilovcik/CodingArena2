@@ -12,5 +12,6 @@ namespace CodingArena.Player
         IReadOnlyList<IHome> Homes { get; }
         IReadOnlyList<IWeapon> Weapons { get; }
         IReadOnlyList<IHospital> Hospitals { get; }
+        IReadOnlyList<IFirstAidKit> FirstAidKits { get; }
     }
 }

@@ -21,6 +21,7 @@ namespace CodingArena.Main.Battlefields.Weapons
 
         protected Weapon([NotNull] Battlefield battlefield, Point position, string name)
         {
+            Radius = 10;
             myBattlefield = battlefield ?? throw new ArgumentNullException(nameof(battlefield));
             Position = position;
             Init(name);

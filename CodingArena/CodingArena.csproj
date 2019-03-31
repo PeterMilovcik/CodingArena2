@@ -71,6 +71,12 @@
     <Compile Include="Main\Battlefields\Bots\AIs\Demo\Tinker.cs" />
     <Compile Include="Main\Battlefields\Bots\AIs\Demo\Twobit.cs" />
     <Compile Include="Main\Battlefields\Bots\AIs\IBotAIFactory.cs" />
+    <Compile Include="Main\Battlefields\FirstAidKitEventArgs.cs" />
+    <Compile Include="Main\Battlefields\FirstAidKits\FirstAidKit.cs" />
+    <Compile Include="Main\Battlefields\FirstAidKits\FirstAidKitViewModel.cs" />
+    <Compile Include="Main\Battlefields\FirstAidKits\FirstAidKitView.xaml.cs">
+      <DependentUpon>FirstAidKitView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Main\Battlefields\HospitalEventArgs.cs" />
     <Compile Include="Main\Battlefields\Hospitals\Hospital.cs" />
     <Compile Include="Main\Battlefields\Hospitals\HospitalView.xaml.cs">
@@ -111,6 +117,10 @@
     <Compile Include="Main\Battlefields\Weapons\Weapon.cs" />
     <Compile Include="Main\MainViewModel.cs" />
     <Compile Include="Main\Battlefields\Resources\ResourceViewModel.cs" />
+    <Page Include="Main\Battlefields\FirstAidKits\FirstAidKitView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Main\Battlefields\Hospitals\HospitalView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

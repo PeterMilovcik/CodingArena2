@@ -1,5 +1,6 @@
 ﻿using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bullets;
+using CodingArena.Main.Battlefields.FirstAidKits;
 using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Main.Battlefields.Hospitals;
 using CodingArena.Main.Battlefields.Weapons;
@@ -19,6 +20,7 @@ namespace CodingArena.Main.Battlefields
         private readonly List<IResource> myResources;
         private readonly List<Weapon> myWeapons;
         private readonly List<Hospital> myHospitals;
+        private readonly List<FirstAidKit> myFirstAidKits;
 
         public Battlefield(double width, double height)
         {
@@ -30,6 +32,7 @@ namespace CodingArena.Main.Battlefields
             myResources = new List<IResource>();
             myWeapons = new List<Weapon>();
             myHospitals = new List<Hospital>();
+            myFirstAidKits = new List<FirstAidKit>();
         }
 
         public double Width { get; }
@@ -40,6 +43,7 @@ namespace CodingArena.Main.Battlefields
         public IReadOnlyList<IResource> Resources => myResources;
         public IReadOnlyList<IWeapon> Weapons => myWeapons.OfType<IWeapon>().ToList();
         public IReadOnlyList<IHospital> Hospitals => myHospitals.OfType<IHospital>().ToList();
+        public IReadOnlyList<IFirstAidKit> FirstAidKits => myFirstAidKits.OfType<IFirstAidKit>().ToList();
 
         public void Add(Bot bot)
         {
@@ -113,6 +117,18 @@ namespace CodingArena.Main.Battlefields
             OnHospitalRemoved(hospital);
         }
 
+        public void Add(FirstAidKit firstAidKit)
+        {
+            myFirstAidKits.Add(firstAidKit);
+            OnFirstAidKitAdded(firstAidKit);
+        }
+
+        public void Remove(FirstAidKit firstAidKit)
+        {
+            myFirstAidKits.Remove(firstAidKit);
+            OnFirstAidKitRemoved(firstAidKit);
+        }
+
         public event EventHandler<BotEventArgs> BotAdded;
 
         public event EventHandler<BotEventArgs> BotRemoved;
@@ -136,6 +152,10 @@ namespace CodingArena.Main.Battlefields
         public event EventHandler<HospitalEventArgs> HospitalAdded;
 
         public event EventHandler<HospitalEventArgs> HospitalRemoved;
+
+        public event EventHandler<FirstAidKitEventArgs> FirstAidKitAdded;
+
+        public event EventHandler<FirstAidKitEventArgs> FirstAidKitRemoved;
 
         private void OnBotAdded(Bot bot) =>
             BotAdded?.Invoke(this, new BotEventArgs(bot));
@@ -172,5 +192,11 @@ namespace CodingArena.Main.Battlefields
 
         private void OnHospitalRemoved(Hospital hospital) =>
             HospitalRemoved?.Invoke(this, new HospitalEventArgs(hospital));
+
+        private void OnFirstAidKitAdded(FirstAidKit firstAidKit) =>
+            FirstAidKitAdded?.Invoke(this, new FirstAidKitEventArgs(firstAidKit));
+
+        private void OnFirstAidKitRemoved(FirstAidKit firstAidKit) =>
+            FirstAidKitRemoved?.Invoke(this, new FirstAidKitEventArgs(firstAidKit));
     }
 }

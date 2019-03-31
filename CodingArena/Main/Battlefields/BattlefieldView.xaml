@@ -10,6 +10,7 @@
              xmlns:homes="clr-namespace:CodingArena.Main.Battlefields.Homes"
              xmlns:weapons="clr-namespace:CodingArena.Main.Battlefields.Weapons"
              xmlns:hospitals="clr-namespace:CodingArena.Main.Battlefields.Hospitals"
+             xmlns:firstAidKits="clr-namespace:CodingArena.Main.Battlefields.FirstAidKits"
              mc:Ignorable="d" 
              d:DesignWidth="1600" d:DesignHeight="900" >
     <Grid>
@@ -36,6 +37,23 @@
                                     <TranslateTransform X="{Binding X}" Y="{Binding Y}" />
                                 </hospitals:HospitalView.RenderTransform>
                             </hospitals:HospitalView>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <ItemsControl Width="{Binding Width}" Height="{Binding Height}"
+                              ItemsSource="{Binding FirstAidKits}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Background="Transparent"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <firstAidKits:FirstAidKitView DataContext="{Binding}">
+                                <firstAidKits:FirstAidKitView.RenderTransform>
+                                    <TranslateTransform X="{Binding X}" Y="{Binding Y}" />
+                                </firstAidKits:FirstAidKitView.RenderTransform>
+                            </firstAidKits:FirstAidKitView>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

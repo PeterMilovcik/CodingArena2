@@ -1,8 +1,4 @@
-﻿/* -------------------------------------------------------------------------------------------------
-   Restricted - Copyright (C) Siemens Healthcare GmbH/Siemens Medical Solutions USA, Inc., 2019. All rights reserved
-   ------------------------------------------------------------------------------------------------- */
-
-using CodingArena.Player;
+﻿using CodingArena.Player;
 using System.Linq;
 
 namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
@@ -52,6 +48,10 @@ namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
         }
 
         public void OnWeaponPicked(IWeapon weapon)
+        {
+        }
+
+        public void OnRegenerated()
         {
         }
     }

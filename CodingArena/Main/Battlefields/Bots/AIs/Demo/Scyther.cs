@@ -61,5 +61,9 @@ namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
         public void OnWeaponPicked(IWeapon weapon)
         {
         }
+
+        public void OnRegenerated()
+        {
+        }
     }
 }

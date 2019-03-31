@@ -1,5 +1,6 @@
 ﻿using CodingArena.Annotations;
 using CodingArena.Common;
+using CodingArena.Main.Battlefields.FirstAidKits;
 using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Main.Battlefields.Resources;
 using CodingArena.Main.Battlefields.Weapons;
@@ -25,6 +26,7 @@ namespace CodingArena.Main.Battlefields.Bots
         private TimeSpan myRegenerationActiveIn;
         private TimeSpan myRespawnIn;
         private List<Weapon> myAvailableWeapons;
+        private bool myIsBotCollisionEnabled;
 
         public Bot([NotNull] Battlefield battlefield, IBotAI botAI) : base(battlefield)
         {
@@ -51,6 +53,7 @@ namespace CodingArena.Main.Battlefields.Bots
             RegenerationRate = double.Parse(ConfigurationManager.AppSettings["RegenerationPerSecond"]);
             myRegenerationActiveIn = TimeSpan.Zero;
             myRespawnIn = TimeSpan.FromSeconds(int.Parse(ConfigurationManager.AppSettings["RespawnInSeconds"]));
+            myIsBotCollisionEnabled = bool.Parse(ConfigurationManager.AppSettings["BotCollision"]);
         }
 
         public IBotAI BotAI { get; set; }
@@ -124,6 +127,9 @@ namespace CodingArena.Main.Battlefields.Bots
                     case EquipWeaponTurnAction equipWeapon:
                         Execute(equipWeapon);
                         break;
+                    case PickUpFirstAidKitTurnAction pickUpFirstAidKit:
+                        Execute(pickUpFirstAidKit);
+                        break;
                 }
             }
             catch (Exception)
@@ -145,6 +151,7 @@ namespace CodingArena.Main.Battlefields.Bots
             var newActual = HitPoints.Actual + amount;
             newActual = Math.Min(newActual, HitPoints.Maximum);
             HitPoints = new Value(HitPoints.Maximum, newActual);
+            BotAI.OnRegenerated();
             OnChanged();
         }
 
@@ -170,6 +177,18 @@ namespace CodingArena.Main.Battlefields.Bots
                 if (DistanceTo(weapon) < Radius)
                 {
                     PickUpWeapon(weapon);
+                }
+            }
+        }
+
+        private void Execute(PickUpFirstAidKitTurnAction pickUpFirstAidKit)
+        {
+            var firstAidKit = Battlefield.FirstAidKits.OfType<FirstAidKit>().OrderBy(DistanceTo).FirstOrDefault();
+            if (firstAidKit != null)
+            {
+                if (DistanceTo(firstAidKit) < Radius)
+                {
+                    PickUpFirstAidKit(firstAidKit);
                 }
             }
         }
@@ -246,17 +265,19 @@ namespace CodingArena.Main.Battlefields.Bots
                 return true;
             }
 
-            var otherBots = Battlefield.Bots.Except(new[] { this });
-            foreach (var bot in otherBots)
+            if (myIsBotCollisionEnabled)
             {
-                if (bot.IsInCollisionWith(afterMove))
+                var otherBots = Battlefield.Bots.Except(new[] { this });
+                foreach (var bot in otherBots)
                 {
-                    OnCollisionWith(bot);
+                    if (bot.IsInCollisionWith(afterMove))
+                    {
+                        OnCollisionWith(bot);
 
-                    return false;
+                        return false;
+                    }
                 }
             }
-
 
             Position = new Point(afterMove.Position.X, afterMove.Position.Y);
             OnChanged();
@@ -365,6 +386,12 @@ namespace CodingArena.Main.Battlefields.Bots
             myWeapon = weaponToPickUp;
             Battlefield.Remove(weaponToPickUp);
             OnWeaponPicked(weaponToPickUp);
+        }
+
+        private void PickUpFirstAidKit(FirstAidKit firstAidKit)
+        {
+            Regenerate(firstAidKit.RegenerationAmount);
+            Battlefield.Remove(firstAidKit);
         }
 
         private void OnResourcePicked()
