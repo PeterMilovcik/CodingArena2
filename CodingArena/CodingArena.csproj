@@ -213,7 +213,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodingArena.Player\CodingArena.AI.csproj">
+    <ProjectReference Include="..\CodingArena.AI\CodingArena.AI.csproj">
       <Project>{ade7e948-f1b0-4eaa-b5b3-c1eb8577e7ad}</Project>
       <Name>CodingArena.AI</Name>
     </ProjectReference>
