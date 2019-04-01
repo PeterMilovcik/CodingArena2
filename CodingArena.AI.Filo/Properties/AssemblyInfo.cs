@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CodingArena.AI")]
-[assembly: AssemblyDescription("Coding Arena AI class library project for players to implement their bots.")]
+[assembly: AssemblyTitle("CodingArena.AI.Filo")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Peter Milovcik")]
-[assembly: AssemblyProduct("CodingArena.AI")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("CodingArena.AI.Filo")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("ade7e948-f1b0-4eaa-b5b3-c1eb8577e7ad")]
+[assembly: Guid("bc08216f-ebe8-42cf-b2f9-e209a5731654")]
 
 // Version information for an assembly consists of the following four values:
 //

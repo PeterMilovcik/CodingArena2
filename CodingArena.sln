@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingArena.Tests", "Coding
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingArena.AI", "CodingArena.AI\CodingArena.AI.csproj", "{ADE7E948-F1B0-4EAA-B5B3-C1EB8577E7AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodingArena.AI.Filo", "CodingArena.AI.Filo\CodingArena.AI.Filo.csproj", "{BC08216F-EBE8-42CF-B2F9-E209A5731654}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{ADE7E948-F1B0-4EAA-B5B3-C1EB8577E7AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADE7E948-F1B0-4EAA-B5B3-C1EB8577E7AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADE7E948-F1B0-4EAA-B5B3-C1EB8577E7AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC08216F-EBE8-42CF-B2F9-E209A5731654}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC08216F-EBE8-42CF-B2F9-E209A5731654}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC08216F-EBE8-42CF-B2F9-E209A5731654}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC08216F-EBE8-42CF-B2F9-E209A5731654}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
