@@ -1,5 +1,7 @@
-﻿using CodingArena.Main.Battlefields.Bots;
+﻿using CodingArena.AI;
+using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bullets;
+using CodingArena.Main.Battlefields.Explosions;
 using CodingArena.Main.Battlefields.FirstAidKits;
 using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Main.Battlefields.Hospitals;
@@ -7,7 +9,6 @@ using CodingArena.Main.Battlefields.Weapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CodingArena.AI;
 using IWeapon = CodingArena.AI.IWeapon;
 
 namespace CodingArena.Main.Battlefields
@@ -21,6 +22,7 @@ namespace CodingArena.Main.Battlefields
         private readonly List<Weapon> myWeapons;
         private readonly List<Hospital> myHospitals;
         private readonly List<FirstAidKit> myFirstAidKits;
+        private readonly List<Explosion> myExplosions;
 
         public Battlefield(double width, double height)
         {
@@ -33,6 +35,7 @@ namespace CodingArena.Main.Battlefields
             myWeapons = new List<Weapon>();
             myHospitals = new List<Hospital>();
             myFirstAidKits = new List<FirstAidKit>();
+            myExplosions = new List<Explosion>();
         }
 
         public double Width { get; }
@@ -129,6 +132,18 @@ namespace CodingArena.Main.Battlefields
             OnFirstAidKitRemoved(firstAidKit);
         }
 
+        public void Add(Explosion explosion)
+        {
+            myExplosions.Add(explosion);
+            OnExplosionAdded(explosion);
+        }
+
+        public void Remove(Explosion explosion)
+        {
+            myExplosions.Remove(explosion);
+            OnExplosionRemoved(explosion);
+        }
+
         public event EventHandler<BotEventArgs> BotAdded;
 
         public event EventHandler<BotEventArgs> BotRemoved;
@@ -156,6 +171,10 @@ namespace CodingArena.Main.Battlefields
         public event EventHandler<FirstAidKitEventArgs> FirstAidKitAdded;
 
         public event EventHandler<FirstAidKitEventArgs> FirstAidKitRemoved;
+
+        public event EventHandler<ExplosionEventArgs> ExplosionAdded;
+
+        public event EventHandler<ExplosionEventArgs> ExplosionRemoved;
 
         private void OnBotAdded(Bot bot) =>
             BotAdded?.Invoke(this, new BotEventArgs(bot));
@@ -198,5 +217,11 @@ namespace CodingArena.Main.Battlefields
 
         private void OnFirstAidKitRemoved(FirstAidKit firstAidKit) =>
             FirstAidKitRemoved?.Invoke(this, new FirstAidKitEventArgs(firstAidKit));
+
+        private void OnExplosionAdded(Explosion explosion) =>
+            ExplosionAdded?.Invoke(this, new ExplosionEventArgs(explosion));
+
+        private void OnExplosionRemoved(Explosion explosion) =>
+            ExplosionRemoved?.Invoke(this, new ExplosionEventArgs(explosion));
     }
 }

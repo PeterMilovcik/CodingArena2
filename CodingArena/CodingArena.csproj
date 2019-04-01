@@ -72,6 +72,12 @@
     <Compile Include="Main\Battlefields\Bots\AIs\Demo\Twobit.cs" />
     <Compile Include="Main\Battlefields\Bots\AIs\IBotAIFactory.cs" />
     <Compile Include="Main\Battlefields\Bots\Regeneration.cs" />
+    <Compile Include="Main\Battlefields\ExplosionEventArgs.cs" />
+    <Compile Include="Main\Battlefields\Explosions\Explosion.cs" />
+    <Compile Include="Main\Battlefields\Explosions\ExplosionView.xaml.cs">
+      <DependentUpon>ExplosionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Main\Battlefields\Explosions\ExplosionViewModel.cs" />
     <Compile Include="Main\Battlefields\FirstAidKitEventArgs.cs" />
     <Compile Include="Main\Battlefields\FirstAidKits\FirstAidKit.cs" />
     <Compile Include="Main\Battlefields\FirstAidKits\FirstAidKitViewModel.cs" />
@@ -118,6 +124,10 @@
     <Compile Include="Main\Battlefields\Weapons\Weapon.cs" />
     <Compile Include="Main\MainViewModel.cs" />
     <Compile Include="Main\Battlefields\Resources\ResourceViewModel.cs" />
+    <Page Include="Main\Battlefields\Explosions\ExplosionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Main\Battlefields\FirstAidKits\FirstAidKitView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
