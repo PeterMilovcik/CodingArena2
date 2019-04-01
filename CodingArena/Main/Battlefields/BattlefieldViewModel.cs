@@ -16,6 +16,8 @@ namespace CodingArena.Main.Battlefields
     {
         private Battlefield myBattlefield;
         private ObservableCollection<BotStatsViewModel> myStats;
+        private double myWidth;
+        private double myHeight;
 
         public BattlefieldViewModel()
         {
@@ -31,8 +33,27 @@ namespace CodingArena.Main.Battlefields
             FirstAidKits = new ObservableCollection<FirstAidKitViewModel>();
         }
 
-        public double Width { get; set; }
-        public double Height { get; set; }
+        public double Width
+        {
+            get => myWidth;
+            set
+            {
+                if (value.Equals(myWidth)) return;
+                myWidth = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double Height
+        {
+            get => myHeight;
+            set
+            {
+                if (value.Equals(myHeight)) return;
+                myHeight = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ObservableCollection<HomeViewModel> Homes { get; set; }
         public ObservableCollection<BotViewModel> Bots { get; set; }
@@ -55,6 +76,8 @@ namespace CodingArena.Main.Battlefields
 
         public void Set(Battlefield battlefield)
         {
+            Width = battlefield.Width;
+            Height = battlefield.Height;
             Bots.Clear();
             Bullets.Clear();
             Resources.Clear();
