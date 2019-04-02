@@ -1,4 +1,5 @@
-﻿using CodingArena.Annotations;
+﻿using CodingArena.AI;
+using CodingArena.Annotations;
 using CodingArena.Common;
 using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bullets;
@@ -7,7 +8,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Threading.Tasks;
 using System.Windows;
-using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Weapons
 {
@@ -18,6 +18,7 @@ namespace CodingArena.Main.Battlefields.Weapons
         protected TimeSpan myReloadTime;
         protected Ammunition myAmmunition;
         protected TimeSpan myRemainingReloadTime;
+        protected Point myTarget;
 
         protected Weapon([NotNull] Battlefield battlefield, Point position, string name)
         {
@@ -77,9 +78,10 @@ namespace CodingArena.Main.Battlefields.Weapons
                 new Bullet(myBattlefield, shooter, Ammunition.Speed, Ammunition.Damage, MaxRange)
             };
 
-        public virtual IEnumerable<Bullet> Fire(Bot shooter)
+        public virtual IEnumerable<Bullet> Fire(Bot shooter, Point target)
         {
             if (!CanFire()) return new List<Bullet>();
+            myTarget = target;
             ResetRemainingReloadTime();
             DecreaseAmmunitionBy(1);
             return CreateBullets(shooter);

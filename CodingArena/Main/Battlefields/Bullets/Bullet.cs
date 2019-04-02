@@ -1,11 +1,12 @@
-﻿using CodingArena.Annotations;
+﻿using CodingArena.AI;
+using CodingArena.Annotations;
 using CodingArena.Common;
 using CodingArena.Main.Battlefields.Bots;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Bullets
 {
@@ -45,57 +46,88 @@ namespace CodingArena.Main.Battlefields.Bullets
         public double Damage { get; }
         public double Distance { get; private set; }
         public double MaxDistance { get; }
+
         public override async Task UpdateAsync()
         {
             await base.UpdateAsync();
             Move();
         }
 
-        public bool Move()
+        public virtual void Move()
         {
-            var movement = new Vector(Direction.X, Direction.Y);
-            movement.X *= Speed * DeltaTime.TotalSeconds;
-            movement.Y *= Speed * DeltaTime.TotalSeconds;
+            var movement = GetMovement();
+            var afterMove = GetAfterMove(movement);
 
-            var afterMove = new Bullet(Battlefield, Shooter, Speed, Damage, MaxDistance)
+            if (IsOutOfBattlefield(afterMove) && OnOutOfBattlefield())
+            {
+                return;
+            }
+
+            Distance += movement.Length;
+
+            if (IsMaxDistanceReached() && OnMaxDistanceReached())
+            {
+                return;
+            }
+
+            var damageBots = GetDamageBots(afterMove);
+            if (damageBots.Any() && OnCollisionWith(damageBots))
+            {
+                return;
+            }
+
+            OnMoved(afterMove);
+            OnChanged();
+        }
+
+        protected virtual void OnMoved(Bullet afterMove) =>
+            Position = new Point(afterMove.Position.X, afterMove.Position.Y);
+
+        protected virtual List<Bot> GetDamageBots(Bullet afterMove) =>
+            Battlefield.Bots.Except(new[] { Shooter }).OfType<Bot>()
+                .Where(bot => bot.IsInCollisionWith(afterMove)).ToList();
+
+        protected virtual bool OnCollisionWith(List<Bot> bots)
+        {
+            bots.ForEach(bot => bot.TakeDamageFrom(this));
+            OnChanged();
+            Battlefield.Remove(this);
+            return true;
+        }
+
+        protected virtual bool OnMaxDistanceReached()
+        {
+            Battlefield.Remove(this);
+            return true;
+        }
+
+        protected virtual bool IsMaxDistanceReached() => Distance > MaxDistance;
+
+        protected virtual bool OnOutOfBattlefield()
+        {
+            Battlefield.Remove(this);
+            return true;
+        }
+
+        protected virtual bool IsOutOfBattlefield(Bullet afterMove) =>
+            afterMove.Position.X > Battlefield.Width - 1 ||
+            afterMove.Position.X < 0 ||
+            afterMove.Position.Y > Battlefield.Height - 1 ||
+            afterMove.Position.Y < 0;
+
+        protected virtual Bullet GetAfterMove(Vector movement) =>
+            new Bullet(Battlefield, Shooter, Speed, Damage, MaxDistance)
             {
                 Position = new Point(Position.X + movement.X, Position.Y + movement.Y),
                 Radius = Radius
             };
 
-            if (afterMove.Position.X > Battlefield.Width - 1 ||
-                afterMove.Position.X < 0 ||
-                afterMove.Position.Y > Battlefield.Height - 1 ||
-                afterMove.Position.Y < 0)
-            {
-                Battlefield.Remove(this);
-                return true;
-            }
-
-            Distance += movement.Length;
-            if (Distance > MaxDistance)
-            {
-                Battlefield.Remove(this);
-                return true;
-            }
-
-            var damageBots = Battlefield.Bots.Except(new[] { Shooter }).OfType<Bot>()
-                .Where(bot => bot.IsInCollisionWith(afterMove)).ToList();
-            if (damageBots.Any())
-            {
-                foreach (var bot in damageBots)
-                {
-                    bot.TakeDamageFrom(this);
-                }
-
-                OnChanged();
-                Battlefield.Remove(this);
-                return false;
-            }
-
-            Position = new Point(afterMove.Position.X, afterMove.Position.Y);
-            OnChanged();
-            return true;
+        protected virtual Vector GetMovement()
+        {
+            var movement = new Vector(Direction.X, Direction.Y);
+            movement.X *= Speed * DeltaTime.TotalSeconds;
+            movement.Y *= Speed * DeltaTime.TotalSeconds;
+            return movement;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using CodingArena.Annotations;
+﻿using CodingArena.AI;
+using CodingArena.AI.TurnActions;
+using CodingArena.Annotations;
 using CodingArena.Common;
 using CodingArena.Main.Battlefields.FirstAidKits;
 using CodingArena.Main.Battlefields.Homes;
@@ -10,8 +12,6 @@ using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using CodingArena.AI;
-using CodingArena.AI.TurnActions;
 using IWeapon = CodingArena.AI.IWeapon;
 
 namespace CodingArena.Main.Battlefields.Bots
@@ -25,6 +25,7 @@ namespace CodingArena.Main.Battlefields.Bots
         private TimeSpan myRespawnIn;
         private List<Weapon> myAvailableWeapons;
         private bool myIsBotCollisionEnabled;
+        private Point myTarget;
 
         public Bot([NotNull] Battlefield battlefield, IBotAI botAI) : base(battlefield)
         {
@@ -339,6 +340,7 @@ namespace CodingArena.Main.Battlefields.Bots
             var movement = new Vector(position.X - Position.X, position.Y - Position.Y);
             movement.Normalize();
             Direction = movement;
+            myTarget = position;
             myRemainingAimTime = new TimeSpan(myWeapon.AimTime.Ticks);
         }
 
@@ -436,7 +438,7 @@ namespace CodingArena.Main.Battlefields.Bots
             myRemainingAimTime -= DeltaTime;
             if (myRemainingAimTime <= TimeSpan.Zero)
             {
-                var bullets = myWeapon.Fire(this);
+                var bullets = myWeapon.Fire(this, myTarget);
                 foreach (var bullet in bullets)
                 {
                     Battlefield.Add(bullet);

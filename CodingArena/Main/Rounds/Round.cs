@@ -4,6 +4,7 @@ using CodingArena.Main.Battlefields;
 using CodingArena.Main.Battlefields.Bots;
 using CodingArena.Main.Battlefields.Bots.AIs;
 using CodingArena.Main.Battlefields.Bullets;
+using CodingArena.Main.Battlefields.Explosions;
 using CodingArena.Main.Battlefields.FirstAidKits;
 using CodingArena.Main.Battlefields.Homes;
 using CodingArena.Main.Battlefields.Hospitals;
@@ -75,12 +76,17 @@ namespace CodingArena.Main.Rounds
             {
                 AddFirstAidKit();
             }
-            var bulletTasks = Battlefield.Bullets.ToList().OfType<Bullet>().Select(b => b.UpdateAsync());
+            var bulletTasks = Battlefield.Bullets.ToList()
+                .OfType<Bullet>().Select(b => b.UpdateAsync());
             await Task.WhenAll(bulletTasks);
             var botTasks = Bots.Select(b => b.UpdateAsync());
             await Task.WhenAll(botTasks);
-            var hospitalTasks = Battlefield.Hospitals.ToList().OfType<Hospital>().Select(b => b.UpdateAsync());
+            var hospitalTasks = Battlefield.Hospitals.ToList()
+                .OfType<Hospital>().Select(b => b.UpdateAsync());
             await Task.WhenAll(hospitalTasks);
+            var explosionTasks = Battlefield.Explosions.ToList()
+                .OfType<Explosion>().Select(b => b.UpdateAsync());
+            await Task.WhenAll(explosionTasks);
             await Task.Delay(TimeSpan.FromMilliseconds(myTurnDelay));
         }
 
@@ -159,6 +165,7 @@ namespace CodingArena.Main.Rounds
             int shotgunChance = int.Parse(ConfigurationManager.AppSettings["MachineGunChance"]);
             int rifleChance = int.Parse(ConfigurationManager.AppSettings["RifleChance"]);
             int pistolChance = int.Parse(ConfigurationManager.AppSettings["PistolChance"]);
+            int grenadeChance = int.Parse(ConfigurationManager.AppSettings["GrenadeChance"]);
 
             var weaponChance = myRandom.Next(
                 sniperRifleChance + machineGunChance + shotgunChance + rifleChance + pistolChance);
@@ -177,7 +184,10 @@ namespace CodingArena.Main.Rounds
                 case int n when n >= sniperRifleChance + machineGunChance + rifleChance && n < sniperRifleChance + machineGunChance + rifleChance + shotgunChance:
                     weapon = new Shotgun(Battlefield, position);
                     break;
-                case int n when n >= sniperRifleChance + machineGunChance + rifleChance + shotgunChance:
+                case int n when n >= sniperRifleChance + machineGunChance + rifleChance + shotgunChance && n < sniperRifleChance + machineGunChance + rifleChance + shotgunChance + grenadeChance:
+                    weapon = new Grenade(Battlefield, position);
+                    break;
+                case int n when n >= sniperRifleChance + machineGunChance + rifleChance + shotgunChance + grenadeChance:
                     weapon = new Pistol(Battlefield, position);
                     break;
             }

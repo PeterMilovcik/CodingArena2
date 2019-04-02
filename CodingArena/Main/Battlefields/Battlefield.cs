@@ -47,6 +47,7 @@ namespace CodingArena.Main.Battlefields
         public IReadOnlyList<IWeapon> Weapons => myWeapons.OfType<IWeapon>().ToList();
         public IReadOnlyList<IHospital> Hospitals => myHospitals.OfType<IHospital>().ToList();
         public IReadOnlyList<IFirstAidKit> FirstAidKits => myFirstAidKits.OfType<IFirstAidKit>().ToList();
+        public IReadOnlyList<Explosion> Explosions => myExplosions.ToList();
 
         public void Add(Bot bot)
         {
