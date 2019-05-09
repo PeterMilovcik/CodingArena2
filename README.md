@@ -35,4 +35,14 @@ if (ownBot.HasResource)
 }
 ```
 
+**Attack enemy bot**
+``` csharp
+if (battlefield.Bots.Contains(enemy))
+{
+   return ownBot.DistanceTo(enemy) < ownBot.EquippedWeapon.MaxRange
+      ? TurnAction.ShootAt(enemy)
+      : TurnAction.MoveTowards(enemy);
+}
+```
+
 All possible actions are available by using [TurnAction](./CodingArena.AI/TurnAction.cs) static factory class.
