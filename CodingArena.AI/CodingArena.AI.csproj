@@ -51,7 +51,7 @@
     <Compile Include="IBot.cs" />
     <Compile Include="IBullet.cs" />
     <Compile Include="IAmmunition.cs" />
-    <Compile Include="IBotAI.cs" />
+    <Compile Include="BotAI.cs" />
     <Compile Include="ICollider.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="IHospital.cs" />

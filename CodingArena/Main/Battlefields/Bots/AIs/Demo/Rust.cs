@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
 {
-    public class Rust : IBotAI
+    public class Rust : BotAI
     {
         private IBot myAttacker;
-        private Random Random { get; }
-        public string BotName { get; } = nameof(Rust);
+        public override string BotName { get; } = nameof(Rust);
         private List<Point> Corners { get; }
-        private Point SafePoint { get; set; }
 
         public Rust()
         {
-            Random = new Random();
             Corners = new List<Point>();
         }
 
-        public ITurnAction Update(IBot ownBot, IBattlefield battlefield)
+        public override ITurnAction Update(IBot ownBot, IBattlefield battlefield)
         {
             if (!Corners.Any())
             {
@@ -90,32 +86,6 @@ namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
             }
 
             return TurnAction.Idle;
-        }
-
-        public void OnDamaged(double damage, IBot shooter)
-        {
-            myAttacker = shooter;
-            SafePoint = Corners[Random.Next(4)];
-        }
-
-        public void OnMoved(double distance)
-        {
-        }
-
-        public void OnCollisionWith(IBot bot)
-        {
-        }
-
-        public void OnResourcePicked()
-        {
-        }
-
-        public void OnWeaponPicked(IWeapon weapon)
-        {
-        }
-
-        public void OnRegenerated()
-        {
         }
     }
 }

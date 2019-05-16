@@ -6,7 +6,7 @@ namespace CodingArena.Main.Battlefields.Bots.AIs
 {
     internal class DemoBotAIFactory : IBotAIFactory
     {
-        public List<IBotAI> CreateBotAIs() => new List<IBotAI>
+        public List<BotAI> CreateBotAIs() => new List<BotAI>
         {
             new Proto(),
             new Scrappie(),

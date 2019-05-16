@@ -35,7 +35,14 @@ namespace CodingArena.Main.Battlefields.Bots
             var newActual = myBot.HitPoints.Actual + amount;
             newActual = Math.Min(newActual, myBot.HitPoints.Maximum);
             myBot.HitPoints = new Value(myBot.HitPoints.Maximum, newActual);
-            myBot.BotAI.OnRegenerated();
+            try
+            {
+                myBot.BotAI.OnRegenerated();
+            }
+            catch
+            {
+                // ignore
+            }
             myBot.OnChanged();
         }
 

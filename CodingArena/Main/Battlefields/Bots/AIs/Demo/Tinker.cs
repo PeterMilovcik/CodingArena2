@@ -3,15 +3,15 @@ using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
 {
-    internal class Tinker : IBotAI
+    internal class Tinker : BotAI
     {
         public Tinker()
         {
             BotName = nameof(Tinker);
         }
-        public string BotName { get; }
+        public override string BotName { get; }
 
-        public ITurnAction Update(IBot ownBot, IBattlefield battlefield)
+        public override ITurnAction Update(IBot ownBot, IBattlefield battlefield)
         {
             if (ownBot.EquippedWeapon.Ammunition.Remaining == 0)
             {
@@ -56,30 +56,6 @@ namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
             }
 
             return TurnAction.Idle;
-        }
-
-        public void OnDamaged(double damage, IBot shooter)
-        {
-        }
-
-        public void OnMoved(double distance)
-        {
-        }
-
-        public void OnCollisionWith(IBot bot)
-        {
-        }
-
-        public void OnResourcePicked()
-        {
-        }
-
-        public void OnWeaponPicked(IWeapon weapon)
-        {
-        }
-
-        public void OnRegenerated()
-        {
         }
     }
 }

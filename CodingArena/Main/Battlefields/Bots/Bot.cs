@@ -27,7 +27,7 @@ namespace CodingArena.Main.Battlefields.Bots
         private bool myIsBotCollisionEnabled;
         private Point myTarget;
 
-        public Bot([NotNull] Battlefield battlefield, IBotAI botAI) : base(battlefield)
+        public Bot([NotNull] Battlefield battlefield, BotAI botAI) : base(battlefield)
         {
             Regeneration = new Regeneration(this);
             Init(battlefield, botAI);
@@ -35,11 +35,18 @@ namespace CodingArena.Main.Battlefields.Bots
 
         public Regeneration Regeneration { get; }
 
-        private void Init(Battlefield battlefield, IBotAI botAI)
+        private void Init(Battlefield battlefield, BotAI botAI)
         {
             Regeneration.Init();
             BotAI = botAI;
-            Name = BotAI.BotName;
+            try
+            {
+                Name = BotAI.BotName;
+            }
+            catch
+            {
+                Name = "Unknown";
+            }
             myBattlefield = battlefield ?? throw new ArgumentNullException(nameof(battlefield));
             Radius = 20;
             var maxHitPoints = double.Parse(ConfigurationManager.AppSettings["MaxHitPoints"]);
@@ -55,7 +62,7 @@ namespace CodingArena.Main.Battlefields.Bots
             myIsBotCollisionEnabled = bool.Parse(ConfigurationManager.AppSettings["BotCollision"]);
         }
 
-        public IBotAI BotAI { get; set; }
+        public BotAI BotAI { get; set; }
         public string Name { get; set; }
         public IValue HitPoints { get; set; }
         public IResource Resource { get; private set; }
@@ -95,39 +102,52 @@ namespace CodingArena.Main.Battlefields.Bots
                     Aim();
                     return;
                 }
-                var turnAction = BotAI.Update(this, myBattlefield);
-                switch (turnAction)
+                var turnAction = GetTurnAction();
+                if (turnAction != null)
                 {
-                    case ShootAtTurnAction shoot:
-                        Execute(shoot);
-                        break;
-                    case MoveTowardsTurnAction moveTowards:
-                        Execute(moveTowards);
-                        break;
-                    case MoveAwayFromTurnAction moveAway:
-                        Execute(moveAway);
-                        break;
-                    case PickUpResourceTurnAction pickUpResource:
-                        Execute(pickUpResource);
-                        break;
-                    case DropDownResourceTurnAction dropDownResource:
-                        Execute(dropDownResource);
-                        break;
-                    case PickUpWeaponTurnAction pickUpAmmo:
-                        Execute(pickUpAmmo);
-                        break;
-                    case EquipWeaponTurnAction equipWeapon:
-                        Execute(equipWeapon);
-                        break;
-                    case PickUpFirstAidKitTurnAction pickUpFirstAidKit:
-                        Execute(pickUpFirstAidKit);
-                        break;
+                    switch (turnAction)
+                    {
+                        case ShootAtTurnAction shoot:
+                            Execute(shoot);
+                            break;
+                        case MoveTowardsTurnAction moveTowards:
+                            Execute(moveTowards);
+                            break;
+                        case MoveAwayFromTurnAction moveAway:
+                            Execute(moveAway);
+                            break;
+                        case PickUpResourceTurnAction pickUpResource:
+                            Execute(pickUpResource);
+                            break;
+                        case DropDownResourceTurnAction dropDownResource:
+                            Execute(dropDownResource);
+                            break;
+                        case PickUpWeaponTurnAction pickUpAmmo:
+                            Execute(pickUpAmmo);
+                            break;
+                        case EquipWeaponTurnAction equipWeapon:
+                            Execute(equipWeapon);
+                            break;
+                        case PickUpFirstAidKitTurnAction pickUpFirstAidKit:
+                            Execute(pickUpFirstAidKit);
+                            break;
+                    }
                 }
             }
-            catch (Exception)
+            catch
             {
                 // ignored
             }
+        }
+
+        private ITurnAction GetTurnAction()
+        {
+            ITurnAction result = null;
+            var task = Task.Run(() => result = BotAI.Update(this, myBattlefield));
+            var timeout = TimeSpan.FromSeconds(1);
+            var success = task.Wait(timeout);
+            if (!success) throw new TimeoutException($"GetTurnAction is not complete after timeout {timeout}.");
+            return result;
         }
 
         private void Respawn()
@@ -319,7 +339,7 @@ namespace CodingArena.Main.Battlefields.Bots
             }
         }
 
-        private void Die()
+        private void Die(IBot attacker = null)
         {
             if (HasResource)
             {
@@ -327,12 +347,15 @@ namespace CodingArena.Main.Battlefields.Bots
             }
             HitPoints = new Value(HitPoints.Maximum, 0);
             Battlefield.Remove(this);
+            try
+            {
+                BotAI.OnDied(attacker);
+            }
+            catch
+            {
+                // ignore
+            }
             OnDied();
-        }
-
-        private void Die(IBot shooter)
-        {
-            Die();
         }
 
         private void ShootAt(Point position)

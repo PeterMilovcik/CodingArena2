@@ -5,6 +5,6 @@ namespace CodingArena.Main.Battlefields.Bots.AIs
 {
     public interface IBotAIFactory
     {
-        List<IBotAI> CreateBotAIs();
+        List<BotAI> CreateBotAIs();
     }
 }

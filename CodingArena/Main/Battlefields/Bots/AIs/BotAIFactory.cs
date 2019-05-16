@@ -9,9 +9,9 @@ namespace CodingArena.Main.Battlefields.Bots.AIs
 {
     public class BotAIFactory : IBotAIFactory
     {
-        public List<IBotAI> CreateBotAIs()
+        public List<BotAI> CreateBotAIs()
         {
-            var result = new List<IBotAI>();
+            var result = new List<BotAI>();
             var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var dir = Path.Combine(baseDirectory, "Bots");
             if (!Directory.Exists(dir)) throw new DirectoryNotFoundException($"{dir} not found.");
@@ -24,7 +24,7 @@ namespace CodingArena.Main.Battlefields.Bots.AIs
                     var aiType = FindAIType(assembly);
 
                     if (aiType != null &&
-                        Activator.CreateInstance(aiType) is IBotAI botAI)
+                        Activator.CreateInstance(aiType) is BotAI botAI)
                     {
                         result.Add(botAI);
                     }
@@ -49,6 +49,6 @@ namespace CodingArena.Main.Battlefields.Bots.AIs
             }
         }
 
-        private bool IsBotAIType(Type t) => typeof(IBotAI).IsAssignableFrom(t) && t.IsClass;
+        private bool IsBotAIType(Type t) => typeof(BotAI).IsAssignableFrom(t) && t.IsClass;
     }
 }

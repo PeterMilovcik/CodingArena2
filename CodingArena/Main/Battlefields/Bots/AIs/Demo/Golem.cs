@@ -3,16 +3,16 @@ using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
 {
-    internal class Golem : IBotAI
+    internal class Golem : BotAI
     {
         public Golem()
         {
             BotName = nameof(Golem);
         }
 
-        public string BotName { get; }
+        public override string BotName { get; }
 
-        public ITurnAction Update(IBot ownBot, IBattlefield battlefield)
+        public override ITurnAction Update(IBot ownBot, IBattlefield battlefield)
         {
             var enemies = battlefield.Bots.Except(new[] { ownBot });
 
@@ -40,30 +40,6 @@ namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
                     : TurnAction.MoveTowards(closestWeapon);
             }
             return TurnAction.Idle;
-        }
-
-        public void OnDamaged(double damage, IBot shooter)
-        {
-        }
-
-        public void OnMoved(double distance)
-        {
-        }
-
-        public void OnCollisionWith(IBot bot)
-        {
-        }
-
-        public void OnResourcePicked()
-        {
-        }
-
-        public void OnWeaponPicked(IWeapon weapon)
-        {
-        }
-
-        public void OnRegenerated()
-        {
         }
     }
 }

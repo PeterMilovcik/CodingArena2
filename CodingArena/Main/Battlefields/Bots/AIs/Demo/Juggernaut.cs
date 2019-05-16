@@ -3,16 +3,16 @@ using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
 {
-    internal class Juggernaut : IBotAI
+    internal class Juggernaut : BotAI
     {
         public Juggernaut()
         {
             BotName = nameof(Juggernaut);
         }
 
-        public string BotName { get; }
+        public override string BotName { get; }
 
-        public ITurnAction Update(IBot ownBot, IBattlefield battlefield)
+        public override ITurnAction Update(IBot ownBot, IBattlefield battlefield)
         {
             var enemies = battlefield.Bots.Except(new[] { ownBot }).Where(b => b.HasResource);
 
@@ -38,30 +38,6 @@ namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
                     ? TurnAction.PickUpWeapon()
                     : TurnAction.MoveTowards(closestWeapon);
             }
-        }
-
-        public void OnDamaged(double damage, IBot shooter)
-        {
-        }
-
-        public void OnMoved(double distance)
-        {
-        }
-
-        public void OnCollisionWith(IBot bot)
-        {
-        }
-
-        public void OnResourcePicked()
-        {
-        }
-
-        public void OnWeaponPicked(IWeapon weapon)
-        {
-        }
-
-        public void OnRegenerated()
-        {
         }
     }
 }

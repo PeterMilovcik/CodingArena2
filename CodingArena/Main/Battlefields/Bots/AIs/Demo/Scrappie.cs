@@ -6,11 +6,11 @@ using CodingArena.AI;
 
 namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
 {
-    public class Scrappie : IBotAI
+    public class Scrappie : BotAI
     {
         private IBot myAttacker;
         private Random Random { get; }
-        public string BotName { get; } = nameof(Scrappie);
+        public override string BotName { get; } = nameof(Scrappie);
         private List<Point> Corners { get; }
         private Point SafePoint { get; set; }
 
@@ -20,7 +20,7 @@ namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
             Corners = new List<Point>();
         }
 
-        public ITurnAction Update(IBot ownBot, IBattlefield battlefield)
+        public override ITurnAction Update(IBot ownBot, IBattlefield battlefield)
         {
             if (!Corners.Any())
             {
@@ -90,32 +90,6 @@ namespace CodingArena.Main.Battlefields.Bots.AIs.Demo
             }
 
             return TurnAction.Idle;
-        }
-
-        public void OnDamaged(double damage, IBot shooter)
-        {
-            myAttacker = shooter;
-            SafePoint = Corners[Random.Next(4)];
-        }
-
-        public void OnMoved(double distance)
-        {
-        }
-
-        public void OnCollisionWith(IBot bot)
-        {
-        }
-
-        public void OnResourcePicked()
-        {
-        }
-
-        public void OnWeaponPicked(IWeapon weapon)
-        {
-        }
-
-        public void OnRegenerated()
-        {
         }
     }
 }
