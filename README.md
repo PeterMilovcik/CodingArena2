@@ -8,7 +8,7 @@ A game for programmers to compete against each other to show best skills for cre
 
 1. Create class assembly project for implementation of your bot.
 2. Reference latest NuGet package called `CodingArena.AI`.
-3. Implement interface [IBotAI](./CodingArena.AI/IBotAI.cs).
+3. Implement interface [BotAI](./CodingArena.AI/BotAI.cs).
 4. Build and upload assembly with bot implementation to server where the CodingArena game is hosted.
 
 Here are few examples for implementing bot actions:
